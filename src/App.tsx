@@ -3,13 +3,17 @@ import "./App.css";
 
 // Components
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
     <>
+      <Header />
       <Routes>
         <Route path="/" element={<Header />} />
-        <Header />
+        <Route path="/footer" element={<Footer />} />
+
+        <Route path="*" element={<h1>404 - Not Found</h1>} />
       </Routes>
     </>
   );
