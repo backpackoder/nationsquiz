@@ -1,0 +1,14 @@
+header {
+  width: 100%;
+}
+header ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: lightblue;
+  padding: 5px;
+}
+header ul li {
+  list-style-type: none;
+}

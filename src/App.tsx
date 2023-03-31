@@ -1,21 +1,14 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { AppProvider } from "./AppProvider";
 
 // Components
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
+import { AppConsumer } from "./components/AppConsumer";
 
 function App() {
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Header />} />
-        <Route path="/footer" element={<Footer />} />
-
-        <Route path="*" element={<h1>404 - Not Found</h1>} />
-      </Routes>
-    </>
+    <AppProvider>
+      <AppConsumer />
+    </AppProvider>
   );
 }
 
