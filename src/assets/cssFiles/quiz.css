@@ -1,0 +1,16 @@
+.quiz img {
+  border: solid 1px;
+}
+.quiz ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 300px;
+  border: solid;
+}
+.quiz li {
+  border: solid;
+  cursor: pointer;
+}
