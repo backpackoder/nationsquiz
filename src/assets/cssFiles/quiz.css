@@ -1,16 +1,75 @@
-.quiz img {
+.quiz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.quiz .game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 800px;
+  /* background-color: rgb(243, 243, 243); */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 24px -16px;
+}
+.quiz .game img {
+  width: 100%;
+  max-width: 500px;
   border: solid 1px;
 }
-.quiz ul {
+.quiz .game ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  max-width: 300px;
-  border: solid;
+  gap: 10px;
+  text-align: center;
 }
-.quiz li {
-  border: solid;
+.quiz .game li {
+  background-color: blue;
+  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
+}
+.quiz .game .correctResponse.active {
+  background-color: lightgreen;
+}
+.quiz .game .wrongResponse.active {
+  background-color: red;
+}
+.quiz .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  width: 100%;
+}
+.quiz button {
+  background-color: lightblue;
+  padding: 5px 10px;
+  border: solid 1px;
+  border-radius: 5px;
+}
+.quiz button:hover {
+  background-color: blueviolet;
+}
+
+.modaleWrapper.quiz {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.modale.quiz {
+  background-color: rgb(231, 231, 231);
+  padding: 25px;
+  border-radius: 5px;
 }
