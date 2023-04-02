@@ -1,3 +1,4 @@
+// Context
 export type AppProviderProps = {
   isLoading: boolean;
   data: any;
@@ -18,3 +19,11 @@ export type AppProviderProps = {
   nbOfChoices: number;
   setNbOfChoices: React.Dispatch<React.SetStateAction<number>>;
 };
+
+// Languages
+export type Iso = "fr" | "en" | "es";
+
+export type LanguageBtn = {
+  language: Iso;
+  flag: JSX.Element;
+}[];

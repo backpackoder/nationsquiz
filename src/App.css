@@ -1,5 +1,7 @@
 @import "./assets/cssFiles/header.css";
 
+@import "./assets/cssFiles/changeLanguage.css";
+
 @import "./assets/cssFiles/quiz.css";
 @import "./assets/cssFiles/quizSelection.css";
 
