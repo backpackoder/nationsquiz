@@ -6,7 +6,7 @@ import axios from "axios";
 import { AppProviderProps } from "./types/main";
 
 // Utils
-import { Difficulty, QuizLength, difficulty, quizLength } from "./utils/quiz";
+import { Difficulty, QuizLength, difficulty, quizLength } from "./utils/settings";
 
 export function AppProvider(props: object) {
   const [isLoading, setIsLoading] = useState(true);

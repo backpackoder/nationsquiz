@@ -1,5 +1,4 @@
 import { useContext, useReducer, useState } from "react";
-import { Link } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 
 // Types
@@ -7,18 +6,14 @@ import { AppProviderProps } from "../../types/main";
 
 // Components
 import { Result } from "./Result";
+import { Modale } from "../../modales/Modale";
+import { GameModale } from "../../modales/GameModale";
 
 type QuizPlayingProps = {
-  actualQuestion: number;
   score: number;
-  isModaleOpened: boolean;
+  actualQuestion: number;
   state: any;
-  setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
   responseSelected: (index: any) => void;
-};
-type ModaleProps = {
-  modaleState: any;
-  setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function QuizRunning() {
@@ -26,7 +21,6 @@ export function QuizRunning() {
 
   const [actualQuestion, setActualQuestion] = useState(1);
   const [score, setScore] = useState(0);
-  const [isModaleOpened, setIsModaleOpened] = useState(false);
 
   const countriesList: any[] = [];
   if (data) {
@@ -125,27 +119,22 @@ export function QuizRunning() {
     score,
     actualQuestion,
     state,
-    isModaleOpened,
-    setIsModaleOpened,
     responseSelected,
   };
 
-  return (
-    <section className="quiz">
-      {actualQuestion <= nbOfQuestions ? (
-        <QuizPlaying props={quizPlayingProps} />
-      ) : (
-        <Result score={score} />
-      )}
-    </section>
+  return actualQuestion <= nbOfQuestions ? (
+    <QuizPlaying props={quizPlayingProps} />
+  ) : (
+    <Result score={score} />
   );
 }
 
 function QuizPlaying({ props }: { props: QuizPlayingProps }) {
   const { data, nbOfQuestions, nbOfChoices }: AppProviderProps = useContext(AppContext);
 
-  const { score, actualQuestion, state, isModaleOpened, setIsModaleOpened, responseSelected } =
-    props;
+  const [isModaleOpened, setIsModaleOpened] = useState(false);
+
+  const { score, actualQuestion, state, responseSelected } = props;
   const {
     correctResponseData,
     correctResponseRandomIndex,
@@ -234,31 +223,13 @@ function QuizPlaying({ props }: { props: QuizPlayingProps }) {
         </button>
       </div>
 
-      {isModaleOpened && <Modale modaleState={modaleState} setIsModaleOpened={setIsModaleOpened} />}
+      {isModaleOpened && (
+        <Modale
+          modale="quizRunning"
+          children={<GameModale modaleState={modaleState} setIsModaleOpened={setIsModaleOpened} />}
+          setIsModaleOpened={setIsModaleOpened}
+        />
+      )}
     </>
-  );
-}
-
-function Modale({ modaleState, setIsModaleOpened }: ModaleProps) {
-  const { confirmation, description } = modaleState;
-
-  function handleModalClick(e: React.MouseEvent<HTMLDivElement>) {
-    e.stopPropagation();
-  }
-
-  return (
-    <div className="modaleWrapper quiz" onClick={() => setIsModaleOpened(false)}>
-      <div className="modale quiz" onClick={(e) => handleModalClick(e)}>
-        <p>{description}</p>
-
-        <div className="buttons">
-          <Link to={confirmation}>
-            <button onClick={confirmation}>Oui</button>
-          </Link>
-
-          <button onClick={() => setIsModaleOpened(false)}>Non</button>
-        </div>
-      </div>
-    </div>
   );
 }
