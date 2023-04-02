@@ -16,7 +16,7 @@ export function AppProvider(props: object) {
 
   // Quiz
   const [nbOfQuestions, setNbOfQuestions] = useState(quizLength[QuizLength.Twenty].questions);
-  const [nbOfChoices, setNbOfChoices] = useState(difficulty[Difficulty.Facile].choices);
+  const [nbOfChoices, setNbOfChoices] = useState(difficulty[Difficulty.Easy].choices);
 
   useEffect(() => {
     axios

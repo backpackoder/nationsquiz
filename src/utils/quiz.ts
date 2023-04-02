@@ -19,10 +19,10 @@ export const quizLength = [
 ];
 
 export enum Difficulty {
-  Enfant = 0,
-  Facile,
-  Moyen,
-  Difficile,
+  Kid = 0,
+  Easy,
+  Medium,
+  Hard,
   Expert,
 }
 export const difficulty = [
