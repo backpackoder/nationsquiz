@@ -1,26 +1,11 @@
 import { useState } from "react";
 
-// Components
-import { SettingsModale } from "../../modales/SettingsModale";
-import { Modale } from "../../modales/Modale";
+// Utils
+import { quizData } from "../../utils/quizData";
 
-const quizData = [
-  {
-    theme: "flags",
-    title: "Drapeaux",
-    description: "Quiz sur les drapeaux des pays",
-  },
-  {
-    theme: "capitals",
-    title: "Capitales",
-    description: "Quiz sur les capitales des pays",
-  },
-  {
-    theme: "demography",
-    title: "Demographie",
-    description: "Quel pays à le plus d'habitants ?",
-  },
-];
+// Components
+import { Modale } from "../../modales/Modale";
+import { SettingsModale } from "../../modales/SettingsModale";
 
 export function QuizSelection() {
   const [isModaleOpened, setIsModaleOpened] = useState(false);

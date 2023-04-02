@@ -8,16 +8,18 @@ import { QuizSelection } from "./QuizSelection";
 // Types
 import { AppProviderProps } from "../../types/main";
 
+// Commons
+import { TITLE } from "../../commons/commons";
+
 export function Home() {
-  const { isLoading, data }: AppProviderProps = useContext(AppContext);
+  const { isLoading }: AppProviderProps = useContext(AppContext);
 
   return isLoading ? (
     <Loading />
   ) : (
     <>
-      <h1>Nations Quiz</h1>
+      <h1>{TITLE}</h1>
       <p>Le quiz qui vous permet de tester vos connaissances sur les nations du monde.</p>
-      <p>data: {data[7].name.common}</p>
 
       <QuizSelection />
     </>
