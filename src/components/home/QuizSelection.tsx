@@ -1,4 +1,8 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+
+// Components
+import { SettingsModale } from "../../modales/SettingsModale";
+import { Modale } from "../../modales/Modale";
 
 const quizData = [
   {
@@ -19,6 +23,15 @@ const quizData = [
 ];
 
 export function QuizSelection() {
+  const [isModaleOpened, setIsModaleOpened] = useState(false);
+
+  const [themeClicked, setThemeClicked] = useState("");
+
+  function openModale(theme: any) {
+    setThemeClicked(theme);
+    setIsModaleOpened(true);
+  }
+
   return (
     <section className="quiz-selection">
       <h2>Choisissez votre quiz</h2>
@@ -28,22 +41,31 @@ export function QuizSelection() {
           const { description, theme, title } = item;
 
           return (
-            <Link key={index} to={`/quiz/${theme}`}>
-              <div className="quiz-selection__item" data-title={description}>
-                <h3>{title}</h3>
+            <div
+              key={index}
+              className="quiz-selection__item"
+              onClick={() => openModale(item)}
+              data-title={description}
+            >
+              <h3>{title}</h3>
 
-                {/* <p>Quiz sur les drapeaux des pays</p> */}
-
-                <div className="imgWrapper">
-                  <img src={`../src/assets/imgs/${theme}.jpg`} alt={theme} />
-                </div>
-
-                <button>Je commence le quiz</button>
+              <div className="imgWrapper">
+                <img src={`../src/assets/imgs/${theme}.jpg`} alt={theme} />
               </div>
-            </Link>
+
+              <button>Je commence le quiz</button>
+            </div>
           );
         })}
       </article>
+
+      {isModaleOpened && (
+        <Modale
+          modale="settings"
+          children={<SettingsModale theme={themeClicked} setIsModaleOpened={setIsModaleOpened} />}
+          setIsModaleOpened={setIsModaleOpened}
+        />
+      )}
     </section>
   );
 }
