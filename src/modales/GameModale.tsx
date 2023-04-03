@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type GameModaleProps = {
   dispatch: any;
@@ -8,6 +9,7 @@ type GameModaleProps = {
 
 export function GameModale({ dispatch, gameModale, setIsModaleOpened }: GameModaleProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { confirmation, description } = gameModale;
 
   return (
@@ -20,10 +22,10 @@ export function GameModale({ dispatch, gameModale, setIsModaleOpened }: GameModa
             confirmation === "restart" ? dispatch({ type: confirmation }) : navigate("/quiz")
           }
         >
-          Oui
+          {t("modale.game.accept")}
         </button>
 
-        <button onClick={() => setIsModaleOpened(false)}>Non</button>
+        <button onClick={() => setIsModaleOpened(false)}>{t("modale.game.decline")}</button>
       </div>
     </>
   );

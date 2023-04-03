@@ -1,5 +1,10 @@
 // Context
 export type AppProviderProps = {
+  // Language
+  actualLanguage: string;
+  setActualLanguage: React.Dispatch<React.SetStateAction<string>>;
+
+  // API
   isLoading: boolean;
   data: any;
 
@@ -21,7 +26,7 @@ export type AppProviderProps = {
 };
 
 // Languages
-export type Iso = "fr" | "en" | "es";
+export type Iso = "fra" | "en" | "spa";
 
 export type LanguageBtn = {
   language: Iso;

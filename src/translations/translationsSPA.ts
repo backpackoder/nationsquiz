@@ -1,6 +1,6 @@
-export const translationsES = {
+export const translationsSPA = {
   menu: {
-    home: "Casa",
+    home: "Inicio",
     learn: "Estudiar",
     quiz: "Quiz",
   },

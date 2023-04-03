@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
 type ModaleProps = {
   modale: string;
   children: React.ReactNode;
@@ -12,7 +15,12 @@ export function Modale({ modale, children, setIsModaleOpened }: ModaleProps) {
   return (
     <div className={`modaleWrapper ${modale}`} onClick={() => setIsModaleOpened(false)}>
       <div className={`modale ${modale}`} onClick={(e) => handleModalClick(e)}>
-        <button className="closeBtn">no</button>
+        <FontAwesomeIcon
+          icon={faXmark}
+          size="2xl"
+          className="closeBtn"
+          onClick={() => setIsModaleOpened(false)}
+        />
         {children}
       </div>
     </div>

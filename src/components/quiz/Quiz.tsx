@@ -1,5 +1,6 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext, useMemo, useReducer, useState } from "react";
 import { AppContext } from "../../AppContext";
+import { useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
@@ -11,8 +12,16 @@ import { GameModale } from "../../modales/GameModale";
 import { useNavigate } from "react-router-dom";
 
 export function Quiz() {
-  const { data, nbOfQuestions, nbOfChoices }: AppProviderProps = useContext(AppContext);
+  const { data }: AppProviderProps = useContext(AppContext);
+
+  return data && <QuizRunning />;
+}
+
+function QuizRunning() {
+  const { actualLanguage, data, nbOfQuestions, nbOfChoices }: AppProviderProps =
+    useContext(AppContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
@@ -27,12 +36,38 @@ export function Quiz() {
 
   function getWrongResponsesList() {
     const array = [];
-
     for (let i = 0; i < nbOfChoices; i++) {
       array.push(getRandomWrongResponse());
     }
 
     return array;
+  }
+
+  function getRandomCorrectResponse() {
+    return Math.floor(Math.random() * data.length);
+  }
+
+  function getRandomWrongResponse() {
+    const randomCountry = Math.floor(Math.random() * countriesList.length);
+    const countryChosen = countriesList[randomCountry];
+    const findCountryIndex = data.findIndex((item: any) => item.cca2 === countryChosen);
+
+    countriesList.splice(randomCountry, 1);
+
+    return findCountryIndex;
+  }
+
+  function responseSelected(index: any) {
+    const isCorrect = index === correctResponseRandomIndex;
+
+    !isQuizfinished && dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
+
+    setTimeout(
+      () => {
+        dispatch({ type: "next question" });
+      },
+      isCorrect ? 1000 : 2000
+    );
   }
 
   const initialState = {
@@ -65,7 +100,6 @@ export function Quiz() {
     isCorrect,
     gameModale,
   } = state;
-  console.log("gameModale", gameModale);
 
   const isQuizfinished = actualQuestion > nbOfQuestions;
 
@@ -99,8 +133,8 @@ export function Quiz() {
             ...state.gameModale,
             description:
               action.payload === "restart"
-                ? "Etes-vous sûr de vouloir recommencer le quiz (votre progression sera perdue) ?"
-                : "Etes-vous sûr de vouloir quitter le quiz (votre progression sera perdue) ?",
+                ? t("modale.game.description.restart")
+                : t("modale.game.description.leave"),
             confirmation: action.payload,
           },
         };
@@ -121,37 +155,9 @@ export function Quiz() {
     }
   }
 
-  function getRandomCorrectResponse() {
-    return Math.floor(Math.random() * data.length);
-  }
-
-  function getRandomWrongResponse() {
-    const randomCountry = Math.floor(Math.random() * countriesList.length);
-    const countryChosen = countriesList[randomCountry];
-    const findCountryIndex = data.findIndex((item: any) => item.cca2 === countryChosen);
-
-    countriesList.splice(randomCountry, 1);
-
-    return findCountryIndex;
-  }
-
-  function responseSelected(index: any) {
-    const isCorrect = index === correctResponseRandomIndex;
-
-    !isQuizfinished && dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
-
-    setTimeout(
-      () => {
-        dispatch({ type: "next question" });
-      },
-      isCorrect ? 1000 : 2000
-    );
-  }
-
   return (
     data && (
       <section className="quiz">
-        <h2>Quiz principal</h2>
         <p>score: {score}</p>
         <p>
           question n°: {actualQuestion}/{nbOfQuestions}
@@ -189,7 +195,9 @@ export function Quiz() {
                           !isQuizfinished && !hasResponded && responseSelected(index);
                         }}
                       >
-                        {response.name?.common}
+                        {actualLanguage === "en"
+                          ? response.name.common
+                          : response.translations[actualLanguage].common}
                       </li>
                     );
                   })}
@@ -207,7 +215,7 @@ export function Quiz() {
               dispatch({ type: isQuizfinished ? "restart" : "open modale", payload: "restart" })
             }
           >
-            Recommencer
+            {isQuizfinished ? t("game.result.restart") : t("game.restart")}
           </button>
 
           <button
@@ -218,7 +226,7 @@ export function Quiz() {
                 : dispatch({ type: "open modale", payload: "leave" })
             }
           >
-            Quitter la partie
+            {isQuizfinished ? t("game.result.another") : t("game.leave")}
           </button>
         </div>
 

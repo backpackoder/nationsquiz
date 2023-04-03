@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { Loading } from "../Loading";
-import { QuizSelection } from "./QuizSelection";
+import { QuizList } from "./QuizList";
 
 // Types
 import { AppProviderProps } from "../../types/main";
@@ -13,15 +14,16 @@ import { TITLE } from "../../commons/commons";
 
 export function Home() {
   const { isLoading }: AppProviderProps = useContext(AppContext);
+  const { t } = useTranslation();
 
   return isLoading ? (
     <Loading />
   ) : (
     <>
       <h1>{TITLE}</h1>
-      <p>Le quiz qui vous permet de tester vos connaissances sur les nations du monde.</p>
+      <p>{t("home.catchPhrase")}</p>
 
-      <QuizSelection />
+      <QuizList />
     </>
   );
 }

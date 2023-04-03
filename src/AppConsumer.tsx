@@ -9,7 +9,7 @@ import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 
 import { Quiz } from "./components/quiz/Quiz";
-import { QuizSelection } from "./components/home/QuizSelection";
+import { QuizList } from "./components/home/QuizList";
 
 import { Footer } from "./components/Footer";
 
@@ -27,7 +27,7 @@ export function AppConsumer() {
 
             <Route path="/learn" element={<Learn />} />
 
-            <Route path="/quiz" element={<QuizSelection />} />
+            <Route path="/quiz" element={<QuizList />} />
             <Route path="/quiz/:theme" element={<Quiz />} />
 
             <Route path="*" element={<PageNotFound />} />
