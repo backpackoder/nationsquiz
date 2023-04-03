@@ -66,8 +66,9 @@ export const translationsFRA = {
 
     game: {
       description: {
-        restart: "Etes-vous sûr de vouloir recommencer le quiz (votre progression sera perdue) ?",
-        leave: "Etes-vous sûr de vouloir quitter le quiz (votre progression sera perdue) ?",
+        restart:
+          "Êtes-vous sûr de vouloir recommencer le quiz ?<br>(Votre progression sera perdue)",
+        leave: "Êtes-vous sûr de vouloir quitter le quiz ?<br>(Votre progression sera perdue)",
       },
       accept: "Oui",
       decline: "Non",

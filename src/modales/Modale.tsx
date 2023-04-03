@@ -14,7 +14,7 @@ export function Modale({ name, children, setIsModaleOpened }: ModaleProps) {
   }
 
   return (
-    <div className={`modaleWrapper ${name}`} onClick={() => setIsModaleOpened(false)}>
+    <div className={"modaleWrapper"} onClick={() => setIsModaleOpened(false)}>
       <div className={`modale ${name}`} onClick={(e) => handleModalClick(e)}>
         <FontAwesomeIcon
           icon={faXmark}

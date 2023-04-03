@@ -42,7 +42,7 @@ export function useSettings() {
   const quizLength = [
     {
       label: "10",
-      questions: 2,
+      questions: 10,
     },
     {
       label: "20",

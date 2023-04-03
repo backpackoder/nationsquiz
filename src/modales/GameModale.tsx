@@ -14,7 +14,7 @@ export function GameModale({ setIsModaleOpened, gameModale, dispatch }: GameModa
 
   return (
     <>
-      <p>{description}</p>
+      <p className="description">{description}</p>
 
       <div className="buttons">
         <button

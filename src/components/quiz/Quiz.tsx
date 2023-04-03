@@ -1,7 +1,7 @@
 import { useContext, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
@@ -114,9 +114,11 @@ function QuizRunning() {
           gameModale: {
             ...state.gameModale,
             description:
-              action.payload === "restart"
-                ? t("modale.game.description.restart")
-                : t("modale.game.description.leave"),
+              action.payload === "restart" ? (
+                <Trans components={{ br: <br /> }}>modale.game.description.restart</Trans>
+              ) : (
+                <Trans components={{ br: <br /> }}>modale.game.description.leave</Trans>
+              ),
             confirmation: action.payload,
           },
         };
@@ -157,7 +159,7 @@ function QuizRunning() {
 
         {isModaleOpened && (
           <Modale
-            name="quizRunning"
+            name="game"
             setIsModaleOpened={setIsModaleOpened}
             children={
               <GameModale
