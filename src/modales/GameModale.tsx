@@ -1,21 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type GameModaleProps = {
-  modaleState: any;
+  dispatch: any;
+  gameModale: any;
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function GameModale({ modaleState, setIsModaleOpened }: GameModaleProps) {
-  const { confirmation, description } = modaleState;
+export function GameModale({ dispatch, gameModale, setIsModaleOpened }: GameModaleProps) {
+  const navigate = useNavigate();
+  const { confirmation, description } = gameModale;
 
   return (
     <>
       <p>{description}</p>
 
       <div className="buttons">
-        <Link to={typeof confirmation === "string" ? confirmation : ""}>
-          <button onClick={() => typeof confirmation === "function" && confirmation()}>Oui</button>
-        </Link>
+        <button
+          onClick={() =>
+            confirmation === "restart" ? dispatch({ type: confirmation }) : navigate("/quiz")
+          }
+        >
+          Oui
+        </button>
 
         <button onClick={() => setIsModaleOpened(false)}>Non</button>
       </div>

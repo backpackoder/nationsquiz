@@ -12,6 +12,7 @@ export function Modale({ modale, children, setIsModaleOpened }: ModaleProps) {
   return (
     <div className={`modaleWrapper ${modale}`} onClick={() => setIsModaleOpened(false)}>
       <div className={`modale ${modale}`} onClick={(e) => handleModalClick(e)}>
+        <button className="closeBtn">no</button>
         {children}
       </div>
     </div>
