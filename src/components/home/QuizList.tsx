@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Utils
-import { quizData } from "../../utils/quizData";
+import { useQuizData } from "../../hooks/quizData";
 
 // Components
 import { Modale } from "../../modales/Modale";
 import { SettingsModale } from "../../modales/SettingsModale";
 
-export function QuizSelection() {
+export function QuizList() {
+  const { t } = useTranslation();
+
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
   const [themeClicked, setThemeClicked] = useState("");
@@ -17,9 +20,11 @@ export function QuizSelection() {
     setIsModaleOpened(true);
   }
 
+  const { quizData } = useQuizData();
+
   return (
     <section className="quiz-selection">
-      <h2>Choisissez votre quiz</h2>
+      <h2>{t("quizList.title")}</h2>
 
       <article className="quiz-selection__list">
         {quizData.map((item, index) => {
@@ -38,7 +43,7 @@ export function QuizSelection() {
                 <img src={`../src/assets/imgs/${theme}.jpg`} alt={theme} />
               </div>
 
-              <button>Je commence le quiz</button>
+              <button>{t("quizList.start")}</button>
             </div>
           );
         })}
@@ -46,7 +51,7 @@ export function QuizSelection() {
 
       {isModaleOpened && (
         <Modale
-          modale="settings"
+          name="settings"
           children={<SettingsModale theme={themeClicked} setIsModaleOpened={setIsModaleOpened} />}
           setIsModaleOpened={setIsModaleOpened}
         />

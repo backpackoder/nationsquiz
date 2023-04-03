@@ -1,17 +1,27 @@
-import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-export function Result({ score }: { score: number }) {
-  return (
-    <div>
-      <p>
-        Votre score est de {score} point{score !== 1 && "s"} !
-      </p>
+type ResultProps = {
+  score: number;
+};
 
-      <button onClick={() => window.location.reload()}>Rejouer</button>
+export function Result({ score }: ResultProps) {
+  const { t } = useTranslation();
 
-      <Link to={"/quiz"}>
-        <button>Liste des quiz</button>
-      </Link>
-    </div>
-  );
+  const description = useMemo(() => {
+    const root = "game.result.description";
+
+    switch (score) {
+      case 0:
+        return t(`${root}.zeroPoints`);
+
+      case 1:
+        return t(`${root}.onePoint`);
+
+      default:
+        return t(`${root}.manyPoints`, { score });
+    }
+  }, [score, t]);
+
+  return <p>{description}</p>;
 }

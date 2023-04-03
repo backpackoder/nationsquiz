@@ -1,23 +1,31 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type GameModaleProps = {
-  modaleState: any;
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  gameModale: any;
+  dispatch: any;
 };
 
-export function GameModale({ modaleState, setIsModaleOpened }: GameModaleProps) {
-  const { confirmation, description } = modaleState;
+export function GameModale({ setIsModaleOpened, gameModale, dispatch }: GameModaleProps) {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { confirmation, description } = gameModale;
 
   return (
     <>
-      <p>{description}</p>
+      <p className="description">{description}</p>
 
       <div className="buttons">
-        <Link to={typeof confirmation === "string" ? confirmation : ""}>
-          <button onClick={() => typeof confirmation === "function" && confirmation()}>Oui</button>
-        </Link>
+        <button
+          onClick={() =>
+            confirmation === "restart" ? dispatch({ type: confirmation }) : navigate("/quiz")
+          }
+        >
+          {t("modale.game.accept")}
+        </button>
 
-        <button onClick={() => setIsModaleOpened(false)}>Non</button>
+        <button onClick={() => setIsModaleOpened(false)}>{t("modale.game.decline")}</button>
       </div>
     </>
   );

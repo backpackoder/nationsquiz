@@ -3,9 +3,9 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // Translations
-import { translationsFR } from "./translations/translationsFR";
+import { translationsFRA } from "./translations/translationsFRA";
 import { translationsEN } from "./translations/translationsEN";
-import { translationsES } from "./translations/translationsES";
+import { translationsSPA } from "./translations/translationsSPA";
 
 i18n
   // detect user language
@@ -17,14 +17,14 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     debug: true,
-    fallbackLng: "fr",
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false,
     },
     resources: {
-      fr: { translation: translationsFR },
+      fra: { translation: translationsFRA },
       en: { translation: translationsEN },
-      es: { translation: translationsES },
+      spa: { translation: translationsSPA },
     },
   });
 

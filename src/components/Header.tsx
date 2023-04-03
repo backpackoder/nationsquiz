@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { i18n } from "../i18n";
 import { useTranslation } from "react-i18next";
-import { LanguageBtn } from "../types/main";
+import { Iso, LanguageBtn } from "../types/main";
+import { AppContext } from "../AppContext";
 
 export function Header() {
   const { t } = useTranslation();
@@ -29,34 +30,72 @@ export function Header() {
   );
 }
 
-export const languageBtn: LanguageBtn = [
-  {
-    language: "fr",
-    flag: <img src="https://flagcdn.com/fr.svg" width={40} height={20} alt="Français" />,
-  },
-  {
-    language: "en",
-    flag: <img src="https://flagcdn.com/gb.svg" width={40} height={20} alt="Anglais" />,
-  },
-  {
-    language: "es",
-    flag: <img src="https://flagcdn.com/es.svg" width={40} height={20} alt="Espagnol" />,
-  },
-];
-
 export function ChangeLanguage() {
+  const { setActualLanguage } = useContext(AppContext);
+  const { t } = useTranslation();
+
   const [openLanguageList, setOpenLanguageList] = useState(false);
 
-  function onChange(language: string) {
+  const languageBtn: LanguageBtn = [
+    {
+      language: "fra",
+      flag: (
+        <img
+          src="https://flagcdn.com/fr.svg"
+          width={40}
+          height={20}
+          alt={t("language.fra") ?? "french"}
+        />
+      ),
+    },
+    {
+      language: "en",
+      flag: (
+        <img
+          src="https://flagcdn.com/gb.svg"
+          width={40}
+          height={20}
+          alt={t("language.en") ?? "english"}
+        />
+      ),
+    },
+    {
+      language: "spa",
+      flag: (
+        <img
+          src="https://flagcdn.com/es.svg"
+          width={40}
+          height={20}
+          alt={t("language.spa") ?? "spanish"}
+        />
+      ),
+    },
+  ];
+
+  function onChange(language: Iso) {
+    setActualLanguage(language);
     i18n.changeLanguage(language);
     setOpenLanguageList(!openLanguageList);
+  }
+
+  function convertLanguage(language: string) {
+    switch (language) {
+      case "en":
+        return "gb";
+
+      case "spa":
+        return "es";
+
+      default:
+        return "fr";
+    }
   }
 
   return (
     <div className="changeLanguageWrapper">
       <button className="changeLanguageBtn" onClick={() => setOpenLanguageList(!openLanguageList)}>
         <img
-          src={`https://flagcdn.com/${i18n.language === "en" ? "gb" : i18n.language}.svg`}
+          src={`https://flagcdn.com/${convertLanguage(i18n.language)}.svg`}
           width={40}
           height={20}
           alt="Français"

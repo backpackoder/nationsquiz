@@ -24,7 +24,7 @@
 }
 
 /* When quiz is playing */
-.game {
+.quiz > .game {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,12 +36,12 @@
   border-radius: 10px;
   box-shadow: 0 0 24px -16px;
 }
-.game img {
+.quiz > .game img {
   width: 100%;
   max-width: 500px;
   border: solid 1px;
 }
-.game ul {
+.quiz > .game ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -49,86 +49,18 @@
   gap: 10px;
   text-align: center;
 }
-.game li {
+.quiz > .game li {
   background-color: lightblue;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
 }
-.game li:hover {
+.quiz > .game li:hover {
   background-color: rgb(100, 200, 200);
 }
-.game .correctResponse.active {
+.quiz > .game .correctResponse.active {
   background-color: lightgreen;
 }
-.game .wrongResponse.active {
+.quiz > .game .wrongResponse.active {
   background-color: red;
-}
-
-/* Modale */
-.modaleWrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-.modale {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: rgb(230, 230, 230);
-  padding: 25px;
-  border: solid;
-  border-radius: 5px;
-}
-.modale .buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-  width: 100%;
-}
-.modale .buttons button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-}
-.modale button:hover {
-  background-color: ligh;
-}
-.modale button.active {
-  background-color: blue;
-  color: #fff;
-  scale: 1.25;
-}
-/* Modale settings */
-.modale.settings h2 {
-  margin: 0 auto;
-}
-.modale.settings .setting {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px -5px;
-}
-.modale.settings a {
-  background-color: rgb(0, 230, 0);
-  color: #000;
-  font-weight: 700;
-  text-align: center;
-  padding: 10px;
-  border-radius: 5px;
-}
-.modale.settings a:hover {
-  background-color: rgb(0, 200, 0);
 }
