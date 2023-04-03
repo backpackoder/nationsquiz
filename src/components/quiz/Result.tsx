@@ -1,14 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 type ResultProps = {
-  dispatch: any;
   score: number;
 };
 
-export function Result({ dispatch, score }: ResultProps) {
-  const navigate = useNavigate();
+export function Result({ score }: ResultProps) {
   const { t } = useTranslation();
 
   const description = useMemo(() => {
@@ -26,13 +23,5 @@ export function Result({ dispatch, score }: ResultProps) {
     }
   }, [score, t]);
 
-  return (
-    <div>
-      <p>{description}</p>
-      {/* 
-      <button onClick={() => dispatch({ type: "restart" })}>{t("game.result.restart")}</button>
-
-      <button onClick={() => navigate("/quiz")}>{t("game.result.another")}</button> */}
-    </div>
-  );
+  return <p>{description}</p>;
 }

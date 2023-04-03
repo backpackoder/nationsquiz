@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
 
 // Commons
-import { CAPITALS, DEMOGRAPHY, FLAGS } from "../commons/commons";
+import { THEMES } from "../commons/commons";
 
 export function useQuizData() {
   const { t } = useTranslation();
+  const { FLAGS, CAPITALS, DEMOGRAPHY } = THEMES;
 
   const quizData = [
     {

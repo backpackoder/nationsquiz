@@ -1,15 +1,20 @@
-import { useContext, useMemo, useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 import { useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
 
+// Commons
+import { ROUTES } from "../../commons/commons";
+
 // Components
+import { Game } from "./Game";
 import { Result } from "./Result";
 import { Modale } from "../../modales/Modale";
 import { GameModale } from "../../modales/GameModale";
-import { useNavigate } from "react-router-dom";
+import { Buttons } from "./Buttons";
 
 export function Quiz() {
   const { data }: AppProviderProps = useContext(AppContext);
@@ -18,8 +23,7 @@ export function Quiz() {
 }
 
 function QuizRunning() {
-  const { actualLanguage, data, nbOfQuestions, nbOfChoices }: AppProviderProps =
-    useContext(AppContext);
+  const { data, nbOfQuestions, nbOfChoices }: AppProviderProps = useContext(AppContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -32,7 +36,10 @@ function QuizRunning() {
     });
   }
 
-  const randomResponseLocation = Math.floor(Math.random() * nbOfChoices);
+  function getRandomCorrectResponse() {
+    return Math.floor(Math.random() * data.length);
+  }
+  const randomCorrectResponseLocation = Math.floor(Math.random() * nbOfChoices);
 
   function getWrongResponsesList() {
     const array = [];
@@ -41,10 +48,6 @@ function QuizRunning() {
     }
 
     return array;
-  }
-
-  function getRandomCorrectResponse() {
-    return Math.floor(Math.random() * data.length);
   }
 
   function getRandomWrongResponse() {
@@ -57,25 +60,12 @@ function QuizRunning() {
     return findCountryIndex;
   }
 
-  function responseSelected(index: any) {
-    const isCorrect = index === correctResponseRandomIndex;
-
-    !isQuizfinished && dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
-
-    setTimeout(
-      () => {
-        dispatch({ type: "next question" });
-      },
-      isCorrect ? 1000 : 2000
-    );
-  }
-
   const initialState = {
     actualQuestion: 1,
     score: 0,
 
     correctResponseData: data[getRandomCorrectResponse()],
-    correctResponseRandomIndex: randomResponseLocation,
+    correctResponseRandomIndex: randomCorrectResponseLocation,
 
     wrongResponsesData: getWrongResponsesList(),
 
@@ -90,16 +80,8 @@ function QuizRunning() {
 
   const [state, dispatch] = useReducer<React.Reducer<any, any>>(reducer, initialState);
 
-  const {
-    actualQuestion,
-    score,
-    correctResponseData,
-    correctResponseRandomIndex,
-    wrongResponsesData,
-    hasResponded,
-    isCorrect,
-    gameModale,
-  } = state;
+  const { actualQuestion, score, correctResponseData, correctResponseRandomIndex, gameModale } =
+    state;
 
   const isQuizfinished = actualQuestion > nbOfQuestions;
 
@@ -117,7 +99,7 @@ function QuizRunning() {
           actualQuestion: state.actualQuestion + 1,
 
           correctResponseData: data[getRandomCorrectResponse()],
-          correctResponseRandomIndex: randomResponseLocation,
+          correctResponseRandomIndex: randomCorrectResponseLocation,
 
           wrongResponsesData: getWrongResponsesList(),
 
@@ -165,82 +147,25 @@ function QuizRunning() {
 
         <article className="game">
           {!isQuizfinished ? (
-            <>
-              <h3>De quel pays est ce drapeau ?</h3>
-
-              <img src={correctResponseData?.flags?.png} alt={correctResponseData?.flags?.alt} />
-
-              <ul>
-                {Array(nbOfChoices)
-                  .fill(0)
-                  .map((_, index) => {
-                    const isResponseCorrect = index === correctResponseRandomIndex;
-                    const response = isResponseCorrect
-                      ? correctResponseData
-                      : data[wrongResponsesData[index]];
-
-                    return (
-                      <li
-                        key={index}
-                        className={`${isResponseCorrect ? "correctResponse" : "wrongResponse"} ${
-                          isResponseCorrect
-                            ? hasResponded
-                              ? "active"
-                              : "inactive"
-                            : hasResponded && !isCorrect
-                            ? "active"
-                            : "inactive"
-                        }`}
-                        onClick={() => {
-                          !isQuizfinished && !hasResponded && responseSelected(index);
-                        }}
-                      >
-                        {actualLanguage === "en"
-                          ? response.name.common
-                          : response.translations[actualLanguage].common}
-                      </li>
-                    );
-                  })}
-              </ul>
-            </>
+            <Game isQuizfinished={isQuizfinished} state={state} dispatch={dispatch} />
           ) : (
-            <Result dispatch={dispatch} score={score} />
+            <Result score={score} />
           )}
         </article>
 
-        <div className="buttons">
-          <button
-            className="restart"
-            onClick={() =>
-              dispatch({ type: isQuizfinished ? "restart" : "open modale", payload: "restart" })
-            }
-          >
-            {isQuizfinished ? t("game.result.restart") : t("game.restart")}
-          </button>
-
-          <button
-            className="leave"
-            onClick={() =>
-              isQuizfinished
-                ? navigate("/quiz")
-                : dispatch({ type: "open modale", payload: "leave" })
-            }
-          >
-            {isQuizfinished ? t("game.result.another") : t("game.leave")}
-          </button>
-        </div>
+        <Buttons isQuizfinished={isQuizfinished} dispatch={dispatch} />
 
         {isModaleOpened && (
           <Modale
-            modale="quizRunning"
+            name="quizRunning"
+            setIsModaleOpened={setIsModaleOpened}
             children={
               <GameModale
-                dispatch={dispatch}
-                gameModale={gameModale}
                 setIsModaleOpened={setIsModaleOpened}
+                gameModale={gameModale}
+                dispatch={dispatch}
               />
             }
-            setIsModaleOpened={setIsModaleOpened}
           />
         )}
       </section>

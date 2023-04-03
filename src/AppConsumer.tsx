@@ -14,8 +14,11 @@ import { QuizList } from "./components/home/QuizList";
 import { Footer } from "./components/Footer";
 
 import { PageNotFound } from "./components/PageNotFound";
+import { ROUTES } from "./commons/commons";
 
 export function AppConsumer() {
+  const { HOME, LEARN, QUIZ_LIST, GAME, PAGE_NOT_FOUND } = ROUTES;
+
   return (
     <Router>
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
@@ -23,14 +26,14 @@ export function AppConsumer() {
 
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path={HOME} element={<Home />} />
 
-            <Route path="/learn" element={<Learn />} />
+            <Route path={LEARN} element={<Learn />} />
 
-            <Route path="/quiz" element={<QuizList />} />
-            <Route path="/quiz/:theme" element={<Quiz />} />
+            <Route path={QUIZ_LIST} element={<QuizList />} />
+            <Route path={GAME} element={<Quiz />} />
 
-            <Route path="*" element={<PageNotFound />} />
+            <Route path={PAGE_NOT_FOUND} element={<PageNotFound />} />
           </Routes>
         </main>
 

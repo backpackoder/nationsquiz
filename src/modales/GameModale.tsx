@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 type GameModaleProps = {
-  dispatch: any;
-  gameModale: any;
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  gameModale: any;
+  dispatch: any;
 };
 
-export function GameModale({ dispatch, gameModale, setIsModaleOpened }: GameModaleProps) {
+export function GameModale({ setIsModaleOpened, gameModale, dispatch }: GameModaleProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { confirmation, description } = gameModale;

@@ -51,7 +51,7 @@ export function QuizList() {
 
       {isModaleOpened && (
         <Modale
-          modale="settings"
+          name="settings"
           children={<SettingsModale theme={themeClicked} setIsModaleOpened={setIsModaleOpened} />}
           setIsModaleOpened={setIsModaleOpened}
         />
