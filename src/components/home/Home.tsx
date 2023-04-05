@@ -22,6 +22,7 @@ export function Home() {
     <>
       <h1>{TITLE}</h1>
       <p>{t("home.catchPhrase")}</p>
+      <p>Hey comment toi</p>
 
       <QuizList />
     </>

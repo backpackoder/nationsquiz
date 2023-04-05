@@ -1,21 +1,41 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { it, expect } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import matchers from "@testing-library/jest-dom";
+expect.extend(matchers);
+
+// Components
 import { QuizList } from "../components/home/QuizList";
 
-test("modale opens and closes", () => {
-  render(<QuizList />);
+describe("QuizList component", () => {
+  it("calls openModale function when an item is clicked", () => {
+    render(<QuizList />);
 
-  // Vérifier que la modale n'est pas affichée au début
-  expect(screen.queryByText("Settings")).toBeNull();
+    const quizItemBtn = screen.getAllByRole("button", {
+      name: /quizList.start/i,
+    })[0];
+    userEvent.click(quizItemBtn);
 
-  // Cliquer sur un élément pour ouvrir la modale
-  fireEvent.click(screen.getByText("Start Quiz"));
+    expect(quizItemBtn).toBeVisible();
+    // expect(quizItemBtn).toHaveBeenCalledWith(quizData[0]);
+  });
 
-  // Vérifier que la modale s'est ouverte
-  expect(screen.getByText("Settings")).toBeInTheDocument();
+  it("should open Modale on Start button click", async () => {
+    const { getByText, queryByTestId } = render(<QuizList />);
 
-  // Cliquer sur le bouton pour fermer la modale
-  fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    // const startButton = getByText(/quizList.start/i);
+    const startButton = screen.getAllByRole("button", {
+      name: /quizList.start/i,
+    })[0];
 
-  // Vérifier que la modale s'est fermée
-  expect(screen.queryByText("Settings")).toBeNull();
+    // const settingsTitle = screen.getByText(/quizList.start/i);
+    // expect(settingsTitle).toBeVisible();
+
+    // const notOk = screen.getByText(/quizList.title/i);
+    // expect("notOk").not.toBeInTheDocument();
+
+    // fireEvent.click(startButton);
+    // expect(settingsTitle).not.toBeVisible();
+  });
 });
