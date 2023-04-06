@@ -10,26 +10,26 @@ import { useSettings } from "../hooks/settings";
 import { AppProviderProps } from "../types/main";
 
 type SettingsModaleProps = {
-  theme: any;
+  quizTheme: any;
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function SettingsModale({ theme, setIsModaleOpened }: SettingsModaleProps) {
+export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleProps) {
   const { nbOfQuestions, setNbOfQuestions, nbOfChoices, setNbOfChoices }: AppProviderProps =
     useContext(AppContext);
   const { t } = useTranslation();
   const { difficulty, quizLength } = useSettings();
 
-  const settings = "modale.settings";
+  const root = "modale.settings";
 
   return (
     <>
-      <h2>{t(`quizList.${theme.theme}.title`)}</h2>
+      <h2>{t(`quizList.${quizTheme.theme}.title`)}</h2>
 
-      <h3>{t(`${settings}.title`)}</h3>
+      <h3>{t(`${root}.title`)}</h3>
 
       <div className="setting">
-        <h4>{t(`${settings}.difficulty.title`)}</h4>
+        <h4>{t(`${root}.difficulty.title`)}</h4>
 
         <div className="buttons">
           {difficulty.map((item, index) => {
@@ -47,7 +47,7 @@ export function SettingsModale({ theme, setIsModaleOpened }: SettingsModaleProps
       </div>
 
       <div className="setting">
-        <h4>{t(`${settings}.questions.title`)}</h4>
+        <h4>{t(`${root}.questions.title`)}</h4>
 
         <div className="buttons">
           {quizLength.map((item, index) => {
@@ -64,8 +64,8 @@ export function SettingsModale({ theme, setIsModaleOpened }: SettingsModaleProps
         </div>
       </div>
 
-      <Link to={`/quiz/${theme.theme}`} onClick={() => setIsModaleOpened(false)}>
-        {t(`${settings}.start`)}
+      <Link to={`/quiz/${quizTheme.theme}`} onClick={() => setIsModaleOpened(false)}>
+        {t(`${root}.start`)}
       </Link>
     </>
   );

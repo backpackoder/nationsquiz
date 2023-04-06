@@ -20,14 +20,17 @@ export const translationsEN = {
     flags: {
       title: "Flags",
       description: "Quiz on the flags of the countries",
+      question: "What country is this flag from?",
     },
     capitals: {
       title: "Capitals",
       description: "Quiz on the capitals of the countries",
+      question: "What is the capital of this country?",
     },
     demography: {
       title: "Demography",
       description: "Which country has the most inhabitants?",
+      question: "What is the country with the most inhabitants?",
     },
     start: "I start the quiz",
   },

@@ -1,8 +1,11 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { AppContext } from "../../AppContext";
 
 // Types
 import { AppProviderProps } from "../../types/main";
+import { useParams } from "react-router-dom";
+import { THEMES } from "../../commons/commons";
+import { t } from "i18next";
 
 type GameProps = {
   isQuizfinished: boolean;
@@ -11,19 +14,14 @@ type GameProps = {
 };
 
 export function Game({ isQuizfinished, state, dispatch }: GameProps) {
-  const { actualLanguage, data, nbOfChoices }: AppProviderProps = useContext(AppContext);
-  const {
-    correctResponseData,
-    correctResponseRandomIndex,
-    wrongResponsesData,
-    hasResponded,
-    isCorrect,
-  } = state;
+  const { theme } = useParams();
+  const { actualLanguage, nbOfChoices }: AppProviderProps = useContext(AppContext);
+  const { hasResponded, isCorrect, responses, answer } = state;
 
   function responseSelected(index: any) {
-    const isCorrect = index === correctResponseRandomIndex;
+    const isCorrect = index === answer.index;
 
-    !isQuizfinished && dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
+    dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
 
     setTimeout(
       () => {
@@ -35,18 +33,15 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
 
   return (
     <>
-      <h3>De quel pays est ce drapeau ?</h3>
+      <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      <img src={correctResponseData?.flags?.png} alt={correctResponseData?.flags?.alt} />
+      <img src={answer.data.flags.png} alt={answer.data.flags.alt} />
 
       <ul>
         {Array(nbOfChoices)
           .fill(0)
           .map((_, index) => {
-            const isResponseCorrect = index === correctResponseRandomIndex;
-            const response = isResponseCorrect
-              ? correctResponseData
-              : data[wrongResponsesData[index]];
+            const isResponseCorrect = index === answer.index;
 
             return (
               <li
@@ -65,8 +60,8 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
                 }}
               >
                 {actualLanguage === "en"
-                  ? response.name.common
-                  : response.translations[actualLanguage].common}
+                  ? responses[index].name.common
+                  : responses[index].translations[actualLanguage].common}
               </li>
             );
           })}
