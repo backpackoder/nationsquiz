@@ -9,33 +9,37 @@ expect.extend(matchers);
 import { QuizList } from "../components/home/QuizList";
 
 describe("QuizList component", () => {
-  it("calls openModale function when an item is clicked", () => {
-    render(<QuizList />);
-
-    const quizItemBtn = screen.getAllByRole("button", {
+  function setUp() {
+    const utils = render(<QuizList />);
+    const quizItemBtn = utils.getAllByRole("button", {
       name: /quizList.start/i,
     })[0];
-    userEvent.click(quizItemBtn);
+    return {
+      quizItemBtn,
+      ...utils,
+    };
+  }
+
+  it("should render the first button", () => {
+    const { quizItemBtn } = setUp();
 
     expect(quizItemBtn).toBeVisible();
-    // expect(quizItemBtn).toHaveBeenCalledWith(quizData[0]);
   });
 
-  it("should open Modale on Start button click", async () => {
-    const { getByText, queryByTestId } = render(<QuizList />);
+  // it("should open Modale on Start button click", async () => {
+  //   const { getByText, queryByTestId } = render(<QuizList />);
 
-    // const startButton = getByText(/quizList.start/i);
-    const startButton = screen.getAllByRole("button", {
-      name: /quizList.start/i,
-    })[0];
+  // const startButton = getByText(/quizList.start/i);
+  // const startButton = screen.getAllByRole("button", {
+  //   name: /quizList.start/i,
+  // })[0];
+  // const settingsTitle = screen.getByText(/quizList.start/i);
+  // expect(settingsTitle).toBeVisible();
 
-    // const settingsTitle = screen.getByText(/quizList.start/i);
-    // expect(settingsTitle).toBeVisible();
+  // const notOk = screen.getByText(/quizList.title/i);
+  // expect("notOk").not.toBeInTheDocument();
 
-    // const notOk = screen.getByText(/quizList.title/i);
-    // expect("notOk").not.toBeInTheDocument();
-
-    // fireEvent.click(startButton);
-    // expect(settingsTitle).not.toBeVisible();
-  });
+  // fireEvent.click(startButton);
+  // expect(settingsTitle).not.toBeVisible();
+  // });
 });

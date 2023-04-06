@@ -13,10 +13,10 @@ export function QuizList() {
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
-  const [themeClicked, setThemeClicked] = useState("");
+  const [quizTheme, setQuizTheme] = useState("");
 
   function openModale(theme: any) {
-    setThemeClicked(theme);
+    setQuizTheme(theme);
     setIsModaleOpened(true);
   }
 
@@ -52,7 +52,7 @@ export function QuizList() {
       {isModaleOpened && (
         <Modale
           name="settings"
-          children={<SettingsModale theme={themeClicked} setIsModaleOpened={setIsModaleOpened} />}
+          children={<SettingsModale quizTheme={quizTheme} setIsModaleOpened={setIsModaleOpened} />}
           setIsModaleOpened={setIsModaleOpened}
         />
       )}

@@ -20,14 +20,17 @@ export const translationsSPA = {
     flags: {
       title: "Banderas",
       description: "Quiz sobre las banderas de los países",
+      question: "¿De qué país es esta bandera?",
     },
     capitals: {
       title: "Capitales",
       description: "Quiz sobre las capitales de los países",
+      question: "¿Cuál es la capital de este país?",
     },
     demography: {
       title: "Demografía",
       description: "¿Qué país tiene más habitantes?",
+      question: "¿Cuál es el país que tiene más habitantes?",
     },
     start: "¡Comienzo el quiz!",
   },

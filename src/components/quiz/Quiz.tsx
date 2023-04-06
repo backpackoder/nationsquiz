@@ -1,13 +1,9 @@
 import { useContext, useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
-
-// Commons
-import { ROUTES } from "../../commons/commons";
 
 // Components
 import { Game } from "./Game";
@@ -24,50 +20,38 @@ export function Quiz() {
 
 function QuizRunning() {
   const { data, nbOfQuestions, nbOfChoices }: AppProviderProps = useContext(AppContext);
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
-  const countriesList: any[] = [];
-  if (data) {
-    data.map((item: any) => {
-      countriesList.push(item.cca2);
-    });
-  }
+  function getResponses() {
+    const countriesList: any[] = data;
+    const responses: any[] = [];
 
-  function getRandomCorrectResponse() {
-    return Math.floor(Math.random() * data.length);
-  }
-  const randomCorrectResponseLocation = Math.floor(Math.random() * nbOfChoices);
-
-  function getWrongResponsesList() {
-    const array = [];
     for (let i = 0; i < nbOfChoices; i++) {
-      array.push(getRandomWrongResponse());
+      const randomCountry = countriesList[Math.floor(Math.random() * countriesList.length)];
+      responses.push(randomCountry);
+      countriesList.splice(countriesList.indexOf(randomCountry), 1);
     }
 
-    return array;
+    const randomAnswer = responses[Math.floor(Math.random() * responses.length)];
+    const answer = {
+      data: randomAnswer,
+      index: responses.indexOf(randomAnswer),
+    };
+    console.log("responses", responses);
+    console.log("answer", answer);
+
+    return { responses, answer };
   }
 
-  function getRandomWrongResponse() {
-    const randomCountry = Math.floor(Math.random() * countriesList.length);
-    const countryChosen = countriesList[randomCountry];
-    const findCountryIndex = data.findIndex((item: any) => item.cca2 === countryChosen);
-
-    countriesList.splice(randomCountry, 1);
-
-    return findCountryIndex;
-  }
+  const results = getResponses();
 
   const initialState = {
     actualQuestion: 1,
     score: 0,
 
-    correctResponseData: data[getRandomCorrectResponse()],
-    correctResponseRandomIndex: randomCorrectResponseLocation,
-
-    wrongResponsesData: getWrongResponsesList(),
+    responses: results.responses,
+    answer: results.answer,
 
     hasResponded: false,
     isCorrect: false,
@@ -79,9 +63,10 @@ function QuizRunning() {
   };
 
   const [state, dispatch] = useReducer<React.Reducer<any, any>>(reducer, initialState);
+  console.log("state response", state.responses);
+  console.log("state answer", state.answer);
 
-  const { actualQuestion, score, correctResponseData, correctResponseRandomIndex, gameModale } =
-    state;
+  const { actualQuestion, score, gameModale } = state;
 
   const isQuizfinished = actualQuestion > nbOfQuestions;
 
@@ -98,10 +83,8 @@ function QuizRunning() {
           ...state,
           actualQuestion: state.actualQuestion + 1,
 
-          correctResponseData: data[getRandomCorrectResponse()],
-          correctResponseRandomIndex: randomCorrectResponseLocation,
-
-          wrongResponsesData: getWrongResponsesList(),
+          responses: results.responses,
+          answer: results.answer,
 
           hasResponded: false,
           isCorrect: false,
@@ -113,12 +96,11 @@ function QuizRunning() {
           ...state,
           gameModale: {
             ...state.gameModale,
-            description:
-              action.payload === "restart" ? (
-                <Trans components={{ br: <br /> }}>modale.game.description.restart</Trans>
-              ) : (
-                <Trans components={{ br: <br /> }}>modale.game.description.leave</Trans>
-              ),
+            description: (
+              <Trans
+                components={{ br: <br /> }}
+              >{`modale.game.description.${action.payload}`}</Trans>
+            ),
             confirmation: action.payload,
           },
         };
@@ -132,20 +114,15 @@ function QuizRunning() {
     }
   }
 
-  if (data) {
-    const search = countriesList.findIndex((item: any) => item === correctResponseData?.cca2);
-    if (search !== -1) {
-      countriesList.splice(search, 1);
-    }
-  }
-
   return (
     data && (
       <section className="quiz">
         <p>score: {score}</p>
         <p>
-          question n°: {actualQuestion}/{nbOfQuestions}
+          question n°: {actualQuestion > nbOfQuestions ? nbOfQuestions : actualQuestion}/
+          {nbOfQuestions}
         </p>
+        <div onClick={() => getResponses()}>click</div>
 
         <article className="game">
           {!isQuizfinished ? (
