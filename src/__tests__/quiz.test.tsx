@@ -6,7 +6,7 @@ import matchers from "@testing-library/jest-dom";
 expect.extend(matchers);
 
 // Components
-import { QuizList } from "../components/home/QuizList";
+import { QuizList } from "../components/home/QuizSelection";
 
 describe("QuizList component", () => {
   function setUp() {
