@@ -9,7 +9,7 @@ import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 
 import { Quiz } from "./components/quiz/Quiz";
-import { QuizList } from "./components/home/QuizList";
+import { QuizList } from "./components/home/QuizSelection";
 
 import { Footer } from "./components/Footer";
 

@@ -40,7 +40,7 @@ export function QuizList() {
               <h3>{title}</h3>
 
               <div className="imgWrapper">
-                <img src={`../src/assets/imgs/${theme}.jpg`} alt={theme} />
+                <img src={`imgs/${theme}.jpg`} alt={theme} />
               </div>
 
               <button>{t("quizList.start")}</button>

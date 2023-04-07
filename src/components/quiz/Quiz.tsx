@@ -1,4 +1,5 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { useParams } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 import { Trans } from "react-i18next";
 
@@ -8,9 +9,10 @@ import { AppProviderProps } from "../../types/main";
 // Components
 import { Game } from "./Game";
 import { Result } from "./Result";
+import { Buttons } from "./Buttons";
 import { Modale } from "../../modales/Modale";
 import { GameModale } from "../../modales/GameModale";
-import { Buttons } from "./Buttons";
+import { THEMES } from "../../commons/commons";
 
 export function Quiz() {
   const { data }: AppProviderProps = useContext(AppContext);
@@ -19,12 +21,29 @@ export function Quiz() {
 }
 
 function QuizRunning() {
+  const { theme } = useParams();
   const { data, nbOfQuestions, nbOfChoices }: AppProviderProps = useContext(AppContext);
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
+  function getCountriesList() {
+    switch (theme) {
+      case THEMES.FLAGS:
+        return data.filter((country: any) => country.cca2 !== undefined);
+
+      case THEMES.CAPITALS:
+        return data.filter((country: any) => country.capital !== undefined);
+
+      case THEMES.DEMOGRAPHY:
+        return data.filter((country: any) => country.population !== undefined);
+
+      default:
+        throw new Error("Theme not found");
+    }
+  }
+
   function getResponses() {
-    const countriesList: any[] = data;
+    const countriesList = getCountriesList();
     const responses: any[] = [];
 
     for (let i = 0; i < nbOfChoices; i++) {
@@ -33,25 +52,39 @@ function QuizRunning() {
       countriesList.splice(countriesList.indexOf(randomCountry), 1);
     }
 
-    const randomAnswer = responses[Math.floor(Math.random() * responses.length)];
+    function getDefinedAnswer() {
+      const populations = responses.map((country: any) => country.population);
+      const biggest = Math.max(...populations);
+      const index = populations.findIndex((population: any) => population === biggest);
+      const answer = responses[index];
+
+      return answer;
+    }
+    const definedAnswer = getDefinedAnswer();
+
+    function getRandomAnswer() {
+      const answer = responses[Math.floor(Math.random() * responses.length)];
+
+      return answer;
+    }
+    const randomAnswer = getRandomAnswer();
+
     const answer = {
-      data: randomAnswer,
-      index: responses.indexOf(randomAnswer),
+      data: theme === THEMES.DEMOGRAPHY ? definedAnswer : randomAnswer,
+      index: responses.indexOf(theme === THEMES.DEMOGRAPHY ? definedAnswer : randomAnswer),
     };
-    console.log("responses", responses);
-    console.log("answer", answer);
 
     return { responses, answer };
   }
 
-  const results = getResponses();
+  const choices = getResponses();
 
   const initialState = {
     actualQuestion: 1,
     score: 0,
 
-    responses: results.responses,
-    answer: results.answer,
+    responses: choices.responses,
+    answer: choices.answer,
 
     hasResponded: false,
     isCorrect: false,
@@ -63,8 +96,6 @@ function QuizRunning() {
   };
 
   const [state, dispatch] = useReducer<React.Reducer<any, any>>(reducer, initialState);
-  console.log("state response", state.responses);
-  console.log("state answer", state.answer);
 
   const { actualQuestion, score, gameModale } = state;
 
@@ -83,8 +114,8 @@ function QuizRunning() {
           ...state,
           actualQuestion: state.actualQuestion + 1,
 
-          responses: results.responses,
-          answer: results.answer,
+          responses: choices.responses,
+          answer: choices.answer,
 
           hasResponded: false,
           isCorrect: false,
@@ -119,10 +150,9 @@ function QuizRunning() {
       <section className="quiz">
         <p>score: {score}</p>
         <p>
-          question n°: {actualQuestion > nbOfQuestions ? nbOfQuestions : actualQuestion}/
+          question n°: {actualQuestion < nbOfQuestions ? actualQuestion : nbOfQuestions}/
           {nbOfQuestions}
         </p>
-        <div onClick={() => getResponses()}>click</div>
 
         <article className="game">
           {!isQuizfinished ? (

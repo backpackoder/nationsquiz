@@ -1,11 +1,11 @@
-import { useContext, useMemo } from "react";
+import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { AppContext } from "../../AppContext";
+import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
-import { useParams } from "react-router-dom";
 import { THEMES } from "../../commons/commons";
-import { t } from "i18next";
 
 type GameProps = {
   isQuizfinished: boolean;
@@ -18,9 +18,36 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
   const { actualLanguage, nbOfChoices }: AppProviderProps = useContext(AppContext);
   const { hasResponded, isCorrect, responses, answer } = state;
 
-  function responseSelected(index: any) {
-    const isCorrect = index === answer.index;
+  const [responseIndex, setResponseIndex] = useState(0);
 
+  function getCountryName(index?: number) {
+    return index !== undefined
+      ? responses[index]?.translations[actualLanguage]?.common ?? responses[index]?.name?.common
+      : answer?.data?.translations[actualLanguage]?.common ?? answer?.data?.name?.common;
+  }
+  function getCapital(index: number) {
+    return responses[index].capital[0];
+  }
+
+  function getChoices(index: number) {
+    switch (theme) {
+      case THEMES.FLAGS:
+        return getCountryName(index);
+
+      case THEMES.CAPITALS:
+        return getCapital(index);
+
+      case THEMES.DEMOGRAPHY:
+        return getCountryName(index);
+
+      default:
+        throw new Error("Theme not found");
+    }
+  }
+
+  function responseSelected(index: number) {
+    setResponseIndex(index);
+    const isCorrect = index === answer.index;
     dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
 
     setTimeout(
@@ -35,7 +62,15 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
     <>
       <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      <img src={answer.data.flags.png} alt={answer.data.flags.alt} />
+      {theme !== THEMES.DEMOGRAPHY && (
+        <img src={answer.data.flags.png} alt={answer.data.flags.alt} className="questionImg" />
+      )}
+
+      {theme === THEMES.CAPITALS && (
+        <p>
+          <b>{getCountryName()}</b>
+        </p>
+      )}
 
       <ul>
         {Array(nbOfChoices)
@@ -51,7 +86,7 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
                     ? hasResponded
                       ? "active"
                       : "inactive"
-                    : hasResponded && !isCorrect
+                    : hasResponded && !isCorrect && index === responseIndex
                     ? "active"
                     : "inactive"
                 }`}
@@ -59,9 +94,17 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
                   !isQuizfinished && !hasResponded && responseSelected(index);
                 }}
               >
-                {actualLanguage === "en"
-                  ? responses[index].name.common
-                  : responses[index].translations[actualLanguage].common}
+                {getChoices(index)}
+
+                {theme === THEMES.DEMOGRAPHY && (
+                  <div className="responseImgWrapper">
+                    <img
+                      src={responses[index].flags.png}
+                      alt={responses[index].flags.alt}
+                      className="responseImg"
+                    />
+                  </div>
+                )}
               </li>
             );
           })}

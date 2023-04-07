@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import { Loading } from "../Loading";
-import { QuizList } from "./QuizList";
+import { QuizList } from "./QuizSelection";
 
 // Types
 import { AppProviderProps } from "../../types/main";
@@ -22,7 +22,6 @@ export function Home() {
     <>
       <h1>{TITLE}</h1>
       <p>{t("home.catchPhrase")}</p>
-      <p>Hey comment toi</p>
 
       <QuizList />
     </>

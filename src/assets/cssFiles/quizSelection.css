@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  width: 100%;
 }
 
 .quiz-selection__list {
@@ -28,6 +28,7 @@
   padding: 5px;
   box-shadow: 0 0 10px -5px #000;
   border-radius: 5px;
+  cursor: pointer;
 }
 .quiz-selection__item .imgWrapper {
   display: flex;
