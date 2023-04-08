@@ -7,10 +7,10 @@ import { i18n } from "./i18n";
 import { AppProviderProps } from "./types/main";
 
 // Hooks
-import { Difficulty, QuizLength, useSettings } from "./hooks/settings";
+import { Regions, Difficulty, QuizLength, useSettings } from "./hooks/settings";
 
 export function AppProvider(props: object) {
-  const { quizLength, difficulty } = useSettings();
+  const { difficulty, quizLength, regions } = useSettings();
 
   // Language
   const [actualLanguage, setActualLanguage] = useState(i18n.language);
@@ -19,11 +19,13 @@ export function AppProvider(props: object) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<any>(null);
 
+  // Settings
+  const [nbOfChoices, setNbOfChoices] = useState(difficulty.values[Difficulty.Easy].value);
+  const [nbOfQuestions, setNbOfQuestions] = useState(quizLength.values[QuizLength.Twenty].value);
+  const [regionChosen, setRegionChosen] = useState(regions.values[Regions.All].value);
+
   // Quiz
   const [isQuizSelected, setIsQuizSelected] = useState(false);
-
-  const [nbOfQuestions, setNbOfQuestions] = useState(quizLength[QuizLength.Twenty].questions);
-  const [nbOfChoices, setNbOfChoices] = useState(difficulty[Difficulty.Easy].choices);
 
   useEffect(() => {
     axios
@@ -48,15 +50,17 @@ export function AppProvider(props: object) {
     isLoading,
     data,
 
+    // Settings
+    nbOfChoices,
+    setNbOfChoices,
+    nbOfQuestions,
+    setNbOfQuestions,
+    regionChosen,
+    setRegionChosen,
+
     // Quiz
     isQuizSelected,
     setIsQuizSelected,
-    quizLength,
-    difficulty,
-    nbOfQuestions,
-    setNbOfQuestions,
-    nbOfChoices,
-    setNbOfChoices,
   };
 
   return <AppContext.Provider {...props} value={contextValue} />;

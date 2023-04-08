@@ -16,3 +16,10 @@ export const THEMES = {
   CAPITALS: "capitals",
   DEMOGRAPHY: "demography",
 };
+
+// Settings
+export const SETTINGS = {
+  DIFFICULTY: "difficulty",
+  QUESTIONS: "questions",
+  REGIONS: "regions",
+};

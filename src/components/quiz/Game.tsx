@@ -5,6 +5,8 @@ import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/main";
+
+// Commons
 import { THEMES } from "../../commons/commons";
 
 type GameProps = {
