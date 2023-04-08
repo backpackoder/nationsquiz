@@ -53,6 +53,7 @@ export const translationsFRA = {
   modale: {
     settings: {
       title: "Paramètres",
+
       difficulty: {
         title: "Difficulté",
         kid: "Enfant",
@@ -61,9 +62,21 @@ export const translationsFRA = {
         hard: "Difficile",
         expert: "Expert",
       },
+
       questions: {
         title: "Questions",
       },
+
+      regions: {
+        title: "Continents",
+        all: "Tous",
+        africa: "Afrique",
+        americas: "Amériques",
+        asia: "Asie",
+        europe: "Europe",
+        oceania: "Océanie",
+      },
+
       start: "Commencer la partie",
     },
 

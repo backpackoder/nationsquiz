@@ -52,6 +52,7 @@ export const translationsSPA = {
   modale: {
     settings: {
       title: "Ajustes",
+
       difficulty: {
         title: "Dificultad",
         kid: "Niño",
@@ -60,9 +61,21 @@ export const translationsSPA = {
         hard: "Difícil",
         expert: "Experto",
       },
+
       questions: {
         title: "Preguntas",
       },
+
+      regions: {
+        title: "Continentes",
+        all: "Todos",
+        africa: "África",
+        americas: "Américas",
+        asia: "Asia",
+        europe: "Europa",
+        oceania: "Oceanía",
+      },
+
       start: "Comienzo la partida",
     },
     game: {

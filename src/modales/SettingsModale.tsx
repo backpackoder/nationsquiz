@@ -1,13 +1,8 @@
-import { useContext } from "react";
-import { AppContext } from "../AppContext";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // Hooks
 import { useSettings } from "../hooks/settings";
-
-// Types
-import { AppProviderProps } from "../types/main";
 
 type SettingsModaleProps = {
   quizTheme: any;
@@ -15,57 +10,43 @@ type SettingsModaleProps = {
 };
 
 export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleProps) {
-  const { nbOfQuestions, setNbOfQuestions, nbOfChoices, setNbOfChoices }: AppProviderProps =
-    useContext(AppContext);
   const { t } = useTranslation();
-  const { difficulty, quizLength } = useSettings();
+  const { settings } = useSettings();
 
-  const root = "modale.settings";
+  const ROOT = "modale.settings";
 
   return (
     <>
       <h2>{t(`quizList.${quizTheme.theme}.title`)}</h2>
 
-      <h3>{t(`${root}.title`)}</h3>
+      <h3>{t(`${ROOT}.title`)}</h3>
 
-      <div className="setting">
-        <h4>{t(`${root}.difficulty.title`)}</h4>
+      <div className="settings">
+        {settings.map((setting, index) => {
+          return (
+            <div key={index} className="setting">
+              <h4>{t(`${ROOT}.${setting.setting.title}.title`)}</h4>
 
-        <div className="buttons">
-          {difficulty.map((item, index) => {
-            return (
-              <button
-                key={index}
-                className={nbOfChoices === item.choices ? "active" : "inactive"}
-                onClick={() => setNbOfChoices(item.choices)}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="setting">
-        <h4>{t(`${root}.questions.title`)}</h4>
-
-        <div className="buttons">
-          {quizLength.map((item, index) => {
-            return (
-              <button
-                key={index}
-                className={nbOfQuestions === item.questions ? "active" : "inactive"}
-                onClick={() => setNbOfQuestions(item.questions)}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
+              <div className="buttons">
+                {setting.setting.values.map((item, index) => {
+                  return (
+                    <button
+                      key={index}
+                      className={setting.value === item.value ? "active" : "inactive"}
+                      onClick={() => setting.changeValue(item.value)}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <Link to={`/quiz/${quizTheme.theme}`} onClick={() => setIsModaleOpened(false)}>
-        {t(`${root}.start`)}
+        {t(`${ROOT}.start`)}
       </Link>
     </>
   );
