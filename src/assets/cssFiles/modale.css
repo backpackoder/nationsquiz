@@ -60,9 +60,7 @@
   flex-direction: column;
   align-items: center;
   gap: 25px;
-  width: 80%;
   max-width: 500px;
-  border-radius: 5px;
 }
 .modaleWrapper .modale.settings .settings .setting {
   display: flex;
@@ -71,6 +69,7 @@
   gap: 10px;
   width: 100%;
   padding: 10px 20px;
+  border-radius: 5px;
   box-shadow: 0 0 10px -5px;
 }
 .modaleWrapper .modale.settings a {

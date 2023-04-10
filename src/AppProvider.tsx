@@ -117,11 +117,15 @@ export function AppProvider(props: object) {
     ],
   };
 
-  const initialState: SettingsState = {
-    nbOfChoices: difficulty.values[Difficulty.Easy].value,
-    nbOfQuestions: quizLength.values[QuizLength.Twenty].value,
-    regionChosen: regions.values[Regions.All].value,
-  };
+  const savedSettings = localStorage.getItem("settings");
+  const initialState: any =
+    savedSettings !== null
+      ? JSON.parse(savedSettings)
+      : {
+          nbOfChoices: difficulty.values[Difficulty.Easy].value,
+          nbOfQuestions: quizLength.values[QuizLength.Twenty].value,
+          regionChosen: regions.values[Regions.All].value,
+        };
 
   const [settingsState, settingsDispatch] = useReducer<React.Reducer<any, any>>(
     reducer,
@@ -149,6 +153,14 @@ export function AppProvider(props: object) {
         throw new Error("Unexpected settings action");
     }
   }
+
+  function updateLocalStorage(state: any) {
+    localStorage.setItem("settings", JSON.stringify(state));
+  }
+
+  useEffect(() => {
+    updateLocalStorage(settingsState);
+  }, [settingsState]);
 
   const contextValue: AppProviderProps = {
     // Language

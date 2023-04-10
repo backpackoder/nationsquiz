@@ -8,6 +8,8 @@ import { AppProviderProps } from "../../types/context";
 
 // Commons
 import { THEMES } from "../../commons/commons";
+
+// Utils
 import { formattedPopulation } from "../../utils/getPopulation";
 
 type GameProps = {

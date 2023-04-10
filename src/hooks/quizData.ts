@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next";
 
+// Types
+import { QuizData } from "../types/quiz";
+
 // Commons
 import { THEMES } from "../commons/commons";
 
@@ -7,7 +10,7 @@ export function useQuizData() {
   const { t } = useTranslation();
   const { FLAGS, CAPITALS, DEMOGRAPHY } = THEMES;
 
-  const quizData = [
+  const quizData: QuizData[] = [
     {
       theme: FLAGS,
       title: t(`quizList.${FLAGS}.title`),
@@ -25,5 +28,5 @@ export function useQuizData() {
     },
   ];
 
-  return { quizData };
+  return quizData;
 }

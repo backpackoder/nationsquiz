@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import { useTranslation } from "react-i18next";
 
+// Types
+import { QuizData } from "../types/quiz";
+
 // Hooks
 import { AppProviderProps } from "../types/context";
+import { ROUTES } from "../commons/commons";
 
 type SettingsModaleProps = {
-  quizTheme: any;
+  quizTheme: QuizData;
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -52,7 +56,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
         })}
       </div>
 
-      <Link to={`/quiz/${quizTheme.theme}`} onClick={() => setIsModaleOpened(false)}>
+      <Link to={`${ROUTES.QUIZ_LIST}/${quizTheme.theme}`} onClick={() => setIsModaleOpened(false)}>
         {t(`${ROOT}.start`)}
       </Link>
     </>

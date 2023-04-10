@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+// Types
+import { QuizData } from "../../types/quiz";
+
 // Utils
 import { useQuizData } from "../../hooks/quizData";
 
@@ -10,17 +13,16 @@ import { SettingsModale } from "../../modales/SettingsModale";
 
 export function QuizList() {
   const { t } = useTranslation();
+  const quizData = useQuizData();
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
-  const [quizTheme, setQuizTheme] = useState("");
+  const [quizTheme, setQuizTheme] = useState(quizData[0]);
 
-  function openModale(theme: any) {
+  function openModale(theme: QuizData) {
     setQuizTheme(theme);
     setIsModaleOpened(true);
   }
-
-  const { quizData } = useQuizData();
 
   return (
     <section className="quiz-selection">

@@ -7,7 +7,7 @@ import { Loading } from "../Loading";
 import { QuizList } from "./QuizSelection";
 
 // Types
-import { AppProviderProps } from "../../types/main";
+import { AppProviderProps } from "../../types/context";
 
 // Commons
 import { TITLE } from "../../commons/commons";
