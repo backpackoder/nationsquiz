@@ -10,6 +10,9 @@ export const ROUTES = {
   PAGE_NOT_FOUND: "*",
 };
 
+// API
+export const API_LINK = "https://restcountries.com/v3.1/all";
+
 // Quiz themes
 export const THEMES = {
   FLAGS: "flags",

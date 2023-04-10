@@ -1,8 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AppContext } from "../AppContext";
 import { useTranslation } from "react-i18next";
 
 // Hooks
-import { useSettings } from "../hooks/settings";
+import { AppProviderProps } from "../types/context";
 
 type SettingsModaleProps = {
   quizTheme: any;
@@ -10,8 +12,8 @@ type SettingsModaleProps = {
 };
 
 export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleProps) {
+  const { settingsDispatch, allSettings }: AppProviderProps = useContext(AppContext);
   const { t } = useTranslation();
-  const { settings } = useSettings();
 
   const ROOT = "modale.settings";
 
@@ -22,18 +24,23 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
       <h3>{t(`${ROOT}.title`)}</h3>
 
       <div className="settings">
-        {settings.map((setting, index) => {
+        {allSettings.map((setting, index) => {
           return (
             <div key={index} className="setting">
               <h4>{t(`${ROOT}.${setting.setting.title}.title`)}</h4>
 
               <div className="buttons">
-                {setting.setting.values.map((item, index) => {
+                {setting.setting.values.map((item, idx) => {
                   return (
                     <button
-                      key={index}
+                      key={idx}
                       className={setting.value === item.value ? "active" : "inactive"}
-                      onClick={() => setting.changeValue(item.value)}
+                      onClick={() =>
+                        settingsDispatch({
+                          type: allSettings[index].callDispatch,
+                          payload: item.value,
+                        })
+                      }
                     >
                       {item.label}
                     </button>

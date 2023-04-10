@@ -37,13 +37,19 @@ export const translationsSPA = {
 
   game: {
     restart: "Reiniciar",
+
     leave: "Abandonar la partida",
+    response: {
+      population: "habitantes",
+    },
+
     result: {
       description: {
         zeroPoints: "No tienes ningún punto.",
         onePoint: "Tienes un punto.",
         manyPoints: "Tienes {{score}} puntos.",
       },
+
       restart: "Repetir",
       another: "Otro quiz",
     },

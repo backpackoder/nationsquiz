@@ -4,7 +4,7 @@ import { AppContext } from "../../AppContext";
 import { Trans } from "react-i18next";
 
 // Types
-import { AppProviderProps } from "../../types/main";
+import { AppProviderProps } from "../../types/context";
 
 // Components
 import { Game } from "./Game";
@@ -16,8 +16,8 @@ import { GameModale } from "../../modales/GameModale";
 // Commons
 import { THEMES } from "../../commons/commons";
 
-// Hooks
-import { Regions } from "../../hooks/settings";
+// Utils
+import { getCountriesList } from "../../utils/getCountriesList";
 
 export function Quiz() {
   const { data }: AppProviderProps = useContext(AppContext);
@@ -27,51 +27,13 @@ export function Quiz() {
 
 function QuizRunning() {
   const { theme } = useParams();
-  const { data, nbOfChoices, nbOfQuestions, regionChosen }: AppProviderProps =
-    useContext(AppContext);
+  const { data, settingsState }: AppProviderProps = useContext(AppContext);
+  const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
-  function getRegion() {
-    switch (regionChosen) {
-      case Regions.Africa:
-        return data.filter((country: any) => country.region === "Africa");
-
-      case Regions.Americas:
-        return data.filter((country: any) => country.region === "Americas");
-
-      case Regions.Asia:
-        return data.filter((country: any) => country.region === "Asia");
-
-      case Regions.Europe:
-        return data.filter((country: any) => country.region === "Europe");
-
-      case Regions.Oceania:
-        return data.filter((country: any) => country.region === "Oceania");
-
-      default:
-        return data;
-    }
-  }
-
-  function getCountriesList() {
-    switch (theme) {
-      case THEMES.FLAGS:
-        return getRegion().filter((country: any) => country.cca2 !== undefined);
-
-      case THEMES.CAPITALS:
-        return getRegion().filter((country: any) => country.capital !== undefined);
-
-      case THEMES.DEMOGRAPHY:
-        return getRegion().filter((country: any) => country.population !== undefined);
-
-      default:
-        throw new Error("Theme not found");
-    }
-  }
-
   function getResponses() {
-    const countriesList = getCountriesList();
+    const countriesList = getCountriesList({ data, theme, region: regionChosen });
     let responses: any = [];
     let definedAnswer, randomAnswer, answer;
 
@@ -143,9 +105,9 @@ function QuizRunning() {
     },
   };
 
-  const [state, dispatch] = useReducer<React.Reducer<any, any>>(reducer, initialState);
+  const [gameState, gameDispatch] = useReducer<React.Reducer<any, any>>(reducer, initialState);
 
-  const { actualQuestion, score, gameModale } = state;
+  const { actualQuestion, score, gameModale } = gameState;
 
   const isQuizfinished = actualQuestion > nbOfQuestions;
 
@@ -204,13 +166,17 @@ function QuizRunning() {
 
         <article className="game">
           {!isQuizfinished ? (
-            <Game isQuizfinished={isQuizfinished} state={state} dispatch={dispatch} />
+            <Game
+              isQuizfinished={isQuizfinished}
+              gameState={gameState}
+              gameDispatch={gameDispatch}
+            />
           ) : (
             <Result score={score} />
           )}
         </article>
 
-        <Buttons isQuizfinished={isQuizfinished} dispatch={dispatch} />
+        <Buttons isQuizfinished={isQuizfinished} dispatch={gameDispatch} />
 
         {isModaleOpened && (
           <Modale
@@ -220,7 +186,7 @@ function QuizRunning() {
               <GameModale
                 setIsModaleOpened={setIsModaleOpened}
                 gameModale={gameModale}
-                dispatch={dispatch}
+                gameDispatch={gameDispatch}
               />
             }
           />

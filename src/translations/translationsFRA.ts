@@ -39,12 +39,17 @@ export const translationsFRA = {
     restart: "Recommencer",
     leave: "Quitter la partie",
 
+    response: {
+      population: "habitants",
+    },
+
     result: {
       description: {
         zeroPoints: "Vous n'avez aucun point.",
         onePoint: "Vous avez un point.",
         manyPoints: "Vous avez {{score}} points.",
       },
+
       restart: "Rejouer",
       another: "Autre quiz",
     },
@@ -56,7 +61,7 @@ export const translationsFRA = {
 
       difficulty: {
         title: "Difficulté",
-        kid: "Enfant",
+        kid: "Bac à sable",
         easy: "Facile",
         medium: "Moyen",
         hard: "Difficile",

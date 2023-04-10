@@ -4,21 +4,35 @@ import { AppContext } from "../../AppContext";
 import { t } from "i18next";
 
 // Types
-import { AppProviderProps } from "../../types/main";
+import { AppProviderProps } from "../../types/context";
 
 // Commons
 import { THEMES } from "../../commons/commons";
+import { formattedPopulation } from "../../utils/getPopulation";
 
 type GameProps = {
   isQuizfinished: boolean;
-  state: any;
-  dispatch: any;
+  gameState: any;
+  gameDispatch: any;
 };
 
-export function Game({ isQuizfinished, state, dispatch }: GameProps) {
+export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
   const { theme } = useParams();
-  const { actualLanguage, nbOfChoices }: AppProviderProps = useContext(AppContext);
-  const { hasResponded, isCorrect, responses, answer } = state;
+  const quizTheme = {
+    is: {
+      flags: theme === THEMES.FLAGS,
+      capitals: theme === THEMES.CAPITALS,
+      demography: theme === THEMES.DEMOGRAPHY,
+    },
+    isnt: {
+      flags: theme !== THEMES.FLAGS,
+      capitals: theme !== THEMES.CAPITALS,
+      demography: theme !== THEMES.DEMOGRAPHY,
+    },
+  };
+  const { actualLanguage, settingsState }: AppProviderProps = useContext(AppContext);
+  const { nbOfChoices } = settingsState;
+  const { hasResponded, responses, answer } = gameState;
 
   const [responseIndex, setResponseIndex] = useState(0);
 
@@ -43,20 +57,20 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
         return getCountryName(index);
 
       default:
-        throw new Error("Theme not found");
+        throw new Error("Quiz theme not found");
     }
   }
 
   function responseSelected(index: number) {
     setResponseIndex(index);
     const isCorrect = index === answer.index;
-    dispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
+    gameDispatch({ type: isCorrect ? "correct answer" : "wrong answer" });
 
     setTimeout(
       () => {
-        dispatch({ type: "next question" });
+        gameDispatch({ type: "next question" });
       },
-      isCorrect ? 1000 : 2000
+      isCorrect ? (quizTheme.is.demography ? 2000 : 1000) : quizTheme.is.demography ? 4000 : 2000
     );
   }
 
@@ -64,11 +78,15 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
     <>
       <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      {theme !== THEMES.DEMOGRAPHY && (
-        <img src={answer.data.flags.png} alt={answer.data.flags.alt} className="questionImg" />
+      {quizTheme.isnt.demography && (
+        <img
+          src={answer.data.flags.png}
+          alt={quizTheme.is.capitals ? "Mysterious flag" : answer.data.flags.alt}
+          className="questionImg"
+        />
       )}
 
-      {theme === THEMES.CAPITALS && (
+      {quizTheme.is.capitals && (
         <p>
           <b>{getCountryName()}</b>
         </p>
@@ -79,18 +97,13 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
           .fill(0)
           .map((_, index) => {
             const isResponseCorrect = index === answer.index;
+            const isResponseWrong = index === responseIndex && !isResponseCorrect;
 
             return (
               <li
                 key={index}
                 className={`${isResponseCorrect ? "correctResponse" : "wrongResponse"} ${
-                  isResponseCorrect
-                    ? hasResponded
-                      ? "active"
-                      : "inactive"
-                    : hasResponded && !isCorrect && index === responseIndex
-                    ? "active"
-                    : "inactive"
+                  hasResponded && (isResponseCorrect || isResponseWrong ? "active" : "inactive")
                 }`}
                 onClick={() => {
                   !isQuizfinished && !hasResponded && responseSelected(index);
@@ -98,14 +111,25 @@ export function Game({ isQuizfinished, state, dispatch }: GameProps) {
               >
                 {getChoices(index)}
 
-                {theme === THEMES.DEMOGRAPHY && (
-                  <div className="responseImgWrapper">
-                    <img
-                      src={responses[index].flags.png}
-                      alt={responses[index].flags.alt}
-                      className="responseImg"
-                    />
-                  </div>
+                {quizTheme.is.demography && (
+                  <>
+                    <div className="responseImgWrapper">
+                      <img
+                        src={responses[index].flags.png}
+                        alt={responses[index].flags.alt}
+                        className="responseImg"
+                      />
+                    </div>
+                    {hasResponded && (isResponseCorrect || isResponseWrong) && (
+                      <p>
+                        {formattedPopulation({
+                          population: responses[index].population,
+                          language: actualLanguage,
+                        })}{" "}
+                        {t("game.response.population")}
+                      </p>
+                    )}
+                  </>
                 )}
               </li>
             );

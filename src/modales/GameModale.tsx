@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 type GameModaleProps = {
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
   gameModale: any;
-  dispatch: any;
+  gameDispatch: any;
 };
 
-export function GameModale({ setIsModaleOpened, gameModale, dispatch }: GameModaleProps) {
+export function GameModale({ setIsModaleOpened, gameModale, gameDispatch }: GameModaleProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { confirmation, description } = gameModale;
@@ -19,7 +19,7 @@ export function GameModale({ setIsModaleOpened, gameModale, dispatch }: GameModa
       <div className="buttons">
         <button
           onClick={() =>
-            confirmation === "restart" ? dispatch({ type: confirmation }) : navigate("/quiz")
+            confirmation === "restart" ? gameDispatch({ type: confirmation }) : navigate("/quiz")
           }
         >
           {t("modale.game.accept")}

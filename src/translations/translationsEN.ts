@@ -39,12 +39,17 @@ export const translationsEN = {
     restart: "Restart",
     leave: "Leave the game",
 
+    response: {
+      population: "inhabitants",
+    },
+
     result: {
       description: {
         zeroPoints: "You have no points.",
         onePoint: "You have one point.",
         manyPoints: "You have {{score}} points.",
       },
+
       restart: "Play again",
       another: "Other quiz",
     },
