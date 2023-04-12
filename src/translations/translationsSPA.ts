@@ -32,7 +32,7 @@ export const translationsSPA = {
       description: "¿Qué país tiene más habitantes?",
       question: "¿Cuál es el país que tiene más habitantes?",
     },
-    start: "¡Comienzo el quiz!",
+    start: "Jugar",
   },
 
   game: {

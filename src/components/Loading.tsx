@@ -1,3 +1,8 @@
 export function Loading() {
-  return <p>Loading...</p>;
+  return (
+    <div className="loading">
+      <img src="/imgs/earth.png" alt="Loading..." className="earth" />
+      <p>Loading the countries...</p>
+    </div>
+  );
 }

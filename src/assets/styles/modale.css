@@ -1,0 +1,90 @@
+.modaleWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modaleWrapper .modale {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 90vw;
+  max-height: 90vh;
+  background-color: rgb(230, 230, 230);
+  padding: 25px;
+  border-radius: 5px;
+  overflow: auto;
+}
+.modaleWrapper .modale .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+.modaleWrapper .modale .buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+.modaleWrapper .modale button:hover {
+  background-color: ligh;
+}
+.modaleWrapper .modale button.active {
+  background-color: blue;
+  color: #fff;
+  scale: 1.25;
+}
+.modaleWrapper .modale .closeBtn {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  color: red;
+}
+
+/* Modale settings */
+.modaleWrapper .modale.settings h2 {
+  margin: 0 auto;
+}
+.modaleWrapper .modale.settings .settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  max-width: 500px;
+}
+.modaleWrapper .modale.settings .settings .setting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px -5px;
+}
+.modaleWrapper .modale.settings a {
+  background-color: rgb(0, 230, 0);
+  color: #000;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+.modaleWrapper .modale.settings a:hover {
+  background-color: rgb(0, 200, 0);
+}
+
+/* Modale Game */
+.modaleWrapper .modale.game .description {
+  text-align: center;
+}

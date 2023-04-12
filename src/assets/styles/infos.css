@@ -1,0 +1,14 @@
+.infos .imgsWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+.infos .imgsWrapper img {
+  max-width: 50%;
+  max-height: 200px;
+}
+.infos .imgsWrapper .flag {
+  border: solid 1px;
+}

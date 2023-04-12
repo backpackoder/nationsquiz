@@ -32,7 +32,7 @@ export const translationsFRA = {
       description: "Quel pays à le plus d'habitants ?",
       question: "Quel est le pays qui a le plus d'habitants ?",
     },
-    start: "Je commence le quiz",
+    start: "Jouer",
   },
 
   game: {

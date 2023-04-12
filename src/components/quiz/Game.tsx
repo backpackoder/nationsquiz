@@ -10,7 +10,7 @@ import { AppProviderProps } from "../../types/context";
 import { THEMES } from "../../commons/commons";
 
 // Utils
-import { formattedPopulation } from "../../utils/getPopulation";
+import { getFormattedPopulation } from "../../utils/getPopulation";
 
 type GameProps = {
   isQuizfinished: boolean;
@@ -39,9 +39,9 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
   const [responseIndex, setResponseIndex] = useState(0);
 
   function getCountryName(index?: number) {
-    return index !== undefined
-      ? responses[index]?.translations[actualLanguage]?.common ?? responses[index]?.name?.common
-      : answer?.data?.translations[actualLanguage]?.common ?? answer?.data?.name?.common;
+    return index === undefined
+      ? answer?.data?.translations[actualLanguage]?.common ?? answer?.data?.name?.common
+      : responses[index]?.translations[actualLanguage]?.common ?? responses[index]?.name?.common;
   }
   function getCapital(index: number) {
     return responses[index].capital[0];
@@ -124,7 +124,7 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
                     </div>
                     {hasResponded && (isResponseCorrect || isResponseWrong) && (
                       <p>
-                        {formattedPopulation({
+                        {getFormattedPopulation({
                           population: responses[index].population,
                           language: actualLanguage,
                         })}{" "}

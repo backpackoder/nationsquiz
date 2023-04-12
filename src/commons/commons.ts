@@ -5,6 +5,7 @@ export const TITLE = "Nations Quiz";
 export const ROUTES = {
   HOME: "/",
   LEARN: "/learn",
+  INFOS: "/learn/infos/:country",
   QUIZ_LIST: "/quiz",
   GAME: "/quiz/:theme",
   PAGE_NOT_FOUND: "*",

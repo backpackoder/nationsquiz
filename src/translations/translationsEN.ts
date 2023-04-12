@@ -32,7 +32,7 @@ export const translationsEN = {
       description: "Which country has the most inhabitants?",
       question: "What is the country with the most inhabitants?",
     },
-    start: "I start the quiz",
+    start: "Play",
   },
 
   game: {

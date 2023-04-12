@@ -1,3 +1,5 @@
+// Types
+import { API_DATA } from "./api";
 import { AllSettings, SettingsAction, SettingsState } from "./settings";
 
 // Context
@@ -8,7 +10,8 @@ export type AppProviderProps = {
 
   // API
   isLoading: boolean;
-  data: any;
+  data: API_DATA;
+  error: unknown;
 
   // Settings
   allSettings: AllSettings;

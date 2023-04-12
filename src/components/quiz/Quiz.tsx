@@ -18,14 +18,9 @@ import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getCountriesList } from "../../utils/getCountriesList";
+import { GameState } from "../../types/quiz";
 
 export function Quiz() {
-  const { data }: AppProviderProps = useContext(AppContext);
-
-  return data && <QuizRunning />;
-}
-
-function QuizRunning() {
   const { theme } = useParams();
   const { data, settingsState }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
@@ -89,7 +84,7 @@ function QuizRunning() {
 
   const choices = getResponses();
 
-  const initialState = {
+  const initialState: GameState = {
     actualQuestion: 1,
     score: 0,
 
@@ -156,42 +151,36 @@ function QuizRunning() {
   }
 
   return (
-    data && (
-      <section className="quiz">
-        <p>score: {score}</p>
-        <p>
-          question n°: {actualQuestion < nbOfQuestions ? actualQuestion : nbOfQuestions}/
-          {nbOfQuestions}
-        </p>
+    <section className="quiz">
+      <p>score: {score}</p>
+      <p>
+        question n°: {actualQuestion < nbOfQuestions ? actualQuestion : nbOfQuestions}/
+        {nbOfQuestions}
+      </p>
 
-        <article className="game">
-          {!isQuizfinished ? (
-            <Game
-              isQuizfinished={isQuizfinished}
-              gameState={gameState}
+      <article className="game">
+        {!isQuizfinished ? (
+          <Game isQuizfinished={isQuizfinished} gameState={gameState} gameDispatch={gameDispatch} />
+        ) : (
+          <Result score={score} />
+        )}
+      </article>
+
+      <Buttons isQuizfinished={isQuizfinished} dispatch={gameDispatch} />
+
+      {isModaleOpened && (
+        <Modale
+          name="game"
+          setIsModaleOpened={setIsModaleOpened}
+          children={
+            <GameModale
+              setIsModaleOpened={setIsModaleOpened}
+              gameModale={gameModale}
               gameDispatch={gameDispatch}
             />
-          ) : (
-            <Result score={score} />
-          )}
-        </article>
-
-        <Buttons isQuizfinished={isQuizfinished} dispatch={gameDispatch} />
-
-        {isModaleOpened && (
-          <Modale
-            name="game"
-            setIsModaleOpened={setIsModaleOpened}
-            children={
-              <GameModale
-                setIsModaleOpened={setIsModaleOpened}
-                gameModale={gameModale}
-                gameDispatch={gameDispatch}
-              />
-            }
-          />
-        )}
-      </section>
-    )
+          }
+        />
+      )}
+    </section>
   );
 }
