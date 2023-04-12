@@ -1,10 +1,12 @@
 import { useEffect, useReducer, useState } from "react";
 import { AppContext } from "./AppContext";
-import axios from "axios";
+import { useQuery } from "react-query";
+import axios, { AxiosResponse } from "axios";
 import { i18n } from "./i18n";
 import { useTranslation } from "react-i18next";
 
 // Types
+import { API_DATA } from "./types/api";
 import {
   AllSettings,
   Difficulty,
@@ -26,22 +28,10 @@ export function AppProvider(props: object) {
   const [actualLanguage, setActualLanguage] = useState(i18n.language);
 
   // API
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    axios
-      .get(API_LINK)
-      .then((response: any) => {
-        setData(response.data);
-      })
-      .catch((err: any) => {
-        console.log("Fetch error: ", err);
-      })
-      .finally(function () {
-        setIsLoading(false);
-      });
-  }, []);
+  const { data, isLoading, error } = useQuery<API_DATA>("data", async () => {
+    const response: AxiosResponse<API_DATA> = await axios.get(API_LINK);
+    return response.data;
+  });
 
   const difficulty: Setting = {
     title: SETTINGS.DIFFICULTY,
@@ -118,7 +108,7 @@ export function AppProvider(props: object) {
   };
 
   const savedSettings = localStorage.getItem("settings");
-  const initialState: any =
+  const initialState: SettingsState =
     savedSettings !== null
       ? JSON.parse(savedSettings)
       : {
@@ -127,10 +117,7 @@ export function AppProvider(props: object) {
           regionChosen: regions.values[Regions.All].value,
         };
 
-  const [settingsState, settingsDispatch] = useReducer<React.Reducer<any, any>>(
-    reducer,
-    initialState
-  );
+  const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
 
   const allSettings: AllSettings = [
     { setting: difficulty, value: settingsState.nbOfChoices, callDispatch: "change choices" },
@@ -170,6 +157,7 @@ export function AppProvider(props: object) {
     // API
     isLoading,
     data,
+    error,
 
     // Settings
     allSettings,

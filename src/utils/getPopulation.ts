@@ -3,7 +3,7 @@ type FormatedPopulation = {
   language: string;
 };
 
-export function formattedPopulation({ population, language }: FormatedPopulation) {
+export function getFormattedPopulation({ population, language }: FormatedPopulation) {
   const billions = Math.floor(population / 1_000_000_000);
   const millions = Math.floor((population - billions * 1_000_000_000) / 1_000_000);
   const thousands = Math.floor(
@@ -26,7 +26,7 @@ export function formattedPopulation({ population, language }: FormatedPopulation
   if (thousands > 0) {
     parts.push(formattedThousands.padStart(parts.length > 0 ? 3 : 0, "0"));
   }
-  if (ones > 0) {
+  if (ones >= 0) {
     parts.push(formattedOnes.padStart(parts.length > 0 ? 3 : 0, "0"));
   }
 

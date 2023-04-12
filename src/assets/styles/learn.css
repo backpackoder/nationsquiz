@@ -1,0 +1,30 @@
+.learn {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 150px);
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
+}
+
+.learn .item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: lightblue;
+  padding: 10px;
+  border: solid blue;
+  border-radius: 5px;
+}
+
+.learn .imgWrapper {
+  display: inherit;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+.learn .imgWrapper img {
+  max-width: 100%;
+}

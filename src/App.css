@@ -1,10 +1,15 @@
-@import "./assets/cssFiles/header.css";
+@import "./assets/styles/loading.css";
+@import "./assets/styles/header.css";
 
-@import "./assets/cssFiles/changeLanguage.css";
+@import "./assets/styles/changeLanguage.css";
 
-@import "./assets/cssFiles/quiz.css";
-@import "./assets/cssFiles/quizSelection.css";
+@import "./assets/styles/learn.css";
+@import "./assets/styles/searchBar.css";
+@import "./assets/styles/infos.css";
 
-@import "./assets/cssFiles/modale.css";
+@import "./assets/styles/quizSelection.css";
+@import "./assets/styles/quiz.css";
 
-@import "./assets/cssFiles/footer.css";
+@import "./assets/styles/modale.css";
+
+@import "./assets/styles/footer.css";
