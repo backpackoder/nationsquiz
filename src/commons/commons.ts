@@ -4,8 +4,8 @@ export const TITLE = "Nations Quiz";
 // Routes
 export const ROUTES = {
   HOME: "/",
-  LEARN: "/learn",
-  INFOS: "/learn/infos/:country",
+  STUDY: "/study",
+  INFOS: "/study/infos/:country",
   QUIZ_LIST: "/quiz",
   GAME: "/quiz/:theme",
   PAGE_NOT_FOUND: "*",
@@ -26,4 +26,13 @@ export const SETTINGS = {
   DIFFICULTY: "difficulty",
   QUESTIONS: "questions",
   REGIONS: "regions",
+};
+
+export const CONTINENTS = {
+  AFRICA: "Africa",
+  AMERICAS: "Americas",
+  ANTARCTIC: "Antarctic",
+  ASIA: "Asia",
+  EUROPE: "Europe",
+  OCEANIA: "Oceania",
 };

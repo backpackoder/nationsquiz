@@ -10,7 +10,7 @@ import { Header } from "./components/Header";
 import { Home } from "./components/home/Home";
 import { Footer } from "./components/Footer";
 
-import { Learn } from "./components/learn/Learn";
+import { Study } from "./components/learn/Study";
 import { Infos } from "./components/learn/Infos";
 
 import { Quiz } from "./components/quiz/Quiz";
@@ -26,8 +26,8 @@ import { AppProviderProps } from "./types/context";
 import { ROUTES } from "./commons/commons";
 
 export function AppConsumer() {
-  const { isLoading, error }: AppProviderProps = useContext(AppContext);
-  const { HOME, LEARN, INFOS, QUIZ_LIST, GAME, PAGE_NOT_FOUND } = ROUTES;
+  const { status }: AppProviderProps = useContext(AppContext);
+  const { HOME, STUDY, INFOS, QUIZ_LIST, GAME, PAGE_NOT_FOUND } = ROUTES;
 
   return (
     <Router>
@@ -35,14 +35,14 @@ export function AppConsumer() {
       <Header />
 
       <main>
-        {isLoading ? (
+        {status === "loading" ? (
           <Loading />
-        ) : error === null ? (
+        ) : status === "success" ? (
           <Routes>
             <Route path="/*" element={<Loading />} />
             <Route path={HOME} element={<Home />} />
 
-            <Route path={LEARN} element={<Learn />} />
+            <Route path={STUDY} element={<Study />} />
             <Route path={INFOS} element={<Infos />} />
 
             <Route path={QUIZ_LIST} element={<QuizList />} />

@@ -10,7 +10,7 @@ import { PageNotFound } from "../errors/PageNotFound";
 
 // Utils
 import { stringForUrl } from "../../utils/stringForUrl";
-import { getFormattedPopulation } from "../../utils/getPopulation";
+import { getFormattedNumber } from "../../utils/formattedNumber";
 
 export function Infos() {
   const { country } = useParams();
@@ -58,9 +58,9 @@ export function Infos() {
           })}
         </p> */}
 
-        <p>
-          Region: {countryData.region}, {countryData.continents[0]}, {countryData.subregion}
-        </p>
+        <p>Region: {countryData.region}</p>
+        <p>continent: {countryData.continents[0]}</p>
+        <p>subregion: {countryData.subregion}</p>
 
         <p>Area: {countryData.area}</p>
 
@@ -82,7 +82,7 @@ export function Infos() {
 
         <p>
           Population:{" "}
-          {getFormattedPopulation({ population: countryData.population, language: actualLanguage })}{" "}
+          {getFormattedNumber({ population: countryData.population, language: actualLanguage })}{" "}
           inhabitants
         </p>
 
@@ -102,6 +102,8 @@ export function Infos() {
         </p>
 
         <p>Maps:</p>
+
+        <p>GINI:</p>
 
         <p>
           Car: sign: {countryData.car.signs}, side: {countryData.car.side}

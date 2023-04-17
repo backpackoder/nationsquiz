@@ -3,7 +3,10 @@
 
 @import "./assets/styles/changeLanguage.css";
 
-@import "./assets/styles/learn.css";
+@import "./assets/styles/home.css";
+@import "./assets/styles/didYouKnow.css";
+
+@import "./assets/styles/study.css";
 @import "./assets/styles/searchBar.css";
 @import "./assets/styles/infos.css";
 

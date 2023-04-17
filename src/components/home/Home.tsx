@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 // Components
+import { DidYouKnow } from "./DidYouKnow";
+import { GoToStudy } from "./GoToStudy";
 import { QuizList } from "./QuizSelection";
 
 // Commons
@@ -11,8 +13,12 @@ export function Home() {
 
   return (
     <>
-      <h1>{TITLE}</h1>
-      <p>{t("home.catchPhrase")}</p>
+      {/* <h1>{TITLE}</h1>
+      <p>{t("home.catchPhrase")}</p> */}
+
+      <DidYouKnow />
+
+      <GoToStudy />
 
       <QuizList />
     </>

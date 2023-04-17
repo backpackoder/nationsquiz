@@ -1,15 +1,13 @@
-type FormatedPopulation = {
-  population: number;
+type formattedNumber = {
+  number: number;
   language: string;
 };
 
-export function getFormattedPopulation({ population, language }: FormatedPopulation) {
-  const billions = Math.floor(population / 1_000_000_000);
-  const millions = Math.floor((population - billions * 1_000_000_000) / 1_000_000);
-  const thousands = Math.floor(
-    (population - billions * 1_000_000_000 - millions * 1_000_000) / 1000
-  );
-  const ones = population - billions * 1_000_000_000 - millions * 1_000_000 - thousands * 1000;
+export function getFormattedNumber({ number, language }: formattedNumber) {
+  const billions = Math.floor(number / 1_000_000_000);
+  const millions = Math.floor((number - billions * 1_000_000_000) / 1_000_000);
+  const thousands = Math.floor((number - billions * 1_000_000_000 - millions * 1_000_000) / 1000);
+  const ones = number - billions * 1_000_000_000 - millions * 1_000_000 - thousands * 1000;
 
   const formattedBillions = billions.toLocaleString(language);
   const formattedMillions = millions.toLocaleString(language);

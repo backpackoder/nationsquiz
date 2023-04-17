@@ -1,0 +1,9 @@
+.goToStudy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background-color: lightgreen;
+  padding: 10px;
+}

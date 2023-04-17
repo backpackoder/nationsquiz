@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { AppContext } from "./AppContext";
 import { useQuery } from "react-query";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { i18n } from "./i18n";
 import { useTranslation } from "react-i18next";
 
@@ -28,9 +28,9 @@ export function AppProvider(props: object) {
   const [actualLanguage, setActualLanguage] = useState(i18n.language);
 
   // API
-  const { data, isLoading, error } = useQuery<API_DATA>("data", async () => {
-    const response: AxiosResponse<API_DATA> = await axios.get(API_LINK);
-    return response.data;
+  const { status, error, data } = useQuery({
+    queryKey: ["nations"],
+    queryFn: () => axios.get<API_DATA[]>(API_LINK).then((res) => res.data),
   });
 
   const difficulty: Setting = {
@@ -155,7 +155,7 @@ export function AppProvider(props: object) {
     setActualLanguage,
 
     // API
-    isLoading,
+    status,
     data,
     error,
 

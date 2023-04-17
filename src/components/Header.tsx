@@ -4,6 +4,7 @@ import { i18n } from "../i18n";
 import { useTranslation } from "react-i18next";
 import { Iso, LanguageBtn } from "../types/main";
 import { AppContext } from "../AppContext";
+import { ROUTES } from "../commons/commons";
 
 export function Header() {
   const { t } = useTranslation();
@@ -13,13 +14,13 @@ export function Header() {
       <nav>
         <ul>
           <li>
-            <Link to="/">{t("menu.home")}</Link>
+            <Link to={ROUTES.HOME}>{t("menu.home")}</Link>
           </li>
           <li>
-            <Link to="/learn">{t("menu.learn")}</Link>
+            <Link to={ROUTES.STUDY}>{t("menu.study")}</Link>
           </li>
           <li>
-            <Link to="/quiz">{t("menu.quiz")}</Link>
+            <Link to={ROUTES.QUIZ_LIST}>{t("menu.quiz")}</Link>
           </li>
           <li>
             <ChangeLanguage />

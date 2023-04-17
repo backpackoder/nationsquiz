@@ -1,44 +1,53 @@
+import { useTranslation } from "react-i18next";
+
 // Types
 import { InputProps } from "../types/search";
 
 export function useSearchInputs() {
+  const { t } = useTranslation();
+
   const searchInputs: InputProps = [
     {
-      label: "Trier par",
+      label: t("searchBar.sort.label"),
       name: "sort",
       options: [
-        { value: "", label: "Select" },
-        { value: "Name ascending", label: "Nom (A-Z)" },
-        { value: "Name descending", label: "Nom (Z-A)" },
-        { value: "Population descending", label: "Population (9-1)" },
-        { value: "Population ascending", label: "Population (1-9)" },
+        { value: "", label: t("searchBar.sort.options.default") },
+        { value: "Name ascending", label: t("searchBar.sort.options.name_ascending") },
+        { value: "Name descending", label: t("searchBar.sort.options.name_descending") },
+        {
+          value: "Population descending",
+          label: t("searchBar.sort.options.population_descending"),
+        },
+        { value: "Population ascending", label: t("searchBar.sort.options.population_ascending") },
       ],
     },
     {
-      label: "Continent",
+      label: t("searchBar.region.label"),
       name: "region",
       options: [
-        { value: "", label: "Select" },
-        { value: "Africa", label: "Afrique" },
-        { value: "Americas", label: "Amérique" },
-        { value: "Asia", label: "Asie" },
-        { value: "Europe", label: "Europe" },
-        { value: "Oceania", label: "Océanie" },
+        { value: "", label: t("searchBar.region.options.default") },
+        { value: "Africa", label: t("searchBar.region.options.africa") },
+        { value: "Americas", label: t("searchBar.region.options.americas") },
+        { value: "Asia", label: t("searchBar.region.options.asia") },
+        { value: "Europe", label: t("searchBar.region.options.europe") },
+        { value: "Oceania", label: t("searchBar.region.options.oceania") },
       ],
     },
     {
-      label: "Population",
+      label: t("searchBar.population.label"),
       name: "population",
       options: [
-        { value: 0, label: "Tous" },
-        { value: 1_000_000_000, label: "> 1 billion" },
-        { value: -1_000_000_000, label: "< 1 billion" },
-        { value: 100_000_000, label: "> 100 million" },
-        { value: -100_000_000, label: "< 100 million" },
-        { value: 1_000_000, label: "> 1 million" },
-        { value: -1_000_000, label: "< 1 million" },
-        { value: 100_000, label: "> 100k" },
-        { value: -100_000, label: "< 100k" },
+        { value: 0, label: t("searchBar.population.options.default") },
+        { value: 100_000_000, label: t("searchBar.population.options.more100m") },
+        { value: -100_000_000, label: t("searchBar.population.options.less100m") },
+        { value: 10_000_000, label: t("searchBar.population.options.more10m") },
+        { value: -10_000_000, label: t("searchBar.population.options.less10m") },
+        { value: 1_000_000, label: t("searchBar.population.options.more1m") },
+        { value: -1_000_000, label: t("searchBar.population.options.less1m") },
+        { value: 100_000, label: t("searchBar.population.options.more100k") },
+        { value: -100_000, label: t("searchBar.population.options.less100k") },
+        { value: 10_000, label: t("searchBar.population.options.more10k") },
+        { value: -10_000, label: t("searchBar.population.options.less10k") },
       ],
     },
   ];
