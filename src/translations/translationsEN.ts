@@ -7,12 +7,71 @@ export const translationsEN = {
 
   menu: {
     home: "Home",
-    learn: "Learn",
+    study: "Study",
     quiz: "Quiz",
   },
 
   home: {
     catchPhrase: "The quiz that allows you to test your knowledge of the nations of the world.",
+  },
+
+  goToStudy: {
+    title: "Study the world!",
+    description:
+      "Learn the flags, capitals, demography, and many other information about the countries of the world.",
+    button: "I want to study!",
+  },
+
+  study: {
+    seeDetails: "See all details",
+    noResult: "No country matches your search criteria.",
+  },
+
+  searchBar: {
+    results: {
+      none: "No country found",
+      one: "1 country found",
+      many: "{{results}} countries found",
+    },
+    sort: {
+      label: "Sort by",
+      options: {
+        default: "Select",
+        name_ascending: "Name (A-Z)",
+        name_descending: "Name (Z-A)",
+        population_ascending: "Population (1-9)",
+        population_descending: "Population (9-1)",
+      },
+    },
+    region: {
+      label: "Continent",
+      options: {
+        default: "All",
+        africa: "Africa",
+        americas: "Americas",
+        asia: "Asia",
+        europe: "Europe",
+        oceania: "Oceania",
+      },
+    },
+    population: {
+      label: "Population",
+      options: {
+        default: "All",
+        more100m: "> 100 millions",
+        less100m: "< 100 millions",
+        more10m: "> 10 millions",
+        less10m: "< 10 millions",
+        more1m: "> 1 million",
+        less1m: "< 1 million",
+        more100k: "> 100 000",
+        less100k: "< 100 000",
+        more10k: "> 10 000",
+        less10k: "< 10 000",
+      },
+    },
+    placeholder: "Search a country",
+    reset: "Reset filters",
   },
 
   quizList: {

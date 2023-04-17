@@ -10,7 +10,7 @@ import { AppProviderProps } from "../../types/context";
 import { THEMES } from "../../commons/commons";
 
 // Utils
-import { getFormattedPopulation } from "../../utils/getPopulation";
+import { getFormattedNumber } from "../../utils/formattedNumber";
 
 type GameProps = {
   isQuizfinished: boolean;
@@ -124,7 +124,7 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
                     </div>
                     {hasResponded && (isResponseCorrect || isResponseWrong) && (
                       <p>
-                        {getFormattedPopulation({
+                        {getFormattedNumber({
                           population: responses[index].population,
                           language: actualLanguage,
                         })}{" "}

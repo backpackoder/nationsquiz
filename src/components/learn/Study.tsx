@@ -1,6 +1,7 @@
 import { useContext, useReducer } from "react";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { SearchBar } from "./SearchBar";
@@ -9,14 +10,15 @@ import { SearchBar } from "./SearchBar";
 import { AppProviderProps } from "../../types/context";
 
 // Utils
-import { getFormattedPopulation } from "../../utils/getPopulation";
+import { getFormattedNumber } from "../../utils/formattedNumber";
 import { stringForUrl } from "../../utils/stringForUrl";
 
 // Commons
 import { ROUTES } from "../../commons/commons";
 
-export function Learn() {
+export function Study() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
 
   const initialState = {
@@ -96,11 +98,12 @@ export function Learn() {
       <SearchBar data={filteredData} filterDispatch={filterDispatch} />
 
       {filteredData.length > 0 ? (
-        <article className="learn">
+        <article className="study">
           {filteredData.map((item, index) => {
             return (
               <div key={index} className="item">
                 {/* <h3>{item.translations[actualLanguage]?.common ?? item.name.common}</h3> */}
+                {/* EN DESSOUS A RENDRE DYNAMIQUE EN FONCTION DE LA LANGUE */}
                 <h3>{item.translations["fra"]?.common ?? item.name.common}</h3>
 
                 <div className="imgWrapper">
@@ -109,19 +112,17 @@ export function Learn() {
 
                 <div>
                   <p>
-                    {getFormattedPopulation({
+                    {getFormattedNumber({
                       population: item?.population,
                       language: actualLanguage,
                     })}
                   </p>
                   <button
                     onClick={() =>
-                      navigate(
-                        `${ROUTES.LEARN}/infos/${stringForUrl(item.name.common.toLowerCase())}`
-                      )
+                      navigate(`${ROUTES.STUDY}/infos/${stringForUrl(item.name.common)}`)
                     }
                   >
-                    Voir tous les détails
+                    {t("study.seeDetails")}
                   </button>
                 </div>
               </div>
@@ -129,7 +130,7 @@ export function Learn() {
           })}
         </article>
       ) : (
-        <p>Aucun résultat</p>
+        <p className="noResult">{t("study.noResult")}</p>
       )}
     </section>
   ) : null;

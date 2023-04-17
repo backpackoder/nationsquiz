@@ -1,4 +1,17 @@
 export const translationsFRA = {
+  test: {
+    capital: "La capitale de {{country}} est {{capital}}.",
+    population: "La population de {{country}} est de {{population}} habitants.",
+    population_biggest:
+      "Le pays qui a le plus d'habitants est {{country}} avec {{population}} habitants.",
+    population_continent:
+      "{{population_continent}} personnes vivent en {{continent}}, soit {{population_continent_calc}}% de la population mondiale.",
+    area_biggest: "Le pays le plus étandu est {{country}} avec {{area_biggest}} km².",
+    independent:
+      "Dans le monde, {{independent}} territoires n'ont pas encore revendiqué leur indépendance, soit {{independent_calc}}% d'entre eux.",
+    default: "Il existe {{countries}} territoires dans le monde.",
+  },
+
   language: {
     fra: "Français",
     en: "Anglais",
@@ -7,12 +20,71 @@ export const translationsFRA = {
 
   menu: {
     home: "Accueil",
-    learn: "Étudier",
+    study: "Étudier",
     quiz: "Quiz",
   },
 
   home: {
     catchPhrase: "Le quiz qui vous permet de tester vos connaissances sur les nations du monde.",
+  },
+
+  goToStudy: {
+    title: "Étudiez le monde !",
+    description:
+      "Apprenez les drapeaux, les capitales, la démographie, et plein d'autres informations des pays du monde.",
+    button: "Je veux étudier !",
+  },
+
+  study: {
+    seeDetails: "Voir tous les détails",
+    noResult: "Aucun pays ne corréspond à vos critères de recherche.",
+  },
+
+  searchBar: {
+    results: {
+      none: "Aucun pays trouvé",
+      one: "1 pays trouvé",
+      many: "{{results}} pays trouvés",
+    },
+    sort: {
+      label: "Trier par",
+      options: {
+        default: "Sélectionner",
+        name_ascending: "Nom (A-Z)",
+        name_descending: "Nom (Z-A)",
+        population_ascending: "Population (1-9)",
+        population_descending: "Population (9-1)",
+      },
+    },
+    region: {
+      label: "Continent",
+      options: {
+        default: "Tous",
+        africa: "Afrique",
+        americas: "Amériques",
+        asia: "Asie",
+        europe: "Europe",
+        oceania: "Océanie",
+      },
+    },
+    population: {
+      label: "Population",
+      options: {
+        default: "Toutes",
+        more100m: "> 100 millions",
+        less100m: "< 100 millions",
+        more10m: "> 10 millions",
+        less10m: "< 10 millions",
+        more1m: "> 1 million",
+        less1m: "< 1 million",
+        more100k: "> 100 000",
+        less100k: "< 100 000",
+        more10k: "> 10 000",
+        less10k: "< 10 000",
+      },
+    },
+    placeholder: "Rechercher un pays",
+    reset: "Réinitialiser les filtres",
   },
 
   quizList: {

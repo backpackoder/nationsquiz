@@ -1,4 +1,4 @@
-.learn {
+.study {
   display: grid;
   grid-template-columns: repeat(auto-fit, 150px);
   justify-content: center;
@@ -7,7 +7,7 @@
   padding: 20px;
 }
 
-.learn .item {
+.study .item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,14 +17,20 @@
   padding: 10px;
   border: solid blue;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-.learn .imgWrapper {
+.study .imgWrapper {
   display: inherit;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
 }
-.learn .imgWrapper img {
+.study .imgWrapper img {
   max-width: 100%;
+}
+
+.noResult {
+  text-align: center;
+  padding: 25px;
 }

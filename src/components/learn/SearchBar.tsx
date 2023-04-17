@@ -1,18 +1,39 @@
+import { useTranslation } from "react-i18next";
+
 // Types
-import { useSearchInputs } from "../../hooks/searchInputs";
 import { API_DATA } from "../../types/api";
 
+// Hooks
+import { useSearchInputs } from "../../hooks/searchInputs";
+import { useMemo } from "react";
+
 type SearchBarProps = {
-  data: API_DATA;
+  data: API_DATA[];
   filterDispatch: any;
 };
 
 export function SearchBar({ data, filterDispatch }: SearchBarProps) {
   const { searchInputs } = useSearchInputs();
+  const { t } = useTranslation();
+
+  const results = data?.length;
+
+  const dataLength = useMemo(() => {
+    switch (data?.length) {
+      case 0:
+        return t("searchBar.results.none");
+
+      case 1:
+        return t("searchBar.results.one");
+
+      default:
+        return t("searchBar.results.many", { results });
+    }
+  }, [data]);
 
   return data ? (
     <div className="searchBar">
-      <p>results: {data.length}</p>
+      <p>{dataLength}</p>
 
       {searchInputs.map((input) => (
         <div className="searchItem" key={input.name}>
@@ -33,12 +54,12 @@ export function SearchBar({ data, filterDispatch }: SearchBarProps) {
 
       <input
         type="text"
-        placeholder="Rechercher un pays"
+        placeholder={t("searchBar.placeholder") ?? "Type..."}
         onChange={(e) => filterDispatch({ type: "writing", payload: e.target.value })}
       />
 
       {/* onClick={() => filterDispatch({ type: "reset" })} */}
-      <button onClick={() => window.location.reload()}>Rester filters</button>
+      <button onClick={() => window.location.reload()}>{t("searchBar.reset")}</button>
     </div>
   ) : null;
 }
