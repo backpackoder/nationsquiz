@@ -82,7 +82,7 @@ export function Infos() {
 
         <p>
           Population:{" "}
-          {getFormattedNumber({ population: countryData.population, language: actualLanguage })}{" "}
+          {getFormattedNumber({ number: countryData.population, language: actualLanguage })}{" "}
           inhabitants
         </p>
 

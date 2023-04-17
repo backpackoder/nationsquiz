@@ -125,7 +125,7 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
                     {hasResponded && (isResponseCorrect || isResponseWrong) && (
                       <p>
                         {getFormattedNumber({
-                          population: responses[index].population,
+                          number: responses[index].population,
                           language: actualLanguage,
                         })}{" "}
                         {t("game.response.population")}

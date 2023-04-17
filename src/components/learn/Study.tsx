@@ -113,7 +113,7 @@ export function Study() {
                 <div>
                   <p>
                     {getFormattedNumber({
-                      population: item?.population,
+                      number: item?.population,
                       language: actualLanguage,
                     })}
                   </p>
