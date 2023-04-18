@@ -3,11 +3,10 @@ import { AppContext } from "../AppContext";
 
 // Types
 import { AppProviderProps } from "../types/context";
-import { InfosList, RandomInfo } from "../types/randomInfo";
+import { Filters, FiltersKeys, InfosList, RandomInfo } from "../types/randomInfo";
 
 // Utils
 import { getInfosFilters } from "../utils/infosFilters";
-import { getInfosThemesList } from "../utils/infosThemesList";
 import { getFormattedNumber } from "../utils/formattedNumber";
 import { sumNumbers } from "../utils/sumNumbers";
 import { percentage } from "../utils/percentage";
@@ -15,8 +14,26 @@ import { percentage } from "../utils/percentage";
 export function useGetRandomInfo(next: number) {
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
 
+  // const filter = data?.filter((item) => (item.borders?.length > 0 ? item.borders?.length : null));
+  // console.log("filter", filter);
+
+  // const map = filter?.map((item) => item.borders?.length);
+  // console.log("map", map);
+
+  // const largestNumber = Math.max(...map!);
+  // console.log("largestNumber", largestNumber);
+
+  // const howMany = filter?.filter((item) => item.borders?.length === largestNumber);
+  // console.log("howMany", howMany?.length);
+
   const randomInfo = getRandomInfo();
   const [info, setInfo] = useState(randomInfo);
+
+  function getInfosThemesList(filter: Filters, list: FiltersKeys[]) {
+    return list.map((item) => {
+      return { type: item, filter: filter[item] };
+    });
+  }
 
   function getRandomInfo() {
     const filters = data && getInfosFilters(data);

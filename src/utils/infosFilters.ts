@@ -5,10 +5,10 @@ import { Filters } from "../types/randomInfo";
 // Utils
 import { getRandomContinent } from "./getRandomContinent";
 
-export function getInfosFilters(data: API_DATA[]): Filters {
+export function getInfosFilters(data: API_DATA[]) {
   const randomContinent = getRandomContinent();
 
-  const filters = {
+  const filters: Filters = {
     capital: data?.filter((item) => item.capital !== undefined),
 
     population_country: data?.filter((item) => item.population !== undefined),

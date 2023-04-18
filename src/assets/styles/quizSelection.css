@@ -58,6 +58,8 @@
 .quiz-selection__item button {
   min-width: 50%;
   background-color: lightgreen;
+  font-size: 1rem;
+  font-weight: bold;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;

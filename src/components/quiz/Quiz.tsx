@@ -23,20 +23,21 @@ import { GameState } from "../../types/quiz";
 export function Quiz() {
   const { theme } = useParams();
   const { data, settingsState }: AppProviderProps = useContext(AppContext);
-  const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
+  const { nbOfChoices, nbOfQuestions, regionChosen: region } = settingsState;
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
   function getResponses() {
-    const countriesList = getCountriesList({ data, theme, region: regionChosen });
+    const countriesList = data && getCountriesList({ data, theme, region });
     let responses: any = [];
     let definedAnswer, randomAnswer, answer;
 
     do {
       for (let i = 0; i < nbOfChoices; i++) {
-        const randomCountry = countriesList[Math.floor(Math.random() * countriesList.length)];
+        const randomCountry =
+          countriesList && countriesList[Math.floor(Math.random() * countriesList.length)];
         responses.push(randomCountry);
-        countriesList.splice(countriesList.indexOf(randomCountry), 1);
+        randomCountry && countriesList.splice(countriesList.indexOf(randomCountry), 1);
       }
 
       const uniqueResponses = new Set(responses.map((country: any) => country.population));

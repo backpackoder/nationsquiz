@@ -97,18 +97,23 @@ export const translationsFRA = {
     title: "Choisissez votre quiz",
     flags: {
       title: "Drapeaux",
-      description: "Quiz sur les drapeaux des pays",
+      description: "Trouver les drapeaux des pays",
       question: "De quel pays est ce drapeau ?",
     },
     capitals: {
       title: "Capitales",
-      description: "Quiz sur les capitales des pays",
+      description: "Trouver les capitales des pays",
       question: "Quelle est la capitale de ce pays ?",
     },
     demography: {
       title: "Démographie",
-      description: "Quel pays à le plus d'habitants ?",
-      question: "Quel est le pays qui a le plus d'habitants ?",
+      description: "Trouvez le pays le plus peuplé",
+      question: "Quel pays à le plus d'habitants ?",
+    },
+    borders: {
+      title: "Frontières",
+      description: "Trouver les pays frontaliers d'un pays",
+      question: "Quels sont les pays frontaliers de ce pays ?",
     },
     start: "Jouer",
   },

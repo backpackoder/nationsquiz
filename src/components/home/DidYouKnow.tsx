@@ -19,20 +19,21 @@ export function DidYouKnow() {
   }
 
   return randomCountryFromInfo ? (
-    <>
-      <section className="didYouKnow">
-        <h2>{t("didYouKnow.title")}</h2>
-        <div key={animating} className="info">
-          <p>{t(`didYouKnow.sentence.${randomInfo?.type}`, { ...sentenceInfo })}</p>
-          <div className="imgWrapper">
-            <img
-              src={randomCountryFromInfo.flags.png}
-              alt={randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
-            />
-          </div>
+    <article className="didYouKnow">
+      <h2>{t("didYouKnow.title")}</h2>
+
+      <div key={animating} className="info">
+        <p>{t(`didYouKnow.sentence.${randomInfo?.type}`, { ...sentenceInfo })}</p>
+
+        <div className="imgWrapper">
+          <img
+            src={randomCountryFromInfo.flags.png}
+            alt={randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
+          />
         </div>
-        <button onClick={() => handleClick()}>{t("didYouKnow.nextInfo")}</button>
-      </section>
-    </>
+      </div>
+
+      <button onClick={() => handleClick()}>{t("didYouKnow.nextInfo")}</button>
+    </article>
   ) : null;
 }

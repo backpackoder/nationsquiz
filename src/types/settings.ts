@@ -7,7 +7,7 @@ export type Setting = {
   }[];
 };
 
-export type AllSettings = {
+export type SettingsList = {
   setting: Setting;
   value: number;
   callDispatch: string;
@@ -24,6 +24,11 @@ export type SettingsAction = {
   payload: number;
 };
 
+export enum SettingEnum {
+  Difficulty = 0,
+  QuizLength,
+  Region,
+}
 export enum Difficulty {
   Kid = 0,
   Easy,
@@ -33,8 +38,8 @@ export enum Difficulty {
 }
 export enum QuizLength {
   Ten = 0,
-  Twenty = 1,
-  Thirty = 2,
+  Twenty,
+  Thirty,
 }
 export enum Regions {
   All = 0,
