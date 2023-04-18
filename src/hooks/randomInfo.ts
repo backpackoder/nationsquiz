@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../types/context";
-import { InfosList, RandomInfo } from "../types/randomInfo";
+import { FiltersKeys, InfosList, RandomInfo } from "../types/randomInfo";
 
 // Utils
 import { getInfosFilters } from "../utils/infosFilters";
@@ -36,7 +36,6 @@ export function useGetRandomInfo(next: number) {
 
     const randomInfo: RandomInfo =
       infosList && infosList[Math.floor(Math.random() * infosList.length)];
-    console.log("randomInfo", randomInfo);
 
     const randomCountryFromInfo =
       randomInfo?.filter && randomInfo.filter[Math.floor(Math.random() * randomInfo.filter.length)];
@@ -81,37 +80,38 @@ export function useGetRandomInfo(next: number) {
       independent_calc,
     } = countryInfo;
 
-    function getInfos(sentence: string) {
-      return { randomCountryFromInfo, sentence };
+    function getInfos(sentence: FiltersKeys | "default", params: object = {}) {
+      return {
+        randomCountryFromInfo,
+        sentence: t(`didYouKnow.sentence.${sentence}`, params),
+      };
     }
 
     switch (randomInfo?.type) {
       case "capital":
-        return getInfos(t("test.capital", { country, capital }));
+        return getInfos("capital", { country, capital });
 
       case "population_country":
-        return getInfos(t("test.population", { country, population }));
+        return getInfos("population_country", { country, population });
 
       case "population_country_biggest":
-        return getInfos(t("test.population_biggest", { country, population }));
+        return getInfos("population_country_biggest", { country, population });
 
       case "population_continent":
-        return getInfos(
-          t("test.population_continent", {
-            continent,
-            population_continent,
-            population_continent_calc,
-          })
-        );
+        return getInfos("population_continent", {
+          continent,
+          population_continent,
+          population_continent_calc,
+        });
 
       case "area_biggest":
-        return getInfos(t("test.area_biggest", { country, area_biggest }));
+        return getInfos("area_biggest", { country, area_biggest });
 
       case "independent":
-        return getInfos(t("test.independent", { independent, independent_calc }));
+        return getInfos("independent", { independent, independent_calc });
 
       default:
-        return getInfos(t("test.default", { countries }));
+        return getInfos("default", { countries });
     }
   }
 

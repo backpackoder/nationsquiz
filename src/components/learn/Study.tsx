@@ -16,12 +16,19 @@ import { stringForUrl } from "../../utils/stringForUrl";
 // Commons
 import { ROUTES } from "../../commons/commons";
 
+type FilterState = {
+  sort: string;
+  search: string;
+  region: string;
+  population: number;
+};
+
 export function Study() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
 
-  const initialState = {
+  const initialState: FilterState = {
     sort: "",
     search: "",
     region: "",
@@ -94,11 +101,11 @@ export function Study() {
   });
 
   return data && filteredData ? (
-    <section>
+    <article>
       <SearchBar data={filteredData} filterDispatch={filterDispatch} />
 
       {filteredData.length > 0 ? (
-        <article className="study">
+        <div className="study">
           {filteredData.map((item, index) => {
             return (
               <div key={index} className="item">
@@ -110,28 +117,20 @@ export function Study() {
                   <img src={item.flags.png} alt={item.flags.alt} />
                 </div>
 
-                <div>
-                  <p>
-                    {getFormattedNumber({
-                      number: item?.population,
-                      language: actualLanguage,
-                    })}
-                  </p>
-                  <button
-                    onClick={() =>
-                      navigate(`${ROUTES.STUDY}/infos/${stringForUrl(item.name.common)}`)
-                    }
-                  >
-                    {t("study.seeDetails")}
-                  </button>
-                </div>
+                <button
+                  onClick={() =>
+                    navigate(`${ROUTES.STUDY}/infos/${stringForUrl(item.name.common)}`)
+                  }
+                >
+                  {t("study.infoSheet")}
+                </button>
               </div>
             );
           })}
-        </article>
+        </div>
       ) : (
         <p className="noResult">{t("study.noResult")}</p>
       )}
-    </section>
+    </article>
   ) : null;
 }

@@ -25,10 +25,10 @@ export function QuizList() {
   }
 
   return (
-    <section className="quiz-selection">
+    <article className="quiz-selection">
       <h2>{t("quizList.title")}</h2>
 
-      <article className="quiz-selection__list">
+      <div className="quiz-selection__list">
         {quizData.map((item, index) => {
           const { description, theme, title } = item;
 
@@ -49,7 +49,7 @@ export function QuizList() {
             </div>
           );
         })}
-      </article>
+      </div>
 
       {isModaleOpened && (
         <Modale
@@ -58,6 +58,6 @@ export function QuizList() {
           setIsModaleOpened={setIsModaleOpened}
         />
       )}
-    </section>
+    </article>
   );
 }

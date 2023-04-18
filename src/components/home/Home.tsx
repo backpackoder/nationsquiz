@@ -12,15 +12,15 @@ export function Home() {
   const { t } = useTranslation();
 
   return (
-    <>
-      {/* <h1>{TITLE}</h1>
-      <p>{t("home.catchPhrase")}</p> */}
+    <section>
+      {/* <h1>{TITLE}</h1> */}
+      {/* <p>{t("home.catchPhrase")}</p> */}
 
       <DidYouKnow />
 
       <GoToStudy />
 
       <QuizList />
-    </>
+    </section>
   );
 }
