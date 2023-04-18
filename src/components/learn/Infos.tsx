@@ -23,8 +23,8 @@ export function Infos() {
   const countryLanguage = Object.keys(countryData !== undefined && countryData?.languages);
 
   return countryData ? (
-    <section>
-      <article className="infos">
+    <article>
+      <div className="infos">
         <h2>{countryData.name.common}</h2>
 
         <div className="imgsWrapper">
@@ -120,8 +120,8 @@ export function Infos() {
             );
           })}
         </p>
-      </article>
-    </section>
+      </div>
+    </article>
   ) : (
     <PageNotFound />
   );

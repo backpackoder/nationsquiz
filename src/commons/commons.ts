@@ -19,6 +19,7 @@ export const THEMES = {
   FLAGS: "flags",
   CAPITALS: "capitals",
   DEMOGRAPHY: "demography",
+  BORDERS: "borders",
 };
 
 // Settings

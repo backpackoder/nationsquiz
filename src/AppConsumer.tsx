@@ -39,7 +39,6 @@ export function AppConsumer() {
           <Loading />
         ) : status === "success" ? (
           <Routes>
-            <Route path="/*" element={<Loading />} />
             <Route path={HOME} element={<Home />} />
 
             <Route path={STUDY} element={<Study />} />

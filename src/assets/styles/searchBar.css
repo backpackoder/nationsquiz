@@ -1,11 +1,12 @@
 .searchBar {
   position: sticky;
-  top: 5px;
+  top: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  background-color: aquamarine;
   padding: 10px;
   border: solid;
 }

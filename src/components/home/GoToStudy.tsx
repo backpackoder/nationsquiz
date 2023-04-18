@@ -5,7 +5,7 @@ export function GoToStudy() {
   const navigate = useNavigate();
 
   return (
-    <section className="goToStudy">
+    <article className="goToStudy">
       <h2>Study the world!</h2>
 
       <p>
@@ -14,6 +14,6 @@ export function GoToStudy() {
       </p>
 
       <button onClick={() => navigate(ROUTES.STUDY)}>Let's study!</button>
-    </section>
+    </article>
   );
 }

@@ -15,60 +15,24 @@ export const translationsSPA = {
     catchPhrase: "El quiz que te permite probar tus conocimientos sobre las naciones del mundo.",
   },
 
-  // goToStudy: {
-  //   title: "Étudiez le monde !",
-  //   description:
-  //     "Apprenez les drapeaux, les capitales, la démographie, et plein d'autres informations des pays du monde.",
-  //   button: "Je veux étudier !",
-  // },
+  didYouKnow: {
+    title: "¿Sabías que?",
 
-  // study: {
-  //   seeDetails: "Voir tous les détails",
-  //   noResult: "Aucun pays ne corréspond à vos critères de recherche.",
-  // },
+    sentence: {
+      capital: "La capital de {{country}} es {{capital}}.",
+      population_country: "La población de {{country}} es {{population}} habitantes.",
+      population_country_biggest:
+        "El país con más habitantes es {{country}} con {{population}} habitantes.",
+      population_continent:
+        "{{population_continent}} personas viven en {{continent}}, que es {{population_continent_calc}}% de la población mundial.",
+      area_biggest: "El país más grande es {{country}} con {{area_biggest}} km².",
+      independent:
+        "En el mundo, {{independent}} territorios aún no han reclamado su independencia, que es {{independent_calc}}% de ellos.",
+      default: "Hay {{countries}} territorios en el mundo.",
+    },
 
-  // searchBar: {
-  //   results: "Résultats",
-  //   sort: {
-  //     label: "Trier par",
-  //     options: {
-  //       default: "Sélectionner",
-  //       name_ascending: "Nom (A-Z)",
-  //       name_descending: "Nom (Z-A)",
-  //       population_descending: "Population (9-1)",
-  //       population_ascending: "Population (1-9)",
-  //     },
-  //   },
-  //   region: {
-  //     label: "Continent",
-  //     options: {
-  //       default: "Tous",
-  //       africa: "Afrique",
-  //       americas: "Amériques",
-  //       asia: "Asie",
-  //       europe: "Europe",
-  //       oceania: "Océanie",
-  //     },
-  //   },
-  //   population: {
-  //     label: "Population",
-  //     options: {
-  //       default: "Toutes",
-  //       more100m: "> 100 millions",
-  //       less100m: "< 100 millions",
-  //       more10m: "> 10 millions",
-  //       less10m: "< 10 millions",
-  //       more1m: "> 1 million",
-  //       less1m: "< 1 million",
-  //       more100k: "> 100 000",
-  //       less100k: "< 100 000",
-  //       more10k: "> 10 000",
-  //       less10k: "< 10 000",
-  //     },
-  //   },
-  //   placeholder: "Rechercher un pays",
-  //   reset: "Réinitialiser les filtres",
-  // },
+    nextInfo: "¡Enséñame algo más!",
+  },
 
   goToStudy: {
     title: "¡Estudia el mundo!",
@@ -78,7 +42,7 @@ export const translationsSPA = {
   },
 
   study: {
-    seeDetails: "Ver todos los detalles",
+    infoSheet: "Ficha informativa",
     noResult: "Ningún país coincide con tus criterios de búsqueda.",
   },
 

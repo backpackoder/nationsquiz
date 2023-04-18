@@ -1,38 +1,39 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Hooks
 import { useGetRandomInfo } from "../../hooks/randomInfo";
 
 export function DidYouKnow() {
+  const { t } = useTranslation();
+
   const [nextInfo, setNextInfo] = useState(0);
-  const [animation, setAnimation] = useState(false);
+  const [animating, setAnimating] = useState(0);
 
   const info = useGetRandomInfo(nextInfo);
+  const { randomInfo, randomCountryFromInfo, sentenceInfo } = info;
 
   function handleClick() {
     setNextInfo(nextInfo + 1);
-    setAnimation(true);
+    setAnimating(animating + 1);
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setAnimation(false);
-    }, 500);
-  }, [nextInfo]);
+  return randomCountryFromInfo ? (
+    <article className="didYouKnow">
+      <h2>{t("didYouKnow.title")}</h2>
 
-  return info.randomCountryFromInfo ? (
-    <>
-      <section className="didYouKnow">
-        <div className="content">
+      <div key={animating} className="info">
+        <p>{t(`didYouKnow.sentence.${randomInfo?.type}`, { ...sentenceInfo })}</p>
+
+        <div className="imgWrapper">
           <img
-            src={info.randomCountryFromInfo.flags.png}
-            alt={info.randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
-            className={animation ? "active" : "inactive"}
+            src={randomCountryFromInfo.flags.png}
+            alt={randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
           />
-          <p>{info.sentence}</p>
-          <button onClick={() => handleClick()}>Apprends moi autre chose !</button>
         </div>
-      </section>
-    </>
+      </div>
+
+      <button onClick={() => handleClick()}>{t("didYouKnow.nextInfo")}</button>
+    </article>
   ) : null;
 }

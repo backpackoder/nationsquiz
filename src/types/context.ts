@@ -1,6 +1,6 @@
 // Types
 import { API_DATA } from "./api";
-import { AllSettings, SettingsAction, SettingsState } from "./settings";
+import { SettingsList, SettingsAction, SettingsState } from "./settings";
 
 // Context
 export type AppProviderProps = {
@@ -14,7 +14,7 @@ export type AppProviderProps = {
   error: unknown;
 
   // Settings
-  allSettings: AllSettings;
+  settingsList: SettingsList;
   settingsState: SettingsState;
   settingsDispatch: React.Dispatch<SettingsAction>;
 };

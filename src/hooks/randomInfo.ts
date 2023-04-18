@@ -1,24 +1,39 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
-import { useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../types/context";
-import { InfosList, RandomInfo } from "../types/randomInfo";
+import { Filters, FiltersKeys, InfosList, RandomInfo } from "../types/randomInfo";
 
 // Utils
 import { getInfosFilters } from "../utils/infosFilters";
-import { getInfosThemesList } from "../utils/infosThemesList";
 import { getFormattedNumber } from "../utils/formattedNumber";
 import { sumNumbers } from "../utils/sumNumbers";
 import { percentage } from "../utils/percentage";
 
 export function useGetRandomInfo(next: number) {
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
-  const { t } = useTranslation();
+
+  // const filter = data?.filter((item) => (item.borders?.length > 0 ? item.borders?.length : null));
+  // console.log("filter", filter);
+
+  // const map = filter?.map((item) => item.borders?.length);
+  // console.log("map", map);
+
+  // const largestNumber = Math.max(...map!);
+  // console.log("largestNumber", largestNumber);
+
+  // const howMany = filter?.filter((item) => item.borders?.length === largestNumber);
+  // console.log("howMany", howMany?.length);
 
   const randomInfo = getRandomInfo();
   const [info, setInfo] = useState(randomInfo);
+
+  function getInfosThemesList(filter: Filters, list: FiltersKeys[]) {
+    return list.map((item) => {
+      return { type: item, filter: filter[item] };
+    });
+  }
 
   function getRandomInfo() {
     const filters = data && getInfosFilters(data);
@@ -36,12 +51,11 @@ export function useGetRandomInfo(next: number) {
 
     const randomInfo: RandomInfo =
       infosList && infosList[Math.floor(Math.random() * infosList.length)];
-    console.log("randomInfo", randomInfo);
 
     const randomCountryFromInfo =
       randomInfo?.filter && randomInfo.filter[Math.floor(Math.random() * randomInfo.filter.length)];
 
-    const countryInfo = {
+    const sentenceInfo = {
       country: randomCountryFromInfo?.name.common ?? "No country name",
       countries: data?.length ?? 250,
       capital: randomCountryFromInfo?.capital ? randomCountryFromInfo?.capital[0] : "No capital",
@@ -68,51 +82,7 @@ export function useGetRandomInfo(next: number) {
       independent_calc: percentage(randomInfo?.filter?.length, data?.length),
     };
 
-    const {
-      country,
-      countries,
-      capital,
-      continent,
-      population,
-      population_continent,
-      population_continent_calc,
-      area_biggest,
-      independent,
-      independent_calc,
-    } = countryInfo;
-
-    function getInfos(sentence: string) {
-      return { randomCountryFromInfo, sentence };
-    }
-
-    switch (randomInfo?.type) {
-      case "capital":
-        return getInfos(t("test.capital", { country, capital }));
-
-      case "population_country":
-        return getInfos(t("test.population", { country, population }));
-
-      case "population_country_biggest":
-        return getInfos(t("test.population_biggest", { country, population }));
-
-      case "population_continent":
-        return getInfos(
-          t("test.population_continent", {
-            continent,
-            population_continent,
-            population_continent_calc,
-          })
-        );
-
-      case "area_biggest":
-        return getInfos(t("test.area_biggest", { country, area_biggest }));
-
-      case "independent":
-        return getInfos(t("test.independent", { independent, independent_calc }));
-
-      default:
-        return getInfos(t("test.default", { countries }));
-    }
+    return { randomInfo, randomCountryFromInfo, sentenceInfo };
   }
 
   useEffect(() => {

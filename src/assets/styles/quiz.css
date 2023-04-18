@@ -69,8 +69,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
-.quiz > .game li:hover {
-  background-color: rgb(100, 200, 200);
+@media (hover: hover) {
+  .quiz > .game li:hover {
+    background-color: rgb(100, 200, 200);
+  }
 }
 .quiz > .game .correctResponse.active {
   background-color: lightgreen;

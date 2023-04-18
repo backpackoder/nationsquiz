@@ -1,17 +1,4 @@
 export const translationsFRA = {
-  test: {
-    capital: "La capitale de {{country}} est {{capital}}.",
-    population: "La population de {{country}} est de {{population}} habitants.",
-    population_biggest:
-      "Le pays qui a le plus d'habitants est {{country}} avec {{population}} habitants.",
-    population_continent:
-      "{{population_continent}} personnes vivent en {{continent}}, soit {{population_continent_calc}}% de la population mondiale.",
-    area_biggest: "Le pays le plus étandu est {{country}} avec {{area_biggest}} km².",
-    independent:
-      "Dans le monde, {{independent}} territoires n'ont pas encore revendiqué leur indépendance, soit {{independent_calc}}% d'entre eux.",
-    default: "Il existe {{countries}} territoires dans le monde.",
-  },
-
   language: {
     fra: "Français",
     en: "Anglais",
@@ -28,6 +15,25 @@ export const translationsFRA = {
     catchPhrase: "Le quiz qui vous permet de tester vos connaissances sur les nations du monde.",
   },
 
+  didYouKnow: {
+    title: "Le saviez-vous ?",
+
+    sentence: {
+      capital: "La capitale de {{country}} est {{capital}}.",
+      population_country: "La population de {{country}} est de {{population}} habitants.",
+      population_country_biggest:
+        "Le pays qui a le plus d'habitants est {{country}} avec {{population}} habitants.",
+      population_continent:
+        "{{population_continent}} personnes vivent en {{continent}}, soit {{population_continent_calc}}% de la population mondiale.",
+      area_biggest: "Le pays le plus étandu est {{country}} avec {{area_biggest}} km².",
+      independent:
+        "Dans le monde, {{independent}} territoires n'ont pas encore revendiqué leur indépendance, soit {{independent_calc}}% d'entre eux.",
+      default: "Il existe {{countries}} territoires dans le monde.",
+    },
+
+    nextInfo: "Apprends moi autre chose !",
+  },
+
   goToStudy: {
     title: "Étudiez le monde !",
     description:
@@ -36,7 +42,7 @@ export const translationsFRA = {
   },
 
   study: {
-    seeDetails: "Voir tous les détails",
+    infoSheet: "Fiche info",
     noResult: "Aucun pays ne corréspond à vos critères de recherche.",
   },
 
@@ -91,18 +97,23 @@ export const translationsFRA = {
     title: "Choisissez votre quiz",
     flags: {
       title: "Drapeaux",
-      description: "Quiz sur les drapeaux des pays",
+      description: "Trouver les drapeaux des pays",
       question: "De quel pays est ce drapeau ?",
     },
     capitals: {
       title: "Capitales",
-      description: "Quiz sur les capitales des pays",
+      description: "Trouver les capitales des pays",
       question: "Quelle est la capitale de ce pays ?",
     },
     demography: {
       title: "Démographie",
-      description: "Quel pays à le plus d'habitants ?",
-      question: "Quel est le pays qui a le plus d'habitants ?",
+      description: "Trouvez le pays le plus peuplé",
+      question: "Quel pays à le plus d'habitants ?",
+    },
+    borders: {
+      title: "Frontières",
+      description: "Trouver les pays frontaliers d'un pays",
+      question: "Quels sont les pays frontaliers de ce pays ?",
     },
     start: "Jouer",
   },

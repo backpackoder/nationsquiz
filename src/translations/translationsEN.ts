@@ -15,6 +15,26 @@ export const translationsEN = {
     catchPhrase: "The quiz that allows you to test your knowledge of the nations of the world.",
   },
 
+  didYouKnow: {
+    title: "Did you know?",
+
+    sentence: {
+      capital: "The capital of {{country}} is {{capital}}.",
+      population_country: "The population of {{country}} is {{population}} inhabitants.",
+      population_country_biggest:
+        "The country with the most inhabitants is {{country}} with {{population}} inhabitants.",
+      population_continent:
+        "{{population_continent}} people live in {{continent}}, which is {{population_continent_calc}}% of the world population.",
+      area_biggest: "The largest country is {{country}} with {{area_biggest}} km².",
+      independent:
+        "In the world, {{independent}} territories have not yet claimed their independence, which is {{independent_calc}}% of them.",
+
+      default: "There are {{countries}} territories in the world.",
+    },
+
+    nextInfo: "Teach me something else!",
+  },
+
   goToStudy: {
     title: "Study the world!",
     description:
@@ -23,7 +43,7 @@ export const translationsEN = {
   },
 
   study: {
-    seeDetails: "See all details",
+    infoSheet: "Info sheet",
     noResult: "No country matches your search criteria.",
   },
 

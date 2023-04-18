@@ -18,6 +18,11 @@
   border: solid blue;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.25s ease-in-out;
+}
+.study .item:hover {
+  background-color: lightgray;
+  border: solid green;
 }
 
 .study .imgWrapper {
@@ -28,6 +33,19 @@
 }
 .study .imgWrapper img {
   max-width: 100%;
+}
+
+.study button {
+  width: 100%;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+.study button:hover {
+  background-color: darkblue;
 }
 
 .noResult {

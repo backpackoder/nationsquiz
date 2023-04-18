@@ -47,6 +47,10 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
     return responses[index].capital[0];
   }
 
+  function getBorders(index: number) {
+    return responses[index].borders[0];
+  }
+
   function getChoices(index: number) {
     switch (theme) {
       case THEMES.FLAGS:
@@ -57,6 +61,9 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
 
       case THEMES.DEMOGRAPHY:
         return getCountryName(index);
+
+      case THEMES.BORDERS:
+        return getBorders(index);
 
       default:
         throw new Error("Quiz theme not found");
@@ -72,7 +79,7 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
       () => {
         gameDispatch({ type: "next question" });
       },
-      isCorrect ? (quizTheme.is.demography ? 2000 : 1000) : quizTheme.is.demography ? 4000 : 2000
+      isCorrect ? (quizTheme.is.demography ? 2000 : 1000) : quizTheme.is.demography ? 3000 : 2000
     );
   }
 

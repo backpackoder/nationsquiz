@@ -8,12 +8,12 @@ import { useTranslation } from "react-i18next";
 // Types
 import { API_DATA } from "./types/api";
 import {
-  AllSettings,
   Difficulty,
   QuizLength,
   Regions,
   Setting,
   SettingsAction,
+  SettingsList,
   SettingsState,
 } from "./types/settings";
 
@@ -108,6 +108,7 @@ export function AppProvider(props: object) {
   };
 
   const savedSettings = localStorage.getItem("settings");
+
   const initialState: SettingsState =
     savedSettings !== null
       ? JSON.parse(savedSettings)
@@ -119,9 +120,17 @@ export function AppProvider(props: object) {
 
   const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
 
-  const allSettings: AllSettings = [
-    { setting: difficulty, value: settingsState.nbOfChoices, callDispatch: "change choices" },
-    { setting: quizLength, value: settingsState.nbOfQuestions, callDispatch: "change questions" },
+  const settingsList: SettingsList = [
+    {
+      setting: difficulty,
+      value: settingsState.nbOfChoices,
+      callDispatch: "change choices",
+    },
+    {
+      setting: quizLength,
+      value: settingsState.nbOfQuestions,
+      callDispatch: "change questions",
+    },
     { setting: regions, value: settingsState.regionChosen, callDispatch: "change region" },
   ];
 
@@ -134,6 +143,9 @@ export function AppProvider(props: object) {
         return { ...state, nbOfQuestions: action.payload };
 
       case "change region":
+        return { ...state, regionChosen: action.payload };
+
+      case "region not available for this theme":
         return { ...state, regionChosen: action.payload };
 
       default:
@@ -160,7 +172,7 @@ export function AppProvider(props: object) {
     error,
 
     // Settings
-    allSettings,
+    settingsList,
     settingsState,
     settingsDispatch,
   };
