@@ -11,23 +11,23 @@ export function DidYouKnow() {
   const [animating, setAnimating] = useState(0);
 
   const info = useGetRandomInfo(nextInfo);
-  console.log("info", info);
+  const { randomInfo, randomCountryFromInfo, sentenceInfo } = info;
 
   function handleClick() {
     setNextInfo(nextInfo + 1);
     setAnimating(animating + 1);
   }
 
-  return info.randomCountryFromInfo ? (
+  return randomCountryFromInfo ? (
     <>
       <section className="didYouKnow">
         <h2>{t("didYouKnow.title")}</h2>
         <div key={animating} className="info">
-          <p>{info.sentence}</p>
+          <p>{t(`didYouKnow.sentence.${randomInfo?.type}`, { ...sentenceInfo })}</p>
           <div className="imgWrapper">
             <img
-              src={info.randomCountryFromInfo.flags.png}
-              alt={info.randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
+              src={randomCountryFromInfo.flags.png}
+              alt={randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
             />
           </div>
         </div>

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
-import { useTranslation } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../types/context";
-import { FiltersKeys, InfosList, RandomInfo } from "../types/randomInfo";
+import { InfosList, RandomInfo } from "../types/randomInfo";
 
 // Utils
 import { getInfosFilters } from "../utils/infosFilters";
@@ -15,7 +14,6 @@ import { percentage } from "../utils/percentage";
 
 export function useGetRandomInfo(next: number) {
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
-  const { t } = useTranslation();
 
   const randomInfo = getRandomInfo();
   const [info, setInfo] = useState(randomInfo);
@@ -40,7 +38,7 @@ export function useGetRandomInfo(next: number) {
     const randomCountryFromInfo =
       randomInfo?.filter && randomInfo.filter[Math.floor(Math.random() * randomInfo.filter.length)];
 
-    const countryInfo = {
+    const sentenceInfo = {
       country: randomCountryFromInfo?.name.common ?? "No country name",
       countries: data?.length ?? 250,
       capital: randomCountryFromInfo?.capital ? randomCountryFromInfo?.capital[0] : "No capital",
@@ -67,52 +65,7 @@ export function useGetRandomInfo(next: number) {
       independent_calc: percentage(randomInfo?.filter?.length, data?.length),
     };
 
-    const {
-      country,
-      countries,
-      capital,
-      continent,
-      population,
-      population_continent,
-      population_continent_calc,
-      area_biggest,
-      independent,
-      independent_calc,
-    } = countryInfo;
-
-    function getInfos(sentence: FiltersKeys | "default", params: object = {}) {
-      return {
-        randomCountryFromInfo,
-        sentence: t(`didYouKnow.sentence.${sentence}`, params),
-      };
-    }
-
-    switch (randomInfo?.type) {
-      case "capital":
-        return getInfos("capital", { country, capital });
-
-      case "population_country":
-        return getInfos("population_country", { country, population });
-
-      case "population_country_biggest":
-        return getInfos("population_country_biggest", { country, population });
-
-      case "population_continent":
-        return getInfos("population_continent", {
-          continent,
-          population_continent,
-          population_continent_calc,
-        });
-
-      case "area_biggest":
-        return getInfos("area_biggest", { country, area_biggest });
-
-      case "independent":
-        return getInfos("independent", { independent, independent_calc });
-
-      default:
-        return getInfos("default", { countries });
-    }
+    return { randomInfo, randomCountryFromInfo, sentenceInfo };
   }
 
   useEffect(() => {
