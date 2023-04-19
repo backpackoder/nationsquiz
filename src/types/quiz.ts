@@ -1,3 +1,5 @@
+import { API_DATA } from "./api";
+
 export type QuizData = {
   theme: string;
   title: string;
@@ -10,7 +12,7 @@ export type GameState = {
   responses: any;
   answer: {
     data: any;
-    index: any;
+    index: number;
   };
   hasResponded: boolean;
   isCorrect: boolean;

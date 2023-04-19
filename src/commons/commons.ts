@@ -1,3 +1,6 @@
+// Types
+import { Themes } from "../types/main";
+
 // Main
 export const TITLE = "Nations Quiz";
 
@@ -15,7 +18,7 @@ export const ROUTES = {
 export const API_LINK = "https://restcountries.com/v3.1/all";
 
 // Quiz themes
-export const THEMES = {
+export const THEMES: { [key: string]: Themes } = {
   FLAGS: "flags",
   CAPITALS: "capitals",
   DEMOGRAPHY: "demography",

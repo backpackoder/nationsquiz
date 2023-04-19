@@ -1,40 +1,43 @@
 import { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
 import { AppContext } from "../../AppContext";
+import { useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/context";
+import { GameState } from "../../types/quiz";
 
 // Commons
 import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getFormattedNumber } from "../../utils/formattedNumber";
+import { API_DATA } from "../../types/api";
 
 type GameProps = {
-  isQuizfinished: boolean;
   gameState: any;
   gameDispatch: any;
 };
 
-export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
+export function Game({ gameState, gameDispatch }: GameProps) {
   const { theme } = useParams();
   const quizTheme = {
     is: {
       flags: theme === THEMES.FLAGS,
       capitals: theme === THEMES.CAPITALS,
       demography: theme === THEMES.DEMOGRAPHY,
+      borders: theme === THEMES.BORDERS,
     },
     isnt: {
       flags: theme !== THEMES.FLAGS,
       capitals: theme !== THEMES.CAPITALS,
       demography: theme !== THEMES.DEMOGRAPHY,
+      borders: theme !== THEMES.BORDERS,
     },
   };
-  const { actualLanguage, settingsState }: AppProviderProps = useContext(AppContext);
+  const { actualLanguage, data, settingsState }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices } = settingsState;
-  const { hasResponded, responses, answer } = gameState;
+  const { hasResponded, responses, answer }: GameState = gameState;
 
   const [responseIndex, setResponseIndex] = useState(0);
 
@@ -48,7 +51,7 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
   }
 
   function getBorders(index: number) {
-    return responses[index].borders[0];
+    return responses[index];
   }
 
   function getChoices(index: number) {
@@ -95,11 +98,12 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
         />
       )}
 
-      {quizTheme.is.capitals && (
-        <p>
-          <b>{getCountryName()}</b>
-        </p>
-      )}
+      {quizTheme.is.capitals ||
+        (quizTheme.is.borders && (
+          <p>
+            <b>{getCountryName()}</b>
+          </p>
+        ))}
 
       <ul>
         {Array(nbOfChoices)
@@ -108,6 +112,15 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
             const isResponseCorrect = index === answer.index;
             const isResponseWrong = index === responseIndex && !isResponseCorrect;
 
+            const countryDataFromBorder = data?.find(
+              (country) =>
+                country.name.common ===
+                responses[index].borders
+                  ?.map((item: string) => data.find((country) => country.cca3 === item))
+                  .map((item: API_DATA) => item?.name.common)
+                  .find((item: string) => item === country.name.common)
+            );
+
             return (
               <li
                 key={index}
@@ -115,31 +128,48 @@ export function Game({ isQuizfinished, gameState, gameDispatch }: GameProps) {
                   hasResponded && (isResponseCorrect || isResponseWrong ? "active" : "inactive")
                 }`}
                 onClick={() => {
-                  !isQuizfinished && !hasResponded && responseSelected(index);
+                  !hasResponded && responseSelected(index);
                 }}
               >
-                {getChoices(index)}
+                {quizTheme.is.borders
+                  ? isResponseCorrect
+                    ? countryDataFromBorder?.name.common
+                    : getChoices(index)?.name.common
+                  : getChoices(index)}
 
-                {quizTheme.is.demography && (
-                  <>
-                    <div className="responseImgWrapper">
-                      <img
-                        src={responses[index].flags.png}
-                        alt={responses[index].flags.alt}
-                        className="responseImg"
-                      />
-                    </div>
-                    {hasResponded && (isResponseCorrect || isResponseWrong) && (
-                      <p>
-                        {getFormattedNumber({
-                          number: responses[index].population,
-                          language: actualLanguage,
-                        })}{" "}
-                        {t("game.response.population")}
-                      </p>
-                    )}
-                  </>
-                )}
+                {quizTheme.is.demography ||
+                  (quizTheme.is.borders && (
+                    <>
+                      <div className="responseImgWrapper">
+                        <img
+                          src={
+                            quizTheme.is.borders
+                              ? isResponseCorrect
+                                ? countryDataFromBorder?.flags.png
+                                : getChoices(index)?.flags.png
+                              : responses[index].flags.png
+                          }
+                          alt={
+                            quizTheme.is.borders
+                              ? isResponseCorrect
+                                ? countryDataFromBorder?.flags.alt
+                                : getChoices(index)?.flags.alt
+                              : responses[index].flags.alt
+                          }
+                          className="responseImg"
+                        />
+                      </div>
+                      {quizTheme.is.demography && hasResponded && (
+                        <p>
+                          {getFormattedNumber({
+                            number: responses[index].population,
+                            language: actualLanguage,
+                          })}{" "}
+                          {t("game.response.population")}
+                        </p>
+                      )}
+                    </>
+                  ))}
               </li>
             );
           })}

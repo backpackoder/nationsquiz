@@ -5,3 +5,6 @@ export type LanguageBtn = {
   language: Iso;
   flag: JSX.Element;
 }[];
+
+// Themes
+export type Themes = "flags" | "capitals" | "demography" | "borders";

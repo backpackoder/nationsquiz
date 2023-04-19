@@ -1,5 +1,11 @@
 // Settings
-export type Setting = {
+export type SettingString = "difficulty" | "questions" | "regions";
+
+export type Settings = {
+  [key: string]: SettingString;
+};
+
+export type SettingObj = {
   title: string;
   values: {
     label: string;
@@ -8,7 +14,7 @@ export type Setting = {
 };
 
 export type SettingsList = {
-  setting: Setting;
+  setting: SettingObj;
   value: number;
   callDispatch: string;
 }[];

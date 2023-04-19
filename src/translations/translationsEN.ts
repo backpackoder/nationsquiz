@@ -111,6 +111,11 @@ export const translationsEN = {
       description: "Which country has the most inhabitants?",
       question: "What is the country with the most inhabitants?",
     },
+    borders: {
+      title: "Borders",
+      description: "Find the neighboring country",
+      question: "Which country is bordering this one?",
+    },
     start: "Play",
   },
 
