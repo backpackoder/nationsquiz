@@ -110,6 +110,11 @@ export const translationsSPA = {
       description: "¿Qué país tiene más habitantes?",
       question: "¿Cuál es el país que tiene más habitantes?",
     },
+    borders: {
+      title: "Fronteras",
+      description: "Encuentra el país vecino",
+      question: "¿Cuál es el país que tiene frontera con este?",
+    },
     start: "Jugar",
   },
 

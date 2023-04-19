@@ -113,7 +113,7 @@ export const translationsFRA = {
     borders: {
       title: "Frontières",
       description: "Trouver les pays frontaliers d'un pays",
-      question: "Quels sont les pays frontaliers de ce pays ?",
+      question: "Quels pays est frontalier avec celui-ci ?",
     },
     start: "Jouer",
   },

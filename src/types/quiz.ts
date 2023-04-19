@@ -9,9 +9,9 @@ export type QuizData = {
 export type GameState = {
   actualQuestion: number;
   score: number;
-  responses: API_DATA[];
+  responses: any;
   answer: {
-    data: API_DATA;
+    data: any;
     index: number;
   };
   hasResponded: boolean;

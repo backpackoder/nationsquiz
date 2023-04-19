@@ -12,6 +12,7 @@ import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getFormattedNumber } from "../../utils/formattedNumber";
+import { API_DATA } from "../../types/api";
 
 type GameProps = {
   gameState: any;
@@ -50,19 +51,6 @@ export function Game({ gameState, gameDispatch }: GameProps) {
   }
 
   function getBorders(index: number) {
-    const nameOfResponse = responses[index].name.common;
-
-    const countriesNotBorderingList = responses?.filter(
-      (item) =>
-        !item.borders.some((border) => border === responses[index].cca3) &&
-        item.cca3 !== responses[index].cca3
-    );
-
-    const countriesNotBorderingListString = countriesNotBorderingList
-      .map((item) => item.name.common)
-      .join(", ");
-
-    const randomBorder = Math.floor(Math.random() * responses[index].borders.length);
     return responses[index];
   }
 
@@ -128,9 +116,9 @@ export function Game({ gameState, gameDispatch }: GameProps) {
               (country) =>
                 country.name.common ===
                 responses[index].borders
-                  ?.map((item) => data && data.find((country) => country.cca3 === item))
-                  .map((item) => item?.name.common)
-                  .find((item) => item === country.name.common)
+                  ?.map((item: string) => data.find((country) => country.cca3 === item))
+                  .map((item: API_DATA) => item?.name.common)
+                  .find((item: string) => item === country.name.common)
             );
 
             return (
