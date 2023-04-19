@@ -13,12 +13,21 @@ import { Buttons } from "./Buttons";
 import { Modale } from "../../modales/Modale";
 import { GameModale } from "../../modales/GameModale";
 
+// Types
+import { API_DATA } from "../../types/api";
+import { GameState } from "../../types/quiz";
+
 // Commons
 import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getCountriesList } from "../../utils/getCountriesList";
-import { GameState } from "../../types/quiz";
+
+type Answer = any;
+// {
+//   data: API_DATA;
+//   index: number;
+// }
 
 export function Quiz() {
   const { theme } = useParams();
@@ -27,16 +36,76 @@ export function Quiz() {
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
+  // BORDERS TESTS
+  const mockAPI = [
+    {
+      name: {
+        common: "France",
+      },
+      borders: ["ESP", "AND", "DEU", "ITA", "LUX", "MCO", "CHE", "BEL"],
+      cca3: "FRA",
+    },
+    {
+      name: {
+        common: "Spain",
+      },
+      borders: ["AND", "FRA", "GIB", "PRT", "MAR"],
+      cca3: "ESP",
+    },
+    {
+      name: {
+        common: "Germany",
+      },
+      borders: ["AUT", "BEL", "CZE", "DNK", "FRA", "LUX", "NLD", "POL", "CHE"],
+      cca3: "DEU",
+    },
+    {
+      name: {
+        common: "Italy",
+      },
+      borders: ["AUT", "FRA", "SMR", "SVN", "CHE", "VAT"],
+      cca3: "ITA",
+    },
+    {
+      name: {
+        common: "Portugal",
+      },
+      borders: ["ESP"],
+      cca3: "PRT",
+    },
+    {
+      name: {
+        common: "Monaco",
+      },
+      borders: ["FRA"],
+      cca3: "MCO",
+    },
+    {
+      name: {
+        common: "Luxembourg",
+      },
+      borders: ["BEL", "FRA", "DEU"],
+      cca3: "LUX",
+    },
+    {
+      name: {
+        common: "Andorra",
+      },
+      borders: ["FRA", "ESP"],
+      cca3: "AND",
+    },
+  ];
+
   function getResponses() {
     const countriesList = data && getCountriesList({ data, theme, region });
-    let responses: any = [];
-    let definedAnswer, randomAnswer, answer;
+    let responses: API_DATA[] = [];
+    let definedAnswer, randomAnswer, answer: Answer;
 
     do {
       for (let i = 0; i < nbOfChoices; i++) {
         const randomCountry =
           countriesList && countriesList[Math.floor(Math.random() * countriesList.length)];
-        responses.push(randomCountry);
+        randomCountry && responses.push(randomCountry);
         randomCountry && countriesList.splice(countriesList.indexOf(randomCountry), 1);
       }
 
@@ -55,6 +124,36 @@ export function Quiz() {
           }
           break;
 
+        case THEMES.BORDERS:
+          randomAnswer = getRandomAnswer();
+          answer = {
+            data: randomAnswer,
+            index: responses.indexOf(randomAnswer),
+          };
+
+          const bordersChecker = responses.filter((country) =>
+            country.borders.some((item) => item === answer.data.cca3)
+          );
+
+          function replaceCountry() {
+            const filtering = countriesList?.filter((country) =>
+              answer.data.borders.every((border: string) => border !== country.cca3)
+            );
+
+            const newRandomCountry =
+              filtering && filtering[Math.floor(Math.random() * filtering.length)];
+
+            newRandomCountry && countriesList?.splice(countriesList.indexOf(newRandomCountry), 1);
+
+            return newRandomCountry;
+          }
+
+          bordersChecker.length > 0 &&
+            bordersChecker.map((item) =>
+              responses.splice(responses.indexOf(item), 1, replaceCountry()!)
+            );
+          break;
+
         default:
           randomAnswer = getRandomAnswer();
           answer = {
@@ -65,17 +164,17 @@ export function Quiz() {
       }
     } while (!answer);
 
+    function getRandomAnswer() {
+      const answer = responses[Math.floor(Math.random() * responses.length)];
+
+      return answer;
+    }
+
     function getDefinedAnswer() {
       const populations = responses.map((country: any) => country.population);
       const biggest = Math.max(...populations);
       const answerIndex = populations.findIndex((population: any) => population === biggest);
       const answer = responses[answerIndex];
-
-      return answer;
-    }
-
-    function getRandomAnswer() {
-      const answer = responses[Math.floor(Math.random() * responses.length)];
 
       return answer;
     }
@@ -161,7 +260,7 @@ export function Quiz() {
 
       <article className="game">
         {!isQuizfinished ? (
-          <Game isQuizfinished={isQuizfinished} gameState={gameState} gameDispatch={gameDispatch} />
+          <Game gameState={gameState} gameDispatch={gameDispatch} />
         ) : (
           <Result score={score} />
         )}
@@ -182,6 +281,24 @@ export function Quiz() {
           }
         />
       )}
+
+      {/* <p>
+        TESTS:
+        <br />
+        countriesWithBorders: {countriesWithBorders?.length}
+        <br />
+        nameOfResponse: {nameOfResponse}
+        <br />
+        bordersOfResponse: {bordersOfResponse.join(", ")}
+        <br />
+        bordersFullNames: {bordersFullNames}
+        <br />
+        randomBorderFromResponse: {randomBorderFromResponse}
+        <br />
+        countriesNotBorderingList: {countriesNotBorderingList.length}
+        <br />
+        countriesNotBorderingListString: {countriesNotBorderingListString}
+      </p> */}
     </section>
   );
 }

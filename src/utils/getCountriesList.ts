@@ -11,47 +11,43 @@ export type GetCountriesList = {
   region: number;
 };
 
-export function getCountriesList({ data, theme, region }: GetCountriesList): API_DATA[] {
-  function getRegion(): API_DATA[] {
-    switch (region) {
-      case Regions.Africa:
-        return data.filter((country: any) => country.region === "Africa");
+export function getCountriesList({ data, theme, region }: GetCountriesList) {
+  function getTheme(): API_DATA[] {
+    switch (theme) {
+      case THEMES.FLAGS:
+        return data.filter((country: API_DATA) => country.cca2 !== undefined);
 
-      case Regions.Americas:
-        return data.filter((country: any) => country.region === "Americas");
+      case THEMES.CAPITALS:
+        return data.filter((country: API_DATA) => country.capital !== undefined);
 
-      case Regions.Asia:
-        return data.filter((country: any) => country.region === "Asia");
+      case THEMES.DEMOGRAPHY:
+        return data.filter((country: API_DATA) => country.population !== undefined);
 
-      case Regions.Europe:
-        return data.filter((country: any) => country.region === "Europe");
-
-      case Regions.Oceania:
-        return data.filter((country: any) => country.region === "Oceania");
+      case THEMES.BORDERS:
+        return data.filter((country: API_DATA) => country.borders !== undefined);
 
       default:
-        return data;
+        throw new Error("Theme not found");
     }
   }
-  // item.borders?.length > 0 ? item.borders?.length : null
-  switch (theme) {
-    case THEMES.FLAGS:
-      return getRegion().filter((country: any) => country.cca2 !== undefined);
 
-    case THEMES.CAPITALS:
-      return getRegion().filter((country: any) => country.capital !== undefined);
+  switch (region) {
+    case Regions.Africa:
+      return getTheme().filter((country: API_DATA) => country.region === "Africa");
 
-    case THEMES.DEMOGRAPHY:
-      return getRegion().filter((country: any) => country.population !== undefined);
+    case Regions.Americas:
+      return getTheme().filter((country: API_DATA) => country.region === "Americas");
 
-    case THEMES.BORDERS:
-      console.log(
-        "first",
-        getRegion().filter((country: any) => country.borders !== undefined)
-      );
-      return getRegion().filter((country: any) => country.borders !== undefined);
+    case Regions.Asia:
+      return getTheme().filter((country: API_DATA) => country.region === "Asia");
+
+    case Regions.Europe:
+      return getTheme().filter((country: API_DATA) => country.region === "Europe");
+
+    case Regions.Oceania:
+      return getTheme().filter((country: API_DATA) => country.region === "Oceania");
 
     default:
-      throw new Error("Theme not found");
+      return getTheme();
   }
 }

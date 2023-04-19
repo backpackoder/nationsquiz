@@ -14,18 +14,6 @@ import { percentage } from "../utils/percentage";
 export function useGetRandomInfo(next: number) {
   const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
 
-  // const filter = data?.filter((item) => (item.borders?.length > 0 ? item.borders?.length : null));
-  // console.log("filter", filter);
-
-  // const map = filter?.map((item) => item.borders?.length);
-  // console.log("map", map);
-
-  // const largestNumber = Math.max(...map!);
-  // console.log("largestNumber", largestNumber);
-
-  // const howMany = filter?.filter((item) => item.borders?.length === largestNumber);
-  // console.log("howMany", howMany?.length);
-
   const randomInfo = getRandomInfo();
   const [info, setInfo] = useState(randomInfo);
 

@@ -11,7 +11,7 @@ import {
   Difficulty,
   QuizLength,
   Regions,
-  Setting,
+  SettingObj,
   SettingsAction,
   SettingsList,
   SettingsState,
@@ -33,7 +33,7 @@ export function AppProvider(props: object) {
     queryFn: () => axios.get<API_DATA[]>(API_LINK).then((res) => res.data),
   });
 
-  const difficulty: Setting = {
+  const difficulty: SettingObj = {
     title: SETTINGS.DIFFICULTY,
     values: [
       {
@@ -59,7 +59,7 @@ export function AppProvider(props: object) {
     ],
   };
 
-  const quizLength: Setting = {
+  const quizLength: SettingObj = {
     title: SETTINGS.QUESTIONS,
     values: [
       {
@@ -77,7 +77,7 @@ export function AppProvider(props: object) {
     ],
   };
 
-  const regions: Setting = {
+  const regions: SettingObj = {
     title: SETTINGS.REGIONS,
     values: [
       {
