@@ -1,18 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/context";
-import { GameState } from "../../types/quiz";
+import { API_DATA } from "../../types/api";
+import { SettingEnum, Difficulty } from "../../types/settings";
+import { GameState, ResponsesStringType } from "../../types/quiz";
 
 // Commons
 import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getFormattedNumber } from "../../utils/formattedNumber";
-import { API_DATA } from "../../types/api";
 
 type GameProps = {
   gameState: any;
@@ -35,7 +36,8 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       borders: theme !== THEMES.BORDERS,
     },
   };
-  const { actualLanguage, data, settingsState }: AppProviderProps = useContext(AppContext);
+  const { actualLanguage, data, settingsList, settingsState }: AppProviderProps =
+    useContext(AppContext);
   const { nbOfChoices } = settingsState;
   const { hasResponded, responses, answer }: GameState = gameState;
 
@@ -45,32 +47,6 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     return index === undefined
       ? answer?.data?.translations[actualLanguage]?.common ?? answer?.data?.name?.common
       : responses[index]?.translations[actualLanguage]?.common ?? responses[index]?.name?.common;
-  }
-  function getCapital(index: number) {
-    return responses[index].capital[0];
-  }
-
-  function getBorders(index: number) {
-    return responses[index];
-  }
-
-  function getChoices(index: number) {
-    switch (theme) {
-      case THEMES.FLAGS:
-        return getCountryName(index);
-
-      case THEMES.CAPITALS:
-        return getCapital(index);
-
-      case THEMES.DEMOGRAPHY:
-        return getCountryName(index);
-
-      case THEMES.BORDERS:
-        return getBorders(index);
-
-      default:
-        throw new Error("Quiz theme not found");
-    }
   }
 
   function responseSelected(index: number) {
@@ -98,12 +74,13 @@ export function Game({ gameState, gameDispatch }: GameProps) {
         />
       )}
 
-      {quizTheme.is.capitals ||
-        (quizTheme.is.borders && (
+      {(quizTheme.is.capitals || quizTheme.is.borders) &&
+        settingsState.nbOfChoices <
+          settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value && (
           <p>
             <b>{getCountryName()}</b>
           </p>
-        ))}
+        )}
 
       <ul>
         {Array(nbOfChoices)
@@ -112,14 +89,70 @@ export function Game({ gameState, gameDispatch }: GameProps) {
             const isResponseCorrect = index === answer.index;
             const isResponseWrong = index === responseIndex && !isResponseCorrect;
 
-            const countryDataFromBorder = data?.find(
-              (country) =>
-                country.name.common ===
-                responses[index].borders
-                  ?.map((item: string) => data.find((country) => country.cca3 === item))
-                  .map((item: API_DATA) => item?.name.common)
-                  .find((item: string) => item === country.name.common)
-            );
+            const responsesData: ResponsesStringType = useMemo(() => {
+              switch (theme) {
+                case THEMES.FLAGS:
+                  return {
+                    text: getCountryName(index),
+                    png: responses[index].flags.png,
+                    alt: responses[index].flags.alt,
+                  };
+
+                case THEMES.CAPITALS:
+                  return {
+                    text: responses[index].capital[0],
+                  };
+
+                case THEMES.DEMOGRAPHY:
+                  return {
+                    text:
+                      settingsState.nbOfChoices <
+                        settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert]
+                          .value && getCountryName(index),
+                    png: responses[index].flags.png,
+                    alt: responses[index].flags.alt,
+                  };
+
+                case THEMES.BORDERS:
+                  function getRandomNeighbourFromAnswer(index: number): API_DATA {
+                    return responses[index].borders?.map(
+                      (item: string) => data && data.find((country) => country.cca3 === item)
+                    )[Math.floor(Math.random() * answer.data.borders.length)];
+                  }
+
+                  const randomNeighbourFromAnswer = getRandomNeighbourFromAnswer(index);
+
+                  isResponseCorrect &&
+                    console.log("randomNeighbourFromAnswer", randomNeighbourFromAnswer);
+                  console.log("-----------------------------");
+
+                  return settingsState.nbOfChoices <
+                    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value
+                    ? {
+                        text: isResponseCorrect
+                          ? randomNeighbourFromAnswer?.name.common
+                          : getCountryName(index),
+                        png: isResponseCorrect
+                          ? randomNeighbourFromAnswer?.flags.png
+                          : responses[index].flags.png,
+                        alt: isResponseCorrect
+                          ? randomNeighbourFromAnswer?.flags.alt
+                          : responses[index].flags.alt,
+                      }
+                    : {
+                        text: null,
+                        png: isResponseCorrect
+                          ? randomNeighbourFromAnswer?.flags.png
+                          : responses[index].flags.png,
+                        alt: isResponseCorrect
+                          ? randomNeighbourFromAnswer?.flags.png
+                          : responses[index].flags.alt,
+                      };
+
+                default:
+                  throw new Error("Quiz theme not found");
+              }
+            }, [responses]);
 
             return (
               <li
@@ -131,35 +164,21 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                   !hasResponded && responseSelected(index);
                 }}
               >
-                {quizTheme.is.borders
-                  ? isResponseCorrect
-                    ? countryDataFromBorder?.name.common
-                    : getChoices(index)?.name.common
-                  : getChoices(index)}
+                <p>{responsesData?.text}</p>
 
-                {quizTheme.is.demography ||
-                  (quizTheme.is.borders && (
-                    <>
-                      <div className="responseImgWrapper">
-                        <img
-                          src={
-                            quizTheme.is.borders
-                              ? isResponseCorrect
-                                ? countryDataFromBorder?.flags.png
-                                : getChoices(index)?.flags.png
-                              : responses[index].flags.png
-                          }
-                          alt={
-                            quizTheme.is.borders
-                              ? isResponseCorrect
-                                ? countryDataFromBorder?.flags.alt
-                                : getChoices(index)?.flags.alt
-                              : responses[index].flags.alt
-                          }
-                          className="responseImg"
-                        />
-                      </div>
-                      {quizTheme.is.demography && hasResponded && (
+                {(quizTheme.is.demography || quizTheme.is.borders) && (
+                  <>
+                    <div className="responseImgWrapper">
+                      <img
+                        src={responsesData?.png}
+                        alt={responsesData?.alt}
+                        className="responseImg"
+                      />
+                    </div>
+
+                    {quizTheme.is.demography &&
+                      hasResponded &&
+                      (isResponseCorrect || isResponseWrong) && (
                         <p>
                           {getFormattedNumber({
                             number: responses[index].population,
@@ -168,8 +187,8 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                           {t("game.response.population")}
                         </p>
                       )}
-                    </>
-                  ))}
+                  </>
+                )}
               </li>
             );
           })}

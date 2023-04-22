@@ -36,66 +36,6 @@ export function Quiz() {
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
 
-  // BORDERS TESTS
-  const mockAPI = [
-    {
-      name: {
-        common: "France",
-      },
-      borders: ["ESP", "AND", "DEU", "ITA", "LUX", "MCO", "CHE", "BEL"],
-      cca3: "FRA",
-    },
-    {
-      name: {
-        common: "Spain",
-      },
-      borders: ["AND", "FRA", "GIB", "PRT", "MAR"],
-      cca3: "ESP",
-    },
-    {
-      name: {
-        common: "Germany",
-      },
-      borders: ["AUT", "BEL", "CZE", "DNK", "FRA", "LUX", "NLD", "POL", "CHE"],
-      cca3: "DEU",
-    },
-    {
-      name: {
-        common: "Italy",
-      },
-      borders: ["AUT", "FRA", "SMR", "SVN", "CHE", "VAT"],
-      cca3: "ITA",
-    },
-    {
-      name: {
-        common: "Portugal",
-      },
-      borders: ["ESP"],
-      cca3: "PRT",
-    },
-    {
-      name: {
-        common: "Monaco",
-      },
-      borders: ["FRA"],
-      cca3: "MCO",
-    },
-    {
-      name: {
-        common: "Luxembourg",
-      },
-      borders: ["BEL", "FRA", "DEU"],
-      cca3: "LUX",
-    },
-    {
-      name: {
-        common: "Andorra",
-      },
-      borders: ["FRA", "ESP"],
-      cca3: "AND",
-    },
-  ];
-
   function getResponses() {
     const countriesList = data && getCountriesList({ data, theme, region });
     let responses: API_DATA[] = [];
@@ -130,27 +70,21 @@ export function Quiz() {
             data: randomAnswer,
             index: responses.indexOf(randomAnswer),
           };
-
           const bordersChecker = responses.filter((country) =>
             country.borders.some((item) => item === answer.data.cca3)
           );
-
-          function replaceCountry() {
+          function replaceResponse() {
             const filtering = countriesList?.filter((country) =>
               answer.data.borders.every((border: string) => border !== country.cca3)
             );
-
             const newRandomCountry =
               filtering && filtering[Math.floor(Math.random() * filtering.length)];
-
             newRandomCountry && countriesList?.splice(countriesList.indexOf(newRandomCountry), 1);
-
             return newRandomCountry;
           }
-
           bordersChecker.length > 0 &&
             bordersChecker.map((item) =>
-              responses.splice(responses.indexOf(item), 1, replaceCountry()!)
+              responses.splice(responses.indexOf(item), 1, replaceResponse()!)
             );
           break;
 
@@ -165,9 +99,7 @@ export function Quiz() {
     } while (!answer);
 
     function getRandomAnswer() {
-      const answer = responses[Math.floor(Math.random() * responses.length)];
-
-      return answer;
+      return responses[Math.floor(Math.random() * responses.length)];
     }
 
     function getDefinedAnswer() {

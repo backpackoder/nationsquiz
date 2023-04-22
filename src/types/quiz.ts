@@ -1,5 +1,3 @@
-import { API_DATA } from "./api";
-
 export type QuizData = {
   theme: string;
   title: string;
@@ -21,3 +19,9 @@ export type GameState = {
     confirmation: string;
   };
 };
+
+export type ResponsesStringType = {
+  text?: string;
+  png?: string;
+  alt?: string;
+} | null;

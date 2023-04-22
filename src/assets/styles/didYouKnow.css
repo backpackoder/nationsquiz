@@ -1,6 +1,7 @@
 .didYouKnow {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   min-width: 200px;
   max-height: 300px;
@@ -10,7 +11,7 @@
   overflow: hidden;
 }
 
-.didYouKnow .h2 {
+.didYouKnow h2 {
   animation: fadeIn 1s ease-in-out;
 }
 
@@ -39,6 +40,7 @@
 }
 
 .didYouKnow button {
+  width: 100%;
   background-color: rgb(150, 225, 150);
   padding: 5px 10px;
   border: none;
