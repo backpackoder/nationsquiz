@@ -50,7 +50,6 @@
   align-items: center;
   justify-content: end;
   gap: 5px;
-  width: 125px;
   background-color: lightblue;
   padding: 5px 10px;
   border-radius: 5px;
@@ -60,6 +59,9 @@
   .quiz > .game ul li:hover {
     background-color: rgb(100, 200, 200);
   }
+}
+.quiz > .game ul li.limited {
+  max-width: 125px;
 }
 .quiz > .game ul li .responseImgWrapper {
   display: flex;
@@ -79,13 +81,13 @@
 }
 
 @media (min-width: 600px) {
-  .quiz > .game ul li {
-    width: 150px;
+  .quiz > .game ul li.limited {
+    max-width: 150px;
   }
 }
 
 @media (min-width: 800px) {
-  .quiz > .game ul li {
-    width: 200px;
+  .quiz > .game ul li.limited {
+    max-width: 175px;
   }
 }

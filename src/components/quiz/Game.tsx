@@ -159,7 +159,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                 key={index}
                 className={`${isResponseCorrect ? "correctResponse" : "wrongResponse"} ${
                   hasResponded && (isResponseCorrect || isResponseWrong ? "active" : "inactive")
-                }`}
+                } ${quizTheme.is.demography || quizTheme.is.borders ? "limited" : "unlimited"}`}
                 onClick={() => {
                   !hasResponded && responseSelected(index);
                 }}
