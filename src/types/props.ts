@@ -31,7 +31,8 @@ export type FlagsOfResponsesProps = {
   responsesData: any;
 };
 
-export type PopulationResultProps = {
+export type DataRevealProps = {
+  theme: string | undefined;
   responses: any;
   index: number;
 };

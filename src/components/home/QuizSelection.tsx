@@ -28,17 +28,12 @@ export function QuizList() {
     <article className="quiz-selection">
       <h2>{t("quizList.title")}</h2>
 
-      <div className="quiz-selection__list">
+      <ul>
         {quizData.map((item, index) => {
           const { description, theme, title } = item;
 
           return (
-            <div
-              key={index}
-              className="quiz-selection__item"
-              onClick={() => openModale(item)}
-              data-title={description}
-            >
+            <li key={index} onClick={() => openModale(item)} data-title={description}>
               <h3>{title}</h3>
 
               <div className="imgWrapper">
@@ -46,10 +41,10 @@ export function QuizList() {
               </div>
 
               <button>{t("quizList.start")}</button>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
 
       {isModaleOpened && (
         <Modale

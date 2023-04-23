@@ -8,7 +8,7 @@ import { THEMES } from "../commons/commons";
 
 export function useQuizData() {
   const { t } = useTranslation();
-  const { FLAGS, CAPITALS, DEMOGRAPHY, BORDERS } = THEMES;
+  const { FLAGS, CAPITALS, DEMOGRAPHY, BORDERS, AREAS } = THEMES;
 
   const quizData: QuizData[] = [
     {
@@ -30,6 +30,11 @@ export function useQuizData() {
       theme: BORDERS,
       title: t(`quizList.${BORDERS}.title`),
       description: t(`quizList.${BORDERS}.description`),
+    },
+    {
+      theme: AREAS,
+      title: t(`quizList.${AREAS}.title`),
+      description: t(`quizList.${AREAS}.description`),
     },
   ];
 

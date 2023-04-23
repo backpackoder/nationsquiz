@@ -7,9 +7,9 @@ import { t } from "i18next";
 import { AppProviderProps } from "../../types/context";
 import {
   CountryNameOfAnswerProps,
+  DataRevealProps,
   FlagsOfResponsesProps,
   GameProps,
-  PopulationResultProps,
 } from "../../types/props";
 import { API_DATA } from "../../types/api";
 import { SettingEnum, Difficulty } from "../../types/settings";
@@ -29,12 +29,14 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       capitals: theme === THEMES.CAPITALS,
       demography: theme === THEMES.DEMOGRAPHY,
       borders: theme === THEMES.BORDERS,
+      areas: theme === THEMES.AREAS,
     },
     isnt: {
       flags: theme !== THEMES.FLAGS,
       capitals: theme !== THEMES.CAPITALS,
       demography: theme !== THEMES.DEMOGRAPHY,
       borders: theme !== THEMES.BORDERS,
+      areas: theme !== THEMES.AREAS,
     },
   };
   const { actualLanguage, data, settingsList, settingsState }: AppProviderProps =
@@ -63,7 +65,13 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       () => {
         gameDispatch({ type: "next question" });
       },
-      isCorrect ? (quizTheme.is.demography ? 2000 : 1000) : quizTheme.is.demography ? 3000 : 2000
+      isCorrect
+        ? quizTheme.is.demography || quizTheme.is.areas
+          ? 2000
+          : 1000
+        : quizTheme.is.demography || quizTheme.is.areas
+        ? 3000
+        : 2000
     );
   }
 
@@ -71,7 +79,9 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     <>
       <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      {quizTheme.isnt.demography && <FlagOfAnswer src={answer.data.flags.png} />}
+      {(quizTheme.is.flags || quizTheme.is.capitals || quizTheme.is.borders) && (
+        <FlagOfAnswer src={answer.data.flags.png} />
+      )}
 
       {(quizTheme.is.capitals || quizTheme.is.borders) && !isExpertMode && (
         <CountryNameOfAnswer countryName={getCountryName()} />
@@ -126,6 +136,13 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                       : responses[index].flags.alt,
                   };
 
+                case THEMES.AREAS:
+                  return {
+                    text: !isExpertMode && getCountryName(index),
+                    png: responses[index].flags.png,
+                    alt: responses[index].flags.alt,
+                  };
+
                 default:
                   throw new Error("Quiz theme not found");
               }
@@ -136,21 +153,25 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                 key={index}
                 className={`${isResponseCorrect ? "correctResponse" : "wrongResponse"} ${
                   hasResponded && (isResponseCorrect || isResponseWrong ? "active" : "inactive")
-                } ${quizTheme.is.demography || quizTheme.is.borders ? "limited" : "unlimited"}`}
+                } ${
+                  quizTheme.is.demography || quizTheme.is.borders || quizTheme.is.areas
+                    ? "limited"
+                    : "unlimited"
+                }`}
                 onClick={() => {
                   !hasResponded && responseSelected(index);
                 }}
               >
                 <p>{responsesData?.text}</p>
 
-                {(quizTheme.is.demography || quizTheme.is.borders) && (
+                {(quizTheme.is.demography || quizTheme.is.borders || quizTheme.is.areas) && (
                   <>
                     <FlagsOfResponses responsesData={responsesData} />
 
-                    {quizTheme.is.demography &&
+                    {(quizTheme.is.demography || quizTheme.is.areas) &&
                       hasResponded &&
                       (isResponseCorrect || isResponseWrong) && (
-                        <PopulationResult responses={responses} index={index} />
+                        <DataReveal theme={theme} responses={responses} index={index} />
                       )}
                   </>
                 )}
@@ -187,16 +208,29 @@ function FlagsOfResponses({ responsesData }: FlagsOfResponsesProps) {
   );
 }
 
-function PopulationResult({ responses, index }: PopulationResultProps) {
+function DataReveal({ theme, responses, index }: DataRevealProps) {
   const { actualLanguage }: AppProviderProps = useContext(AppContext);
 
-  return (
+  const data = useMemo(() => {
+    switch (theme) {
+      case THEMES.DEMOGRAPHY:
+        return "population";
+
+      case THEMES.AREAS:
+        return "area";
+
+      default:
+        throw new Error("Theme not found");
+    }
+  }, [theme]);
+
+  return theme ? (
     <p>
       {getFormattedNumber({
-        number: responses[index].population,
+        number: responses[index][data],
         language: actualLanguage,
       })}{" "}
-      {t("game.response.population")}
+      {t(`game.response.${data}`)}
     </p>
-  );
+  ) : null;
 }

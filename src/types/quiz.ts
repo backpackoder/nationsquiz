@@ -18,7 +18,7 @@ export type GameState = {
 };
 
 export type Answer = {
-  data: API_DATA;
+  data: any;
   index: number;
 };
 

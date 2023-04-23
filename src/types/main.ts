@@ -7,4 +7,4 @@ export type LanguageBtn = {
 }[];
 
 // Themes
-export type Themes = "flags" | "capitals" | "demography" | "borders";
+export type Themes = "flags" | "capitals" | "demography" | "borders" | "areas";

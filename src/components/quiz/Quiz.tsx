@@ -1,4 +1,4 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext, useMemo, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 import { Trans } from "react-i18next";
@@ -49,12 +49,27 @@ export function Quiz() {
         randomCountry && countriesList.splice(countriesList.indexOf(randomCountry), 1);
       }
 
-      const uniqueResponses = new Set(responses.map((country: any) => country.population));
+      function getUniqueResponses(theme: string) {
+        const data = useMemo(() => {
+          switch (theme) {
+            case THEMES.DEMOGRAPHY:
+              return "population";
+
+            case THEMES.AREAS:
+              return "area";
+
+            default:
+              throw new Error("Theme not found");
+          }
+        }, [theme]);
+
+        return new Set(responses.map((country: any) => country[data]));
+      }
 
       switch (theme) {
         case THEMES.DEMOGRAPHY:
-          if (uniqueResponses.size === responses.length) {
-            definedAnswer = getDefinedAnswer();
+          if (getUniqueResponses(THEMES.DEMOGRAPHY).size === responses.length) {
+            definedAnswer = getDefinedAnswer(THEMES.DEMOGRAPHY);
             answer = {
               data: definedAnswer,
               index: responses.indexOf(definedAnswer),
@@ -88,6 +103,18 @@ export function Quiz() {
             );
           break;
 
+        case THEMES.AREAS:
+          if (getUniqueResponses(THEMES.AREAS).size === responses.length) {
+            definedAnswer = getDefinedAnswer(THEMES.AREAS);
+            answer = {
+              data: definedAnswer,
+              index: responses.indexOf(definedAnswer),
+            };
+          } else {
+            responses = [];
+          }
+          break;
+
         default:
           randomAnswer = getRandomAnswer();
           answer = {
@@ -102,13 +129,22 @@ export function Quiz() {
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    function getDefinedAnswer() {
-      const populations = responses.map((country: any) => country.population);
-      const biggest = Math.max(...populations);
-      const answerIndex = populations.findIndex((population: any) => population === biggest);
-      const answer = responses[answerIndex];
+    function getDefinedAnswer(theme: string) {
+      function getBiggestPopulation() {
+        const populations = responses.map((country: any) => country.population);
+        const biggest = Math.max(...populations);
+        const answerIndex = populations.findIndex((population: any) => population === biggest);
+        return responses[answerIndex];
+      }
 
-      return answer;
+      function getBiggestArea() {
+        const areas = responses.map((country: any) => country.area);
+        const biggest = Math.max(...areas);
+        const answerIndex = areas.findIndex((area: any) => area === biggest);
+        return responses[answerIndex];
+      }
+
+      return theme === THEMES.DEMOGRAPHY ? getBiggestPopulation() : getBiggestArea();
     }
 
     return { responses, answer };
@@ -213,24 +249,6 @@ export function Quiz() {
           }
         />
       )}
-
-      {/* <p>
-        TESTS:
-        <br />
-        countriesWithBorders: {countriesWithBorders?.length}
-        <br />
-        nameOfResponse: {nameOfResponse}
-        <br />
-        bordersOfResponse: {bordersOfResponse.join(", ")}
-        <br />
-        bordersFullNames: {bordersFullNames}
-        <br />
-        randomBorderFromResponse: {randomBorderFromResponse}
-        <br />
-        countriesNotBorderingList: {countriesNotBorderingList.length}
-        <br />
-        countriesNotBorderingListString: {countriesNotBorderingListString}
-      </p> */}
     </section>
   );
 }
