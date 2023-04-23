@@ -77,7 +77,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
 
   return (
     <>
-      <h3>{t(`quizList.${theme}.question`)}</h3>
+      <h3>{t(`game.questions.${theme}`)}</h3>
 
       {(quizTheme.is.flags || quizTheme.is.capitals || quizTheme.is.borders) && (
         <FlagOfAnswer src={answer.data.flags.png} />

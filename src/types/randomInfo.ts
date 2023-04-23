@@ -7,7 +7,8 @@ export type FiltersKeys =
   | "population_country_biggest"
   | "population_continent"
   | "area_biggest"
-  | "independent";
+  | "independent"
+  | "unMember";
 
 export type Filters = Record<FiltersKeys, API_DATA[]>;
 

@@ -28,6 +28,8 @@ export const translationsFRA = {
       area_biggest: "Le pays le plus étandu est {{country}} avec {{area_biggest}} km².",
       independent:
         "Dans le monde, {{independent}} territoires n'ont pas encore revendiqué leur indépendance, soit {{independent_calc}}% d'entre eux.",
+      unMember:
+        "{{unMember_sum}} pays dans le monde sont membres de l'ONU, soit {{unMember_calc}}% des pays.",
       default: "Il existe {{countries}} territoires dans le monde.",
     },
 
@@ -95,37 +97,42 @@ export const translationsFRA = {
 
   quizList: {
     title: "Choisissez votre quiz",
+
     flags: {
       title: "Drapeaux",
       description: "Trouver les drapeaux des pays",
-      question: "De quel pays est ce drapeau ?",
     },
     capitals: {
       title: "Capitales",
       description: "Trouver les capitales des pays",
-      question: "Quelle est la capitale de ce pays ?",
     },
     demography: {
       title: "Démographie",
-      description: "Trouvez le pays le plus peuplé",
-      question: "Quel pays à le plus d'habitants ?",
+      description: "Trouver le pays le plus peuplé",
     },
     borders: {
       title: "Frontières",
-      description: "Trouver les pays frontaliers d'un pays",
-      question: "Quels pays est frontalier avec celui-ci ?",
+      description: "Trouver le pays frontalier",
     },
     areas: {
       title: "Superficies",
-      description: "Trouvez le pays le plus étendu",
-      question: "Quel pays est le plus étendu ?",
+      description: "Trouver le pays le plus étendu",
     },
+
     start: "Jouer",
   },
 
   game: {
     restart: "Recommencer",
     leave: "Quitter la partie",
+
+    questions: {
+      flags: "De quel pays est ce drapeau ?",
+      capitals: "Quelle est la capitale de ce pays ?",
+      demography: "Quel pays à le plus d'habitants ?",
+      borders: "Quels pays est frontalier avec celui-ci ?",
+      areas: "Quel pays est le plus étendu ?",
+    },
 
     response: {
       population: "habitants",

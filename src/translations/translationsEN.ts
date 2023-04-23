@@ -28,7 +28,8 @@ export const translationsEN = {
       area_biggest: "The largest country is {{country}} with {{area_biggest}} km².",
       independent:
         "In the world, {{independent}} territories have not yet claimed their independence, which is {{independent_calc}}% of them.",
-
+      unMember:
+        "{{unMember_sum}} countries in the world are members of the UN, which is {{unMember_calc}}% of the countries.",
       default: "There are {{countries}} territories in the world.",
     },
 
@@ -96,37 +97,42 @@ export const translationsEN = {
 
   quizList: {
     title: "Choose your quiz",
+
     flags: {
       title: "Flags",
-      description: "Quiz on the flags of the countries",
-      question: "What country is this flag from?",
+      description: "Find the flags of the countries",
     },
     capitals: {
       title: "Capitals",
-      description: "Quiz on the capitals of the countries",
-      question: "What is the capital of this country?",
+      description: "Find the capitals of the countries",
     },
     demography: {
       title: "Demography",
-      description: "Which country has the most inhabitants?",
-      question: "What is the country with the most inhabitants?",
+      description: "Find the most populated country",
     },
     borders: {
       title: "Borders",
-      description: "Find the neighboring country",
-      question: "Which country is bordering this one?",
+      description: "Find the bordering country",
     },
     areas: {
       title: "Areas",
-      description: "Which country is the largest?",
-      question: "What is the largest country?",
+      description: "Find the largest country",
     },
+
     start: "Play",
   },
 
   game: {
     restart: "Restart",
     leave: "Leave the game",
+
+    questions: {
+      flags: "Which country is this flag from?",
+      capitals: "What is the capital of this country?",
+      demography: "Which country has the most inhabitants?",
+      borders: "Which country is bordering this one?",
+      areas: "Which country is the largest?",
+    },
 
     response: {
       population: "inhabitants",

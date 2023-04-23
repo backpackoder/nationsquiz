@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 type GameModaleProps = {
   setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +14,9 @@ export function GameModale({ setIsModaleOpened, gameModale, gameDispatch }: Game
 
   return (
     <>
-      <p className="description">{description}</p>
+      <p className="description">
+        {<Trans components={{ br: <br /> }}>{`modale.game.description.${description}`}</Trans>}
+      </p>
 
       <div className="buttons">
         <button

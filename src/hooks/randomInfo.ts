@@ -35,6 +35,7 @@ export function useGetRandomInfo(next: number) {
         "population_continent",
         "area_biggest",
         "independent",
+        "unMember",
       ]);
 
     const randomInfo: RandomInfo =
@@ -68,6 +69,8 @@ export function useGetRandomInfo(next: number) {
       }),
       independent: randomInfo?.filter?.length ?? 0,
       independent_calc: percentage(randomInfo?.filter?.length, data?.length),
+      unMember_sum: randomInfo?.filter?.length ?? 0,
+      unMember_calc: percentage(randomInfo?.filter?.length, data?.length),
     };
 
     return { randomInfo, randomCountryFromInfo, sentenceInfo };

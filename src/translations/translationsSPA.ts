@@ -28,6 +28,8 @@ export const translationsSPA = {
       area_biggest: "El país más grande es {{country}} con {{area_biggest}} km².",
       independent:
         "En el mundo, {{independent}} territorios aún no han reclamado su independencia, que es {{independent_calc}}% de ellos.",
+      unMember:
+        "{{unMember_sum}} países del mundo son miembros de la ONU, que es {{unMember_calc}}% de los países.",
       default: "Hay {{countries}} territorios en el mundo.",
     },
 
@@ -95,38 +97,43 @@ export const translationsSPA = {
 
   quizList: {
     title: "Elige tu quiz",
+
     flags: {
       title: "Banderas",
-      description: "Quiz sobre las banderas de los países",
-      question: "¿De qué país es esta bandera?",
+      description: "Encuentra las banderas de los países",
     },
     capitals: {
       title: "Capitales",
-      description: "Quiz sobre las capitales de los países",
-      question: "¿Cuál es la capital de este país?",
+      description: "Encuentra las capitales de los países",
     },
     demography: {
       title: "Demografía",
-      description: "¿Qué país tiene más habitantes?",
-      question: "¿Cuál es el país que tiene más habitantes?",
+      description: "Encuentra el país más poblado",
     },
     borders: {
       title: "Fronteras",
-      description: "Encuentra el país vecino",
-      question: "¿Cuál es el país que tiene frontera con este?",
+      description: "Encuentra el país fronterizo",
     },
     areas: {
       title: "Áreas",
-      description: "¿Qué país es el más grande?",
-      question: "¿Cuál es el país más grande?",
+      description: "Encuentra el país más grande",
     },
+
     start: "Jugar",
   },
 
   game: {
     restart: "Reiniciar",
-
     leave: "Abandonar la partida",
+
+    questions: {
+      flags: "¿De qué país es esta bandera?",
+      capitals: "¿Cuál es la capital de este país?",
+      demography: "¿Qué país tiene más habitantes?",
+      borders: "¿Qué país limita con este?",
+      areas: "¿Qué país es el más grande?",
+    },
+
     response: {
       population: "habitantes",
       areas: "km²",

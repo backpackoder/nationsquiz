@@ -20,7 +20,15 @@ export function Infos() {
     (item) => stringForUrl(item.name.common) === country && stringForUrl(country)
   );
 
-  const countryLanguage = Object.keys(countryData !== undefined && countryData?.languages);
+  const countryLanguageList = Object.entries(countryData !== undefined && countryData?.languages)
+    .map((language) => language[1])
+    .join(", ");
+
+  const [ISO_4217, currencyValues] = Object.entries(
+    countryData !== undefined && countryData?.currencies
+  )[0];
+  console.log("ISO_4217", ISO_4217);
+  console.log("currencyValues", currencyValues);
 
   return countryData ? (
     <article>
@@ -45,18 +53,7 @@ export function Infos() {
           {countryData.capitalInfo.latlng[1]})
         </p>
 
-        <p>Languages: {countryData.languages["fra"]}</p>
-        {/* <p>
-          Languages:{" "}
-          {countryLanguage.map((lang, index) => {
-            return (
-              <span key={index}>
-                {countryData.languages[lang]}
-                {index < countryLanguage.length - 1 && ", "}
-              </span>
-            );
-          })}
-        </p> */}
+        <p>Languages: {countryLanguageList}</p>
 
         <p>Region: {countryData.region}</p>
         <p>continent: {countryData.continents[0]}</p>
@@ -81,6 +78,12 @@ export function Infos() {
         )}
 
         <p>
+          Currency: {currencyValues.name} ({ISO_4217}), symbol: {currencyValues.symbol}
+        </p>
+
+        <p>Landlocked: {countryData.landlocked ? "Oui" : "Non"}</p>
+
+        <p>
           Population:{" "}
           {getFormattedNumber({ number: countryData.population, language: actualLanguage })}{" "}
           inhabitants
@@ -93,8 +96,6 @@ export function Infos() {
         {countryData.independent !== undefined && (
           <p>Indépendant : {countryData.independent === true ? "Oui" : "non"}</p>
         )}
-
-        <p>Currency:</p>
 
         <p>
           Téléphone: {countryData.idd.root}
