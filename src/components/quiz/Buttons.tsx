@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+// Types
+import { ButtonsProps } from "../../types/props";
+
 // Commons
 import { ROUTES } from "../../commons/commons";
-
-type ButtonsProps = {
-  dispatch: any;
-  isQuizfinished: boolean;
-};
 
 export function Buttons({ isQuizfinished, dispatch }: ButtonsProps) {
   const navigate = useNavigate();

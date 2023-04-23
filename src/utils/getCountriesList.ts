@@ -26,6 +26,9 @@ export function getCountriesList({ data, theme, region }: GetCountriesList) {
       case THEMES.BORDERS:
         return data.filter((country: API_DATA) => country.borders !== undefined);
 
+      case THEMES.AREAS:
+        return data.filter((country: API_DATA) => country.area !== undefined);
+
       default:
         throw new Error("Theme not found");
     }

@@ -115,6 +115,11 @@ export const translationsSPA = {
       description: "Encuentra el país vecino",
       question: "¿Cuál es el país que tiene frontera con este?",
     },
+    areas: {
+      title: "Áreas",
+      description: "¿Qué país es el más grande?",
+      question: "¿Cuál es el país más grande?",
+    },
     start: "Jugar",
   },
 
@@ -124,6 +129,7 @@ export const translationsSPA = {
     leave: "Abandonar la partida",
     response: {
       population: "habitantes",
+      areas: "km²",
     },
 
     result: {

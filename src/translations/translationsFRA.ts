@@ -115,6 +115,11 @@ export const translationsFRA = {
       description: "Trouver les pays frontaliers d'un pays",
       question: "Quels pays est frontalier avec celui-ci ?",
     },
+    areas: {
+      title: "Superficies",
+      description: "Trouvez le pays le plus étendu",
+      question: "Quel pays est le plus étendu ?",
+    },
     start: "Jouer",
   },
 
@@ -124,6 +129,7 @@ export const translationsFRA = {
 
     response: {
       population: "habitants",
+      area: "km²",
     },
 
     result: {

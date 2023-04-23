@@ -116,6 +116,11 @@ export const translationsEN = {
       description: "Find the neighboring country",
       question: "Which country is bordering this one?",
     },
+    areas: {
+      title: "Areas",
+      description: "Which country is the largest?",
+      question: "What is the largest country?",
+    },
     start: "Play",
   },
 
@@ -125,6 +130,7 @@ export const translationsEN = {
 
     response: {
       population: "inhabitants",
+      area: "km²",
     },
 
     result: {

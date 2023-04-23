@@ -1,16 +1,12 @@
 import { useTranslation } from "react-i18next";
 
 // Types
+import { SearchBarProps } from "../../types/props";
 import { API_DATA } from "../../types/api";
 
 // Hooks
 import { useSearchInputs } from "../../hooks/searchInputs";
 import { useMemo } from "react";
-
-type SearchBarProps = {
-  data: API_DATA[];
-  filterDispatch: any;
-};
 
 export function SearchBar({ data, filterDispatch }: SearchBarProps) {
   const { searchInputs } = useSearchInputs();

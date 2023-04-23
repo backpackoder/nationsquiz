@@ -10,7 +10,6 @@ import { SearchBar } from "./SearchBar";
 import { AppProviderProps } from "../../types/context";
 
 // Utils
-import { getFormattedNumber } from "../../utils/formattedNumber";
 import { stringForUrl } from "../../utils/stringForUrl";
 
 // Commons
@@ -26,7 +25,7 @@ type FilterState = {
 export function Study() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
+  const { data }: AppProviderProps = useContext(AppContext);
 
   const initialState: FilterState = {
     sort: "",

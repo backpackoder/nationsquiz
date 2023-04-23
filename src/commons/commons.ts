@@ -23,6 +23,7 @@ export const THEMES: { [key: string]: Themes } = {
   CAPITALS: "capitals",
   DEMOGRAPHY: "demography",
   BORDERS: "borders",
+  AREAS: "areas",
 };
 
 // Settings

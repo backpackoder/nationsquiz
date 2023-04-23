@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-type ResultProps = {
-  score: number;
-};
+// Types
+import { ResultProps } from "../../types/props";
 
 export function Result({ score }: ResultProps) {
   const { t } = useTranslation();

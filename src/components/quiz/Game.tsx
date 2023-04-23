@@ -5,20 +5,21 @@ import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/context";
+import {
+  CountryNameOfAnswerProps,
+  DataRevealProps,
+  FlagsOfResponsesProps,
+  GameProps,
+} from "../../types/props";
 import { API_DATA } from "../../types/api";
 import { SettingEnum, Difficulty } from "../../types/settings";
-import { GameState, ResponsesStringType } from "../../types/quiz";
+import { GameState, ResponsesDataType } from "../../types/quiz";
 
 // Commons
 import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getFormattedNumber } from "../../utils/formattedNumber";
-
-type GameProps = {
-  gameState: any;
-  gameDispatch: any;
-};
 
 export function Game({ gameState, gameDispatch }: GameProps) {
   const { theme } = useParams();
@@ -28,18 +29,24 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       capitals: theme === THEMES.CAPITALS,
       demography: theme === THEMES.DEMOGRAPHY,
       borders: theme === THEMES.BORDERS,
+      areas: theme === THEMES.AREAS,
     },
     isnt: {
       flags: theme !== THEMES.FLAGS,
       capitals: theme !== THEMES.CAPITALS,
       demography: theme !== THEMES.DEMOGRAPHY,
       borders: theme !== THEMES.BORDERS,
+      areas: theme !== THEMES.AREAS,
     },
   };
   const { actualLanguage, data, settingsList, settingsState }: AppProviderProps =
     useContext(AppContext);
   const { nbOfChoices } = settingsState;
   const { hasResponded, responses, answer }: GameState = gameState;
+
+  const isExpertMode =
+    settingsState.nbOfChoices ===
+    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value;
 
   const [responseIndex, setResponseIndex] = useState(0);
 
@@ -58,7 +65,13 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       () => {
         gameDispatch({ type: "next question" });
       },
-      isCorrect ? (quizTheme.is.demography ? 2000 : 1000) : quizTheme.is.demography ? 3000 : 2000
+      isCorrect
+        ? quizTheme.is.demography || quizTheme.is.areas
+          ? 2000
+          : 1000
+        : quizTheme.is.demography || quizTheme.is.areas
+        ? 3000
+        : 2000
     );
   }
 
@@ -66,21 +79,13 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     <>
       <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      {quizTheme.isnt.demography && (
-        <img
-          src={answer.data.flags.png}
-          alt={quizTheme.is.capitals ? "Mysterious flag" : answer.data.flags.alt}
-          className="questionImg"
-        />
+      {(quizTheme.is.flags || quizTheme.is.capitals || quizTheme.is.borders) && (
+        <FlagOfAnswer src={answer.data.flags.png} />
       )}
 
-      {(quizTheme.is.capitals || quizTheme.is.borders) &&
-        settingsState.nbOfChoices <
-          settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value && (
-          <p>
-            <b>{getCountryName()}</b>
-          </p>
-        )}
+      {(quizTheme.is.capitals || quizTheme.is.borders) && !isExpertMode && (
+        <CountryNameOfAnswer countryName={getCountryName()} />
+      )}
 
       <ul>
         {Array(nbOfChoices)
@@ -89,7 +94,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
             const isResponseCorrect = index === answer.index;
             const isResponseWrong = index === responseIndex && !isResponseCorrect;
 
-            const responsesData: ResponsesStringType = useMemo(() => {
+            const responsesData: ResponsesDataType = useMemo(() => {
               switch (theme) {
                 case THEMES.FLAGS:
                   return {
@@ -105,49 +110,38 @@ export function Game({ gameState, gameDispatch }: GameProps) {
 
                 case THEMES.DEMOGRAPHY:
                   return {
-                    text:
-                      settingsState.nbOfChoices <
-                        settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert]
-                          .value && getCountryName(index),
+                    text: !isExpertMode && getCountryName(index),
                     png: responses[index].flags.png,
                     alt: responses[index].flags.alt,
                   };
 
                 case THEMES.BORDERS:
-                  function getRandomNeighbourFromAnswer(index: number): API_DATA {
-                    return responses[index].borders?.map(
+                  function getRandomNeighbourFromAnswer(): API_DATA {
+                    return responses[answer.index].borders?.map(
                       (item: string) => data && data.find((country) => country.cca3 === item)
                     )[Math.floor(Math.random() * answer.data.borders.length)];
                   }
 
-                  const randomNeighbourFromAnswer = getRandomNeighbourFromAnswer(index);
+                  const randomNeighbourFromAnswer = getRandomNeighbourFromAnswer();
 
-                  isResponseCorrect &&
-                    console.log("randomNeighbourFromAnswer", randomNeighbourFromAnswer);
-                  console.log("-----------------------------");
+                  return {
+                    text: isResponseCorrect
+                      ? !isExpertMode && randomNeighbourFromAnswer?.name.common
+                      : !isExpertMode && getCountryName(index),
+                    png: isResponseCorrect
+                      ? randomNeighbourFromAnswer?.flags.png
+                      : responses[index].flags.png,
+                    alt: isResponseCorrect
+                      ? randomNeighbourFromAnswer?.flags.png
+                      : responses[index].flags.alt,
+                  };
 
-                  return settingsState.nbOfChoices <
-                    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value
-                    ? {
-                        text: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.name.common
-                          : getCountryName(index),
-                        png: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.png,
-                        alt: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.alt
-                          : responses[index].flags.alt,
-                      }
-                    : {
-                        text: null,
-                        png: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.png,
-                        alt: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.alt,
-                      };
+                case THEMES.AREAS:
+                  return {
+                    text: !isExpertMode && getCountryName(index),
+                    png: responses[index].flags.png,
+                    alt: responses[index].flags.alt,
+                  };
 
                 default:
                   throw new Error("Quiz theme not found");
@@ -159,33 +153,25 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                 key={index}
                 className={`${isResponseCorrect ? "correctResponse" : "wrongResponse"} ${
                   hasResponded && (isResponseCorrect || isResponseWrong ? "active" : "inactive")
-                } ${quizTheme.is.demography || quizTheme.is.borders ? "limited" : "unlimited"}`}
+                } ${
+                  quizTheme.is.demography || quizTheme.is.borders || quizTheme.is.areas
+                    ? "limited"
+                    : "unlimited"
+                }`}
                 onClick={() => {
                   !hasResponded && responseSelected(index);
                 }}
               >
                 <p>{responsesData?.text}</p>
 
-                {(quizTheme.is.demography || quizTheme.is.borders) && (
+                {(quizTheme.is.demography || quizTheme.is.borders || quizTheme.is.areas) && (
                   <>
-                    <div className="responseImgWrapper">
-                      <img
-                        src={responsesData?.png}
-                        alt={responsesData?.alt}
-                        className="responseImg"
-                      />
-                    </div>
+                    <FlagsOfResponses responsesData={responsesData} />
 
-                    {quizTheme.is.demography &&
+                    {(quizTheme.is.demography || quizTheme.is.areas) &&
                       hasResponded &&
                       (isResponseCorrect || isResponseWrong) && (
-                        <p>
-                          {getFormattedNumber({
-                            number: responses[index].population,
-                            language: actualLanguage,
-                          })}{" "}
-                          {t("game.response.population")}
-                        </p>
+                        <DataReveal theme={theme} responses={responses} index={index} />
                       )}
                   </>
                 )}
@@ -195,4 +181,56 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       </ul>
     </>
   );
+}
+
+type FlagOfAnswerProps = {
+  // VOIR LES UTILITY TYPES POUR SRC
+  src: string;
+};
+
+function FlagOfAnswer({ src }: FlagOfAnswerProps) {
+  return <img src={src} alt="Mysterious flag" className="questionImg" />;
+}
+
+function CountryNameOfAnswer({ countryName }: CountryNameOfAnswerProps) {
+  return (
+    <p>
+      <b>{countryName}</b>
+    </p>
+  );
+}
+
+function FlagsOfResponses({ responsesData }: FlagsOfResponsesProps) {
+  return (
+    <div className="responseImgWrapper">
+      <img src={responsesData?.png} alt={responsesData?.alt} className="responseImg" />
+    </div>
+  );
+}
+
+function DataReveal({ theme, responses, index }: DataRevealProps) {
+  const { actualLanguage }: AppProviderProps = useContext(AppContext);
+
+  const data = useMemo(() => {
+    switch (theme) {
+      case THEMES.DEMOGRAPHY:
+        return "population";
+
+      case THEMES.AREAS:
+        return "area";
+
+      default:
+        throw new Error("Theme not found");
+    }
+  }, [theme]);
+
+  return theme ? (
+    <p>
+      {getFormattedNumber({
+        number: responses[index][data],
+        language: actualLanguage,
+      })}{" "}
+      {t(`game.response.${data}`)}
+    </p>
+  ) : null;
 }
