@@ -32,6 +32,8 @@ export function getInfosFilters(data: API_DATA[]) {
     ],
 
     independent: data?.filter((item) => item.independent === false),
+
+    unMember: data?.filter((item) => item.unMember === true),
   };
 
   return filters;

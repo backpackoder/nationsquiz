@@ -160,7 +160,7 @@ export function Quiz() {
     answer: choices.answer,
 
     hasResponded: false,
-    isCorrect: false,
+    hasRestarted: false,
 
     gameModale: {
       description: "",
@@ -174,24 +174,32 @@ export function Quiz() {
 
   const isQuizfinished = actualQuestion > nbOfQuestions;
 
+  console.log("hasRestarted", gameState.hasRestarted);
   function reducer(state: any, action: any) {
     switch (action.type) {
       case "correct answer":
-        return { ...state, score: state.score + 1, hasResponded: true, isCorrect: true };
+        return {
+          ...state,
+          score: state.score + 1,
+          hasResponded: true,
+        };
 
       case "wrong answer":
-        return { ...state, hasResponded: true, isCorrect: false };
+        return {
+          ...state,
+          hasResponded: true,
+        };
 
       case "next question":
         return {
           ...state,
-          actualQuestion: state.actualQuestion + 1,
+          actualQuestion: state.hasRestarted ? state.actualQuestion : state.actualQuestion + 1,
 
           responses: choices.responses,
           answer: choices.answer,
 
           hasResponded: false,
-          isCorrect: false,
+          hasRestarted: false,
         };
 
       case "open modale":
@@ -200,18 +208,14 @@ export function Quiz() {
           ...state,
           gameModale: {
             ...state.gameModale,
-            description: (
-              <Trans
-                components={{ br: <br /> }}
-              >{`modale.game.description.${action.payload}`}</Trans>
-            ),
+            description: action.payload,
             confirmation: action.payload,
           },
         };
 
       case "restart":
         setIsModaleOpened(false);
-        return initialState;
+        return { ...initialState, hasRestarted: true };
 
       default:
         return new Error("Action not found");

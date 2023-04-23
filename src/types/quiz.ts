@@ -13,8 +13,8 @@ export type GameState = {
   responses: any;
   answer: Answer;
   hasResponded: boolean;
-  isCorrect: boolean;
   gameModale: GameModale;
+  hasRestarted: boolean;
 };
 
 export type Answer = {
