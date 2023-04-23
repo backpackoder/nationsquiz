@@ -1,3 +1,6 @@
+// Types
+import { API_DATA } from "./api";
+
 export type QuizData = {
   theme: string;
   title: string;
@@ -8,19 +11,23 @@ export type GameState = {
   actualQuestion: number;
   score: number;
   responses: any;
-  answer: {
-    data: any;
-    index: number;
-  };
+  answer: Answer;
   hasResponded: boolean;
   isCorrect: boolean;
-  gameModale: {
-    description: string;
-    confirmation: string;
-  };
+  gameModale: GameModale;
 };
 
-export type ResponsesStringType = {
+export type Answer = {
+  data: API_DATA;
+  index: number;
+};
+
+export type GameModale = {
+  description: string;
+  confirmation: string;
+};
+
+export type ResponsesDataType = {
   text?: string;
   png?: string;
   alt?: string;

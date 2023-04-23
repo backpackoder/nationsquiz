@@ -5,20 +5,21 @@ import { t } from "i18next";
 
 // Types
 import { AppProviderProps } from "../../types/context";
+import {
+  CountryNameOfAnswerProps,
+  FlagsOfResponsesProps,
+  GameProps,
+  PopulationResultProps,
+} from "../../types/props";
 import { API_DATA } from "../../types/api";
 import { SettingEnum, Difficulty } from "../../types/settings";
-import { GameState, ResponsesStringType } from "../../types/quiz";
+import { GameState, ResponsesDataType } from "../../types/quiz";
 
 // Commons
 import { THEMES } from "../../commons/commons";
 
 // Utils
 import { getFormattedNumber } from "../../utils/formattedNumber";
-
-type GameProps = {
-  gameState: any;
-  gameDispatch: any;
-};
 
 export function Game({ gameState, gameDispatch }: GameProps) {
   const { theme } = useParams();
@@ -40,6 +41,10 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     useContext(AppContext);
   const { nbOfChoices } = settingsState;
   const { hasResponded, responses, answer }: GameState = gameState;
+
+  const isExpertMode =
+    settingsState.nbOfChoices ===
+    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value;
 
   const [responseIndex, setResponseIndex] = useState(0);
 
@@ -66,21 +71,11 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     <>
       <h3>{t(`quizList.${theme}.question`)}</h3>
 
-      {quizTheme.isnt.demography && (
-        <img
-          src={answer.data.flags.png}
-          alt={quizTheme.is.capitals ? "Mysterious flag" : answer.data.flags.alt}
-          className="questionImg"
-        />
-      )}
+      {quizTheme.isnt.demography && <FlagOfAnswer src={answer.data.flags.png} />}
 
-      {(quizTheme.is.capitals || quizTheme.is.borders) &&
-        settingsState.nbOfChoices <
-          settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value && (
-          <p>
-            <b>{getCountryName()}</b>
-          </p>
-        )}
+      {(quizTheme.is.capitals || quizTheme.is.borders) && !isExpertMode && (
+        <CountryNameOfAnswer countryName={getCountryName()} />
+      )}
 
       <ul>
         {Array(nbOfChoices)
@@ -89,7 +84,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
             const isResponseCorrect = index === answer.index;
             const isResponseWrong = index === responseIndex && !isResponseCorrect;
 
-            const responsesData: ResponsesStringType = useMemo(() => {
+            const responsesData: ResponsesDataType = useMemo(() => {
               switch (theme) {
                 case THEMES.FLAGS:
                   return {
@@ -105,49 +100,31 @@ export function Game({ gameState, gameDispatch }: GameProps) {
 
                 case THEMES.DEMOGRAPHY:
                   return {
-                    text:
-                      settingsState.nbOfChoices <
-                        settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert]
-                          .value && getCountryName(index),
+                    text: !isExpertMode && getCountryName(index),
                     png: responses[index].flags.png,
                     alt: responses[index].flags.alt,
                   };
 
                 case THEMES.BORDERS:
-                  function getRandomNeighbourFromAnswer(index: number): API_DATA {
-                    return responses[index].borders?.map(
+                  function getRandomNeighbourFromAnswer(): API_DATA {
+                    return responses[answer.index].borders?.map(
                       (item: string) => data && data.find((country) => country.cca3 === item)
                     )[Math.floor(Math.random() * answer.data.borders.length)];
                   }
 
-                  const randomNeighbourFromAnswer = getRandomNeighbourFromAnswer(index);
+                  const randomNeighbourFromAnswer = getRandomNeighbourFromAnswer();
 
-                  isResponseCorrect &&
-                    console.log("randomNeighbourFromAnswer", randomNeighbourFromAnswer);
-                  console.log("-----------------------------");
-
-                  return settingsState.nbOfChoices <
-                    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value
-                    ? {
-                        text: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.name.common
-                          : getCountryName(index),
-                        png: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.png,
-                        alt: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.alt
-                          : responses[index].flags.alt,
-                      }
-                    : {
-                        text: null,
-                        png: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.png,
-                        alt: isResponseCorrect
-                          ? randomNeighbourFromAnswer?.flags.png
-                          : responses[index].flags.alt,
-                      };
+                  return {
+                    text: isResponseCorrect
+                      ? !isExpertMode && randomNeighbourFromAnswer?.name.common
+                      : !isExpertMode && getCountryName(index),
+                    png: isResponseCorrect
+                      ? randomNeighbourFromAnswer?.flags.png
+                      : responses[index].flags.png,
+                    alt: isResponseCorrect
+                      ? randomNeighbourFromAnswer?.flags.png
+                      : responses[index].flags.alt,
+                  };
 
                 default:
                   throw new Error("Quiz theme not found");
@@ -168,24 +145,12 @@ export function Game({ gameState, gameDispatch }: GameProps) {
 
                 {(quizTheme.is.demography || quizTheme.is.borders) && (
                   <>
-                    <div className="responseImgWrapper">
-                      <img
-                        src={responsesData?.png}
-                        alt={responsesData?.alt}
-                        className="responseImg"
-                      />
-                    </div>
+                    <FlagsOfResponses responsesData={responsesData} />
 
                     {quizTheme.is.demography &&
                       hasResponded &&
                       (isResponseCorrect || isResponseWrong) && (
-                        <p>
-                          {getFormattedNumber({
-                            number: responses[index].population,
-                            language: actualLanguage,
-                          })}{" "}
-                          {t("game.response.population")}
-                        </p>
+                        <PopulationResult responses={responses} index={index} />
                       )}
                   </>
                 )}
@@ -194,5 +159,44 @@ export function Game({ gameState, gameDispatch }: GameProps) {
           })}
       </ul>
     </>
+  );
+}
+
+type FlagOfAnswerProps = {
+  // VOIR LES UTILITY TYPES POUR SRC
+  src: string;
+};
+
+function FlagOfAnswer({ src }: FlagOfAnswerProps) {
+  return <img src={src} alt="Mysterious flag" className="questionImg" />;
+}
+
+function CountryNameOfAnswer({ countryName }: CountryNameOfAnswerProps) {
+  return (
+    <p>
+      <b>{countryName}</b>
+    </p>
+  );
+}
+
+function FlagsOfResponses({ responsesData }: FlagsOfResponsesProps) {
+  return (
+    <div className="responseImgWrapper">
+      <img src={responsesData?.png} alt={responsesData?.alt} className="responseImg" />
+    </div>
+  );
+}
+
+function PopulationResult({ responses, index }: PopulationResultProps) {
+  const { actualLanguage }: AppProviderProps = useContext(AppContext);
+
+  return (
+    <p>
+      {getFormattedNumber({
+        number: responses[index].population,
+        language: actualLanguage,
+      })}{" "}
+      {t("game.response.population")}
+    </p>
   );
 }
