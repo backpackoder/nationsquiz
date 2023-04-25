@@ -13,8 +13,9 @@ export type ButtonsProps = {
   isQuizfinished: boolean;
 };
 
-export type ResultProps = {
+export type ResultsProps = {
   score: number;
+  time: number;
 };
 
 // GAME
@@ -35,4 +36,22 @@ export type DataRevealProps = {
   theme: string | undefined;
   responses: any;
   index: number;
+};
+
+// RESULTS
+export type OnChangeSubmit = {
+  type: string;
+  value: string;
+};
+export type SubmitScoreProps = {
+  score: number;
+  time: number;
+  onChangeSubmit: ({ type, value }: OnChangeSubmit) => void;
+  submitScore: () => Promise<void>;
+};
+
+// RANKING
+export type RankingProps = {
+  score: number;
+  time: number;
 };

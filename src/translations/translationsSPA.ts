@@ -164,11 +164,11 @@ export const translationsSPA = {
         expert: "Experto",
       },
 
-      questions: {
+      length: {
         title: "Preguntas",
       },
 
-      regions: {
+      region: {
         title: "Continentes",
         all: "Todos",
         africa: "África",

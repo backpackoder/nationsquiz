@@ -11,11 +11,18 @@ export const ROUTES = {
   INFOS: "/study/infos/:country",
   QUIZ_LIST: "/quiz",
   GAME: "/quiz/:theme",
+  RANKINGS: "/rankings",
   PAGE_NOT_FOUND: "*",
 };
 
 // API
 export const API_LINK = "https://restcountries.com/v3.1/all";
+
+// Supabase
+export const SUPABASE = {
+  LINK: "https://adtjkhdrwrvgptkqxmrf.supabase.co",
+  KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkdGpraGRyd3J2Z3B0a3F4bXJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODIzMzAxMDMsImV4cCI6MTk5NzkwNjEwM30.ZmeNo3hArgs65MGRIgF5cj-fxuFN8R9UARWMTIGqgds",
+};
 
 // Quiz themes
 export const THEMES: { [key: string]: Themes } = {
@@ -29,11 +36,12 @@ export const THEMES: { [key: string]: Themes } = {
 // Settings
 export const SETTINGS = {
   DIFFICULTY: "difficulty",
-  QUESTIONS: "questions",
-  REGIONS: "regions",
+  LENGTH: "length",
+  REGION: "region",
 };
 
 export const CONTINENTS = {
+  WORLD: "World",
   AFRICA: "Africa",
   AMERICAS: "Americas",
   ANTARCTIC: "Antarctic",

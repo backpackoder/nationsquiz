@@ -1,5 +1,5 @@
 // Settings
-export type SettingString = "difficulty" | "questions" | "regions";
+export type SettingString = "difficulty" | "length" | "regions";
 
 export type Settings = {
   [key: string]: SettingString;
@@ -9,25 +9,29 @@ export type SettingObj = {
   title: string;
   values: {
     label: string;
-    value: number;
+    value: string;
   }[];
 };
 
-export type SettingsList = {
+export type SettingList = {
   setting: SettingObj;
-  value: number;
+  value: string;
   callDispatch: string;
 }[];
 
 export type SettingsState = {
-  nbOfChoices: number;
-  nbOfQuestions: number;
-  regionChosen: number;
+  nbOfChoices: string;
+  nbOfQuestions: string;
+  regionChosen: string;
 };
 
 export type SettingsAction = {
   type: string;
-  payload: number;
+  payload: SettingsActionPayload;
+};
+
+export type SettingsActionPayload = {
+  [key: string]: string;
 };
 
 export enum SettingEnum {
@@ -35,20 +39,20 @@ export enum SettingEnum {
   QuizLength,
   Region,
 }
-export enum Difficulty {
+export enum Difficulties {
   Kid = 0,
   Easy,
   Medium,
   Hard,
   Expert,
 }
-export enum QuizLength {
+export enum QuizLengths {
   Ten = 0,
   Twenty,
   Thirty,
 }
 export enum Regions {
-  All = 0,
+  World = 0,
   Africa,
   Americas,
   Asia,

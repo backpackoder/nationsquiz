@@ -164,11 +164,11 @@ export const translationsFRA = {
         expert: "Expert",
       },
 
-      questions: {
+      length: {
         title: "Questions",
       },
 
-      regions: {
+      region: {
         title: "Continents",
         all: "Tous",
         africa: "Afrique",

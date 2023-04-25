@@ -1,0 +1,82 @@
+.rankings {
+  padding: 10px 25px;
+  border: solid 1px;
+  border-radius: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 8px;
+  border: solid 1px #000;
+}
+
+th {
+  background-color: #1e90ff;
+  color: white;
+}
+
+td img {
+  display: flex;
+  width: 40px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  cursor: pointer;
+}
+td img:hover {
+  scale: 1.1;
+}
+td button {
+  background-color: lightgreen;
+  padding: 4px 8px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+  border: none;
+}
+td button:hover {
+  background-color: green;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table thead {
+    display: none;
+  }
+
+  table tr {
+    margin-bottom: 10px;
+    display: block;
+    border-bottom: 2px solid #ddd;
+  }
+
+  table td {
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    border-bottom: 1px dotted #ccc;
+    padding: 10px 0;
+  }
+
+  table td:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}

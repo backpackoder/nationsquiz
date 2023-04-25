@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 // Types
 import { InputProps } from "../types/search";
 
+// Commons
+import { CONTINENTS } from "../commons/commons";
+
 export function useSearchInputs() {
   const { t } = useTranslation();
 
@@ -26,11 +29,11 @@ export function useSearchInputs() {
       name: "region",
       options: [
         { value: "", label: t("searchBar.region.options.default") },
-        { value: "Africa", label: t("searchBar.region.options.africa") },
-        { value: "Americas", label: t("searchBar.region.options.americas") },
-        { value: "Asia", label: t("searchBar.region.options.asia") },
-        { value: "Europe", label: t("searchBar.region.options.europe") },
-        { value: "Oceania", label: t("searchBar.region.options.oceania") },
+        { value: CONTINENTS.AFRICA, label: t("searchBar.region.options.africa") },
+        { value: CONTINENTS.AMERICAS, label: t("searchBar.region.options.americas") },
+        { value: CONTINENTS.ASIA, label: t("searchBar.region.options.asia") },
+        { value: CONTINENTS.EUROPE, label: t("searchBar.region.options.europe") },
+        { value: CONTINENTS.OCEANIA, label: t("searchBar.region.options.oceania") },
       ],
     },
     {

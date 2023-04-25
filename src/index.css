@@ -86,4 +86,9 @@ button {
     grid-column: 1 / 3;
     grid-row: 2;
   }
+
+  .rankings {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
 }

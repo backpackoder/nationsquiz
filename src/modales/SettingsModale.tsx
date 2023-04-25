@@ -8,7 +8,7 @@ import { QuizData } from "../types/quiz";
 
 // Hooks
 import { AppProviderProps } from "../types/context";
-import { ROUTES, THEMES } from "../commons/commons";
+import { CONTINENTS, ROUTES, THEMES } from "../commons/commons";
 import { Regions, SettingEnum } from "../types/settings";
 
 type SettingsModaleProps = {
@@ -29,10 +29,10 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
   useEffect(() => {
     switch (quizTheme.theme) {
       case THEMES.BORDERS:
-        if (region.value === Regions.Oceania) {
+        if (region.value === CONTINENTS.OCEANIA) {
           settingsDispatch({
             type: "region not available for this theme",
-            payload: Regions.All,
+            payload: { value: CONTINENTS.WORLD },
           });
         }
         break;
@@ -61,7 +61,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                   onClick={() =>
                     settingsDispatch({
                       type: difficulty.callDispatch,
-                      payload: item.value,
+                      payload: { value: item.value },
                     })
                   }
                 >
@@ -84,11 +84,11 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                   onClick={() =>
                     settingsDispatch({
                       type: quizLength.callDispatch,
-                      payload: item.value,
+                      payload: { value: item.value },
                     })
                   }
                 >
-                  {item.label}
+                  {item.label} ({item.value})
                 </button>
               );
             })}
@@ -113,7 +113,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                   onClick={() =>
                     settingsDispatch({
                       type: region.callDispatch,
-                      payload: item.value,
+                      payload: { value: item.value },
                     })
                   }
                 >

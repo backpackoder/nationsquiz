@@ -1,14 +1,13 @@
 import { useContext, useMemo, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../AppContext";
-import { Trans } from "react-i18next";
 
 // Types
 import { AppProviderProps } from "../../types/context";
 
 // Components
 import { Game } from "./Game";
-import { Result } from "./Result";
+import { Results } from "./Results";
 import { Buttons } from "./Buttons";
 import { Modale } from "../../modales/Modale";
 import { GameModale } from "../../modales/GameModale";
@@ -35,14 +34,37 @@ export function Quiz() {
   const { nbOfChoices, nbOfQuestions, regionChosen: region } = settingsState;
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
+  const [time, setTime] = useState(0);
 
   function getResponses() {
     const countriesList = data && getCountriesList({ data, theme, region });
     let responses: API_DATA[] = [];
     let definedAnswer, randomAnswer, answer: Answer;
 
+    const difficulty = useMemo(() => {
+      switch (nbOfChoices) {
+        case "kid":
+          return 2;
+
+        case "easy":
+          return 4;
+
+        case "medium":
+          return 6;
+
+        case "hard":
+          return 8;
+
+        case "expert":
+          return 10;
+
+        default:
+          throw new Error("nbOfChoices not found");
+      }
+    }, [nbOfChoices]);
+
     do {
-      for (let i = 0; i < nbOfChoices; i++) {
+      for (let i = 0; i < difficulty; i++) {
         const randomCountry =
           countriesList && countriesList[Math.floor(Math.random() * countriesList.length)];
         randomCountry && responses.push(randomCountry);
@@ -172,9 +194,24 @@ export function Quiz() {
 
   const { actualQuestion, score, gameModale } = gameState;
 
-  const isQuizfinished = actualQuestion > nbOfQuestions;
+  const lengthInNumbers = useMemo(() => {
+    switch (nbOfQuestions) {
+      case "short":
+        return 10;
 
-  console.log("hasRestarted", gameState.hasRestarted);
+      case "normal":
+        return 20;
+
+      case "long":
+        return 30;
+
+      default:
+        return 10;
+    }
+  }, [nbOfQuestions]);
+
+  const isQuizfinished = actualQuestion > lengthInNumbers;
+
   function reducer(state: any, action: any) {
     switch (action.type) {
       case "correct answer":
@@ -215,6 +252,7 @@ export function Quiz() {
 
       case "restart":
         setIsModaleOpened(false);
+        setTime(0);
         return { ...initialState, hasRestarted: true };
 
       default:
@@ -222,19 +260,28 @@ export function Quiz() {
     }
   }
 
+  !isQuizfinished &&
+    setTimeout(() => {
+      setTime(time + 1);
+    }, 1000);
+
   return (
     <section className="quiz">
-      <p>score: {score}</p>
       <p>
-        question n°: {actualQuestion < nbOfQuestions ? actualQuestion : nbOfQuestions}/
-        {nbOfQuestions}
+        Theme: {theme} | Difficulty: {nbOfChoices} | Region: {region} | Length: {nbOfQuestions} |
+        Score: {score} | Time: {time}
+      </p>
+
+      <p>
+        Question n°: {actualQuestion < lengthInNumbers ? actualQuestion : lengthInNumbers}/
+        {lengthInNumbers}
       </p>
 
       <article className="game">
         {!isQuizfinished ? (
           <Game gameState={gameState} gameDispatch={gameDispatch} />
         ) : (
-          <Result score={score} />
+          <Results score={score} time={time} />
         )}
       </article>
 

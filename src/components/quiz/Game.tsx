@@ -12,7 +12,7 @@ import {
   GameProps,
 } from "../../types/props";
 import { API_DATA } from "../../types/api";
-import { SettingEnum, Difficulty } from "../../types/settings";
+import { SettingEnum, Difficulties } from "../../types/settings";
 import { GameState, ResponsesDataType } from "../../types/quiz";
 
 // Commons
@@ -31,13 +31,6 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       borders: theme === THEMES.BORDERS,
       areas: theme === THEMES.AREAS,
     },
-    isnt: {
-      flags: theme !== THEMES.FLAGS,
-      capitals: theme !== THEMES.CAPITALS,
-      demography: theme !== THEMES.DEMOGRAPHY,
-      borders: theme !== THEMES.BORDERS,
-      areas: theme !== THEMES.AREAS,
-    },
   };
   const { actualLanguage, data, settingsList, settingsState }: AppProviderProps =
     useContext(AppContext);
@@ -46,7 +39,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
 
   const isExpertMode =
     settingsState.nbOfChoices ===
-    settingsList[SettingEnum.Difficulty].setting.values[Difficulty.Expert].value;
+    settingsList[SettingEnum.Difficulty].setting.values[Difficulties.Expert].value;
 
   const [responseIndex, setResponseIndex] = useState(0);
 
@@ -75,6 +68,28 @@ export function Game({ gameState, gameDispatch }: GameProps) {
     );
   }
 
+  const nbOfResponses = useMemo(() => {
+    switch (nbOfChoices) {
+      case "kid":
+        return 2;
+
+      case "easy":
+        return 4;
+
+      case "medium":
+        return 6;
+
+      case "hard":
+        return 8;
+
+      case "expert":
+        return 10;
+
+      default:
+        return 4;
+    }
+  }, [nbOfChoices]);
+
   return (
     <>
       <h3>{t(`game.questions.${theme}`)}</h3>
@@ -88,7 +103,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
       )}
 
       <ul>
-        {Array(nbOfChoices)
+        {Array(nbOfResponses)
           .fill(0)
           .map((_, index) => {
             const isResponseCorrect = index === answer.index;

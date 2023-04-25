@@ -6,20 +6,20 @@ import { i18n } from "./i18n";
 import { useTranslation } from "react-i18next";
 
 // Types
+import { AppProviderProps } from "./types/context";
 import { API_DATA } from "./types/api";
 import {
-  Difficulty,
-  QuizLength,
+  Difficulties,
+  QuizLengths,
   Regions,
+  SettingList,
   SettingObj,
   SettingsAction,
-  SettingsList,
   SettingsState,
 } from "./types/settings";
 
 // Commons
 import { API_LINK, SETTINGS } from "./commons/commons";
-import { AppProviderProps } from "./types/context";
 
 export function AppProvider(props: object) {
   const { t } = useTranslation();
@@ -38,71 +38,71 @@ export function AppProvider(props: object) {
     values: [
       {
         label: t("modale.settings.difficulty.kid"),
-        value: 2,
+        value: "kid",
       },
       {
         label: t("modale.settings.difficulty.easy"),
-        value: 4,
+        value: "easy",
       },
       {
         label: t("modale.settings.difficulty.medium"),
-        value: 6,
+        value: "medium",
       },
       {
         label: t("modale.settings.difficulty.hard"),
-        value: 8,
+        value: "hard",
       },
       {
         label: t("modale.settings.difficulty.expert"),
-        value: 10,
+        value: "expert",
       },
     ],
   };
 
-  const quizLength: SettingObj = {
-    title: SETTINGS.QUESTIONS,
+  const lengths: SettingObj = {
+    title: SETTINGS.LENGTH,
     values: [
       {
-        label: "10",
-        value: 10,
+        label: "short",
+        value: "short",
       },
       {
-        label: "20",
-        value: 20,
+        label: "normal",
+        value: "normal",
       },
       {
-        label: "30",
-        value: 30,
+        label: "long",
+        value: "long",
       },
     ],
   };
 
   const regions: SettingObj = {
-    title: SETTINGS.REGIONS,
+    title: SETTINGS.REGION,
     values: [
       {
-        label: t("modale.settings.regions.all"),
-        value: 0,
+        label: t("modale.settings.region.all"),
+        value: "world",
       },
       {
-        label: t("modale.settings.regions.africa"),
-        value: 1,
+        label: t("modale.settings.region.africa"),
+        value: "africa",
       },
       {
-        label: t("modale.settings.regions.americas"),
-        value: 2,
+        label: t("modale.settings.region.americas"),
+        value: "americas",
       },
       {
-        label: t("modale.settings.regions.asia"),
-        value: 3,
+        label: t("modale.settings.region.asia"),
+        value: "asia",
       },
       {
-        label: t("modale.settings.regions.europe"),
-        value: 4,
+        label: t("modale.settings.region.europe"),
+        value: "europe",
       },
       {
-        label: t("modale.settings.regions.oceania"),
-        value: 5,
+        label: t("modale.settings.region.oceania"),
+        value: "oceania",
       },
     ],
   };
@@ -113,40 +113,61 @@ export function AppProvider(props: object) {
     savedSettings !== null
       ? JSON.parse(savedSettings)
       : {
-          nbOfChoices: difficulty.values[Difficulty.Easy].value,
-          nbOfQuestions: quizLength.values[QuizLength.Twenty].value,
-          regionChosen: regions.values[Regions.All].value,
+          nbOfChoices: difficulty.values[Difficulties.Easy].value,
+          nbOfQuestions: lengths.values[QuizLengths.Twenty].value,
+          regionChosen: regions.values[Regions.World].value,
         };
 
   const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
+  console.log("settingsState", settingsState);
 
-  const settingsList: SettingsList = [
+  const settingsList: SettingList = [
     {
       setting: difficulty,
       value: settingsState.nbOfChoices,
-      callDispatch: "change choices",
+      callDispatch: "change difficulty",
     },
     {
-      setting: quizLength,
+      setting: lengths,
       value: settingsState.nbOfQuestions,
-      callDispatch: "change questions",
+      callDispatch: "change length",
     },
     { setting: regions, value: settingsState.regionChosen, callDispatch: "change region" },
   ];
 
   function reducer(state: SettingsState, action: SettingsAction) {
     switch (action.type) {
-      case "change choices":
-        return { ...state, nbOfChoices: action.payload };
+      case "change difficulty":
+        return {
+          ...state,
+          nbOfChoices: action.payload.value,
+        };
 
-      case "change questions":
-        return { ...state, nbOfQuestions: action.payload };
+      case "change length":
+        return {
+          ...state,
+          nbOfQuestions: action.payload.value,
+        };
 
       case "change region":
-        return { ...state, regionChosen: action.payload };
+        return {
+          ...state,
+          regionChosen: action.payload.value,
+        };
+
+      case "goToQuiz":
+        return {
+          ...state,
+          nbOfChoices: action.payload.difficulty,
+          nbOfQuestions: action.payload.length,
+          regionChosen: action.payload.region,
+        };
 
       case "region not available for this theme":
-        return { ...state, regionChosen: action.payload };
+        return {
+          ...state,
+          regionChosen: action.payload.value,
+        };
 
       default:
         throw new Error("Unexpected settings action");

@@ -2,13 +2,13 @@
 import { Regions } from "../types/settings";
 
 // Commons
-import { THEMES } from "../commons/commons";
+import { CONTINENTS, THEMES } from "../commons/commons";
 import { API_DATA } from "../types/api";
 
 export type GetCountriesList = {
   data: API_DATA[];
   theme: string | undefined;
-  region: number;
+  region: string;
 };
 
 export function getCountriesList({ data, theme, region }: GetCountriesList) {
@@ -35,19 +35,19 @@ export function getCountriesList({ data, theme, region }: GetCountriesList) {
   }
 
   switch (region) {
-    case Regions.Africa:
+    case CONTINENTS.AFRICA:
       return getTheme().filter((country: API_DATA) => country.region === "Africa");
 
-    case Regions.Americas:
+    case CONTINENTS.AMERICAS:
       return getTheme().filter((country: API_DATA) => country.region === "Americas");
 
-    case Regions.Asia:
+    case CONTINENTS.ASIA:
       return getTheme().filter((country: API_DATA) => country.region === "Asia");
 
-    case Regions.Europe:
+    case CONTINENTS.EUROPE:
       return getTheme().filter((country: API_DATA) => country.region === "Europe");
 
-    case Regions.Oceania:
+    case CONTINENTS.OCEANIA:
       return getTheme().filter((country: API_DATA) => country.region === "Oceania");
 
     default:

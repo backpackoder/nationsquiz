@@ -8,6 +8,7 @@ import { QuizData } from "../../types/quiz";
 import { useQuizData } from "../../hooks/quizData";
 
 // Components
+import { Rankings } from "../rankings/Rankings";
 import { Modale } from "../../modales/Modale";
 import { SettingsModale } from "../../modales/SettingsModale";
 
@@ -45,6 +46,8 @@ export function QuizList() {
           );
         })}
       </ul>
+
+      <Rankings />
 
       {isModaleOpened && (
         <Modale

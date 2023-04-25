@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-// Types
-import { ResultProps } from "../../types/props";
+// Components
+import { Ranking } from "./Ranking";
 
-export function Result({ score }: ResultProps) {
+// Types
+import { ResultsProps } from "../../types/props";
+
+export function Results({ score, time }: ResultsProps) {
   const { t } = useTranslation();
 
   const description = useMemo(() => {
@@ -22,5 +25,11 @@ export function Result({ score }: ResultProps) {
     }
   }, [score, t]);
 
-  return <p>{description}</p>;
+  return (
+    <div>
+      <p>{description}</p>
+
+      <Ranking score={score} time={time} />
+    </div>
+  );
 }
