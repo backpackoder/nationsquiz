@@ -26,7 +26,7 @@ export function Buttons({ isQuizfinished, dispatch }: ButtonsProps) {
         className="leave"
         onClick={() =>
           isQuizfinished
-            ? navigate(ROUTES.QUIZ_LIST)
+            ? navigate(ROUTES.QUIZ.ROOT)
             : dispatch({ type: "open modale", payload: "leave" })
         }
       >
