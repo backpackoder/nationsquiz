@@ -128,7 +128,7 @@ export function Rankings() {
       </div>
 
       <p>
-        {theme.toUpperCase()} of {region.toUpperCase()} ({difficulty} mode, {length} quiz)
+        {theme} of {region} ({difficulty} mode, {length} quiz)
       </p>
 
       {!rankings ? (

@@ -119,7 +119,6 @@ export function AppProvider(props: object) {
         };
 
   const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
-  console.log("settingsState", settingsState);
 
   const settingsList: SettingList = [
     {
@@ -164,7 +163,6 @@ export function AppProvider(props: object) {
         };
 
       case "region not available for this theme":
-        console.log("action.payload.value", action.payload.value);
         return {
           ...state,
           regionChosen: action.payload.value,

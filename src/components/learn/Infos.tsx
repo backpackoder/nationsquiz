@@ -27,8 +27,6 @@ export function Infos() {
   const [ISO_4217, currencyValues] = Object.entries(
     countryData !== undefined && countryData?.currencies
   )[0];
-  console.log("ISO_4217", ISO_4217);
-  console.log("currencyValues", currencyValues);
 
   return countryData ? (
     <article>
