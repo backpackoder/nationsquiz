@@ -28,7 +28,7 @@ import { Rankings } from "./components/rankings/Rankings";
 
 export function AppConsumer() {
   const { status }: AppProviderProps = useContext(AppContext);
-  const { HOME, STUDY, INFOS, QUIZ_LIST, GAME, RANKINGS, PAGE_NOT_FOUND } = ROUTES;
+  const { HOME, STUDY, INFOS, QUIZ, RANKINGS, PAGE_NOT_FOUND } = ROUTES;
 
   return (
     <Router>
@@ -43,10 +43,10 @@ export function AppConsumer() {
             <Route path={HOME} element={<Home />} />
 
             <Route path={STUDY} element={<Study />} />
-            <Route path={INFOS} element={<Infos />} />
+            <Route path={`${STUDY}${INFOS.ROOT}${INFOS.ID}`} element={<Infos />} />
 
-            <Route path={QUIZ_LIST} element={<QuizList />} />
-            <Route path={GAME} element={<Quiz />} />
+            <Route path={QUIZ.ROOT} element={<QuizList />} />
+            <Route path={`${QUIZ.ROOT}${QUIZ.ID}`} element={<Quiz />} />
 
             <Route path={RANKINGS} element={<Rankings />} />
 

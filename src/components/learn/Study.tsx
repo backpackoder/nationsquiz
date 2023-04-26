@@ -117,9 +117,7 @@ export function Study() {
                 </div>
 
                 <button
-                  onClick={() =>
-                    navigate(`${ROUTES.STUDY}/infos/${stringForUrl(item.name.common)}`)
-                  }
+                  onClick={() => navigate(`${ROUTES.INFOS.ROOT}${stringForUrl(item.name.common)}`)}
                 >
                   {t("study.infoSheet")}
                 </button>

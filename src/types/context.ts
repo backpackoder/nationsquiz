@@ -9,6 +9,7 @@ export type AppProviderProps = {
   setActualLanguage: React.Dispatch<React.SetStateAction<string>>;
 
   // API
+  isFetching: boolean;
   status: "idle" | "error" | "loading" | "success";
   data: API_DATA[] | undefined;
   error: unknown;

@@ -28,7 +28,7 @@ export function AppProvider(props: object) {
   const [actualLanguage, setActualLanguage] = useState(i18n.language);
 
   // API
-  const { status, error, data } = useQuery({
+  const { isFetching, status, error, data } = useQuery({
     queryKey: ["nations"],
     queryFn: () => axios.get<API_DATA[]>(API_LINK).then((res) => res.data),
   });
@@ -164,6 +164,7 @@ export function AppProvider(props: object) {
         };
 
       case "region not available for this theme":
+        console.log("action.payload.value", action.payload.value);
         return {
           ...state,
           regionChosen: action.payload.value,
@@ -188,6 +189,7 @@ export function AppProvider(props: object) {
     setActualLanguage,
 
     // API
+    isFetching,
     status,
     data,
     error,

@@ -21,11 +21,16 @@ th {
   color: white;
 }
 
-td img {
+td span {
   display: flex;
-  width: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+td img {
+  width: 30px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  margin: 0 auto;
   cursor: pointer;
 }
 td img:hover {

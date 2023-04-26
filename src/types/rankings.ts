@@ -3,3 +3,12 @@ export type RankingsType =
   | {
       [x: string]: any;
     }[];
+
+export type RankingsInitialState = {
+  theme: string;
+  region: string;
+  difficulty: string;
+  length: string;
+  score: number;
+  time: number;
+};

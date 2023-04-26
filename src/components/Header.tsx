@@ -8,19 +8,20 @@ import { ROUTES } from "../commons/commons";
 
 export function Header() {
   const { t } = useTranslation();
+  const { HOME, STUDY, QUIZ } = ROUTES;
 
   return (
     <header>
       <nav>
         <ul>
           <li>
-            <Link to={ROUTES.HOME}>{t("menu.home")}</Link>
+            <Link to={HOME}>{t("menu.home")}</Link>
           </li>
           <li>
-            <Link to={ROUTES.STUDY}>{t("menu.study")}</Link>
+            <Link to={STUDY}>{t("menu.study")}</Link>
           </li>
           <li>
-            <Link to={ROUTES.QUIZ_LIST}>{t("menu.quiz")}</Link>
+            <Link to={QUIZ.ROOT}>{t("menu.quiz")}</Link>
           </li>
           <li>
             <ChangeLanguage />

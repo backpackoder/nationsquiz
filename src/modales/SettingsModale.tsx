@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import { useTranslation } from "react-i18next";
 
@@ -17,22 +17,31 @@ type SettingsModaleProps = {
 };
 
 export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleProps) {
+  const navigate = useNavigate();
   const { settingsDispatch, settingsList }: AppProviderProps = useContext(AppContext);
   const { t } = useTranslation();
+  const { pathname } = useLocation();
 
   const difficulty = settingsList[SettingEnum.Difficulty];
   const quizLength = settingsList[SettingEnum.QuizLength];
   const region = settingsList[SettingEnum.Region];
 
-  const ROOT = "modale.settings";
+  const T_ROOT = "modale.settings";
+
+  function goToQuiz() {
+    setIsModaleOpened(false);
+    navigate(
+      pathname === ROUTES.HOME ? `${ROUTES.QUIZ.ROOT}${quizTheme.theme}` : `${quizTheme.theme}`
+    );
+  }
 
   useEffect(() => {
     switch (quizTheme.theme) {
       case THEMES.BORDERS:
-        if (region.value === CONTINENTS.OCEANIA) {
+        if (region.value.toLowerCase() === CONTINENTS.OCEANIA.toLowerCase()) {
           settingsDispatch({
             type: "region not available for this theme",
-            payload: { value: CONTINENTS.WORLD },
+            payload: { value: CONTINENTS.WORLD.toLowerCase() },
           });
         }
         break;
@@ -46,11 +55,11 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
     <>
       <h2>{t(`quizList.${quizTheme.theme}.title`)}</h2>
 
-      <h3>{t(`${ROOT}.title`)}</h3>
+      <h3>{t(`${T_ROOT}.title`)}</h3>
 
       <div className="settings">
         <div className={`setting ${difficulty.setting.title}`}>
-          <h4>{t(`${ROOT}.${difficulty.setting.title}.title`)}</h4>
+          <h4>{t(`${T_ROOT}.${difficulty.setting.title}.title`)}</h4>
 
           <div className="buttons">
             {difficulty.setting.values.map((item, index) => {
@@ -73,7 +82,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
         </div>
 
         <div className={`setting ${quizLength.setting.title}`}>
-          <h4>{t(`${ROOT}.${quizLength.setting.title}.title`)}</h4>
+          <h4>{t(`${T_ROOT}.${quizLength.setting.title}.title`)}</h4>
 
           <div className="buttons">
             {quizLength.setting.values.map((item, index) => {
@@ -96,7 +105,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
         </div>
 
         <div className={`setting ${region.setting.title}`}>
-          <h4>{t(`${ROOT}.${region.setting.title}.title`)}</h4>
+          <h4>{t(`${T_ROOT}.${region.setting.title}.title`)}</h4>
 
           <div className="buttons">
             {region.setting.values.map((item, index) => {
@@ -125,9 +134,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
         </div>
       </div>
 
-      <Link to={`${ROUTES.QUIZ_LIST}/${quizTheme.theme}`} onClick={() => setIsModaleOpened(false)}>
-        {t(`${ROOT}.start`)}
-      </Link>
+      <a onClick={() => goToQuiz()}>{t(`${T_ROOT}.start`)}</a>
     </>
   );
 }

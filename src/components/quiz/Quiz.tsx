@@ -1,13 +1,13 @@
-import { useContext, useMemo, useReducer, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { AppContext } from "../../AppContext";
+import { useParams } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
 
 // Types
 import { AppProviderProps } from "../../types/context";
 
 // Components
 import { Game } from "./Game";
-import { Results } from "./Results";
 import { Buttons } from "./Buttons";
 import { Modale } from "../../modales/Modale";
 import { GameModale } from "../../modales/GameModale";
@@ -17,10 +17,13 @@ import { API_DATA } from "../../types/api";
 import { GameState } from "../../types/quiz";
 
 // Commons
-import { THEMES } from "../../commons/commons";
+import { SUPABASE, THEMES } from "../../commons/commons";
 
 // Utils
 import { getCountriesList } from "../../utils/getCountriesList";
+import { SubmitScore } from "../rankings/SubmitScore";
+import { Rankings } from "../rankings/Rankings";
+import { OnChangeSubmit } from "../../types/props";
 
 type Answer = any;
 // {
@@ -28,13 +31,18 @@ type Answer = any;
 //   index: number;
 // }
 
+const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
+
 export function Quiz() {
   const { theme } = useParams();
   const { data, settingsState }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen: region } = settingsState;
 
   const [isModaleOpened, setIsModaleOpened] = useState(false);
+  const [pseudo, setPseudo] = useState(localStorage.getItem("pseudo") || "");
+  const [nationality, setNationality] = useState(localStorage.getItem("nationality") || "");
   const [time, setTime] = useState(0);
+  const [isScoreSubmitted, setIsScoreSubmitted] = useState(false);
 
   function getResponses() {
     const countriesList = data && getCountriesList({ data, theme, region });
@@ -194,23 +202,12 @@ export function Quiz() {
 
   const { actualQuestion, score, gameModale } = gameState;
 
-  const lengthInNumbers = useMemo(() => {
-    switch (nbOfQuestions) {
-      case "short":
-        return 10;
-
-      case "normal":
-        return 20;
-
-      case "long":
-        return 30;
-
-      default:
-        return 10;
-    }
-  }, [nbOfQuestions]);
-
-  const isQuizfinished = actualQuestion > lengthInNumbers;
+  const infosToSubmit = {
+    pseudo,
+    nationality,
+    score,
+    time,
+  };
 
   function reducer(state: any, action: any) {
     switch (action.type) {
@@ -219,18 +216,20 @@ export function Quiz() {
           ...state,
           score: state.score + 1,
           hasResponded: true,
+          hasRestarted: false,
         };
 
       case "wrong answer":
         return {
           ...state,
           hasResponded: true,
+          hasRestarted: false,
         };
 
       case "next question":
         return {
           ...state,
-          actualQuestion: state.hasRestarted ? state.actualQuestion : state.actualQuestion + 1,
+          actualQuestion: state.actualQuestion + 1,
 
           responses: choices.responses,
           answer: choices.answer,
@@ -253,17 +252,76 @@ export function Quiz() {
       case "restart":
         setIsModaleOpened(false);
         setTime(0);
-        return { ...initialState, hasRestarted: true };
+        return { ...initialState, actualQuestion: 1, hasRestarted: true };
 
       default:
         return new Error("Action not found");
     }
   }
 
-  !isQuizfinished &&
-    setTimeout(() => {
-      setTime(time + 1);
-    }, 1000);
+  const lengthInNumbers = useMemo(() => {
+    switch (nbOfQuestions) {
+      case "short":
+        return 10;
+
+      case "normal":
+        return 20;
+
+      case "long":
+        return 30;
+
+      default:
+        return 10;
+    }
+  }, [nbOfQuestions]);
+
+  const isQuizfinished = actualQuestion > lengthInNumbers;
+
+  function onChangeSubmit({ type, value }: OnChangeSubmit) {
+    switch (type) {
+      case "pseudo":
+        setPseudo(value);
+        localStorage.setItem("pseudo", value);
+        break;
+      case "nationality":
+        setNationality(value);
+        localStorage.setItem("nationality", value);
+        break;
+      default:
+        break;
+    }
+  }
+
+  async function submitScore() {
+    if (pseudo === "") {
+      alert("Please enter a pseudo");
+    } else {
+      await supabase.from("rankings").insert([
+        {
+          pseudo,
+          theme,
+          region,
+          difficulty: nbOfChoices,
+          length: nbOfQuestions,
+          score,
+          time,
+          nationality,
+        },
+      ]);
+      setIsScoreSubmitted(true);
+    }
+  }
+
+  useEffect(() => {
+    gameDispatch({ type: "restart" });
+  }, []);
+
+  useEffect(() => {
+    if (!isQuizfinished) {
+      const interval = setInterval(() => setTime(time + 1), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [time]);
 
   return (
     <section className="quiz">
@@ -280,8 +338,14 @@ export function Quiz() {
       <article className="game">
         {!isQuizfinished ? (
           <Game gameState={gameState} gameDispatch={gameDispatch} />
+        ) : isScoreSubmitted ? (
+          <Rankings />
         ) : (
-          <Results score={score} time={time} />
+          <SubmitScore
+            infosToSubmit={infosToSubmit}
+            onChangeSubmit={onChangeSubmit}
+            submitScore={submitScore}
+          />
         )}
       </article>
 

@@ -44,8 +44,12 @@ export type OnChangeSubmit = {
   value: string;
 };
 export type SubmitScoreProps = {
-  score: number;
-  time: number;
+  infosToSubmit: {
+    pseudo: string;
+    nationality: string;
+    score: number;
+    time: number;
+  };
   onChangeSubmit: ({ type, value }: OnChangeSubmit) => void;
   submitScore: () => Promise<void>;
 };

@@ -1,32 +1,94 @@
-import { useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { AppContext } from "../../AppContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 
 // Types
 import { AppProviderProps } from "../../types/context";
-import { RankingsType } from "../../types/rankings";
+import { RankingsInitialState, RankingsType } from "../../types/rankings";
 
 // Utils
-import { rankingsFilters } from "../../utils/rankingsFilters";
+import { getRankingsFilters } from "../../utils/rankingsFilters";
 
 // Commons
-import { SUPABASE } from "../../commons/commons";
+import { ROUTES, SUPABASE } from "../../commons/commons";
 import { formatDistanceToNow } from "date-fns";
 
 const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
 export function Rankings() {
+  const { theme: themeParams } = useParams();
   const navigate = useNavigate();
-  const { data, settingsDispatch }: AppProviderProps = useContext(AppContext);
-  const [rankings, setRankings] = useState<RankingsType>([]);
+  const { data, settingsState, settingsDispatch }: AppProviderProps = useContext(AppContext);
+  const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
+  const [rankings, setRankings] = useState<RankingsType>(null);
 
-  function goToQuiz(rank: { [x: string]: any }) {
-    const keys = Object.entries(rank).map(([key, value]) => {
-      return { [key]: value };
-    });
+  const rankingsFilters = getRankingsFilters({
+    theme: themeParams ?? "flags",
+    difficulty: nbOfChoices,
+    length: nbOfQuestions,
+    region: regionChosen,
+  });
 
-    const change = {
+  const rankingsInitialState: RankingsInitialState = {
+    theme: rankingsFilters.theme.default.value,
+    region: regionChosen,
+    difficulty: nbOfChoices,
+    length: nbOfQuestions,
+    score: 0,
+    time: 999,
+  };
+
+  const [rankingsState, rankingsDispatch] = useReducer(reducer, rankingsInitialState);
+  const { theme, region, difficulty, length, score, time } = rankingsState;
+
+  function reducer(state: RankingsInitialState, action: any) {
+    switch (action.type) {
+      case action.payload.type:
+        return {
+          ...state,
+          [action.payload.type]: action.payload.value,
+        };
+
+      case "reset score and time":
+        return {
+          ...state,
+          score: 0,
+          time: 0,
+        };
+
+      default:
+        return state;
+    }
+  }
+
+  async function getRankings() {
+    setRankings(null);
+
+    const { data } = await supabase
+      .from("rankings")
+      .select()
+      .eq("theme", theme)
+      .eq("region", region)
+      .eq("difficulty", difficulty)
+      .eq("length", length)
+      .gte("score", score)
+      .lte("time", time)
+      .order("score", { ascending: false })
+      .order("time", { ascending: true })
+      .order("date", { ascending: true });
+
+    setRankings(data);
+  }
+
+  function goToQuiz(rank?: { [x: string]: any }) {
+    const keys =
+      rank &&
+      Object.entries(rank).map(([key, value]) => {
+        return { [key]: value };
+      });
+
+    const change = keys && {
       theme: keys.find((item) => item.theme)?.theme,
       region: keys.find((item) => item.region)?.region,
       difficulty: keys.find((item) => item.difficulty)?.difficulty,
@@ -37,70 +99,21 @@ export function Rankings() {
       type: `goToQuiz`,
       payload: {
         value: "",
-        region: change.region,
-        difficulty: change.difficulty,
-        length: change.length,
+        region: change?.region ?? region,
+        difficulty: change?.difficulty ?? difficulty,
+        length: change?.length ?? length,
       },
     });
 
-    navigate(`/quiz/${change.theme}`);
-  }
+    rankingsDispatch({ type: "reset score and time", payload: { type: "nope" } });
 
-  const initialState = {
-    // Selects
-    theme: "all",
-    region: "all",
-    difficulty: "all",
-    length: "all",
-    score: 0,
-    time: 0,
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  function reducer(state: any, action: any) {
-    switch (action.type) {
-      case action.payload.type:
-        return {
-          ...state,
-          [action.payload.type]: action.payload.value,
-        };
-
-      default:
-        return state;
-    }
-  }
-
-  console.log("state", state);
-
-  async function getRankings() {
-    function getType(type: keyof typeof initialState) {
-      const isDefault = state[type] === initialState[type];
-      const column = isDefault ? "" : type;
-      const value = isDefault ? "" : state[type];
-
-      return { column, value };
-    }
-
-    const { data } = await supabase
-      .from("rankings")
-      .select()
-      .eq(getType("theme").column, getType("theme").value)
-      .eq(getType("region").column, getType("region").value)
-      .eq(getType("difficulty").column, getType("difficulty").value)
-      .eq(getType("length").column, getType("length").value)
-      .gte(getType("score").column, getType("score").value)
-      .lte(getType("time").column, getType("time").value)
-      .order("score", { ascending: false })
-      .order("time", { ascending: true })
-      .order("date", { ascending: true });
-
-    setRankings(data);
+    navigate(`../../${ROUTES.QUIZ.ROOT}${rank ? change?.theme : theme}`);
+    window.location.reload();
   }
 
   useEffect(() => {
     getRankings();
-  }, [state]);
+  }, [rankingsState]);
 
   return (
     <article className="rankings">
@@ -108,64 +121,69 @@ export function Rankings() {
 
       <div className="searchBar rankings">
         {Object.entries(rankingsFilters).map(([key, value], index) => {
-          return <Selector key={index} selector={key} options={value} dispatch={dispatch} />;
+          return (
+            <Selector key={index} selector={key} options={value} dispatch={rankingsDispatch} />
+          );
         })}
       </div>
 
       <p>
-        {state.theme === "All" ? "ALL THEMES" : state.theme.toUpperCase()} of{" "}
-        {state.region === "All" ? "WORLD" : state.region.toUpperCase()} (
-        {state.difficulty === "All" ? "All difficulties" : state.difficulty} mode,{" "}
-        {state.length === "All" ? "All lengths" : state.length} quiz)
+        {theme.toUpperCase()} of {region.toUpperCase()} ({difficulty} mode, {length} quiz)
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Pseudo</th>
-            <th>Nationality</th>
-            {state.theme === initialState.theme && <th>Theme</th>}
-            {state.region === initialState.region && <th>Region</th>}
-            {state.difficulty === initialState.difficulty && <th>Difficulty</th>}
-            {state.length === initialState.length && <th>Length</th>}
-            <th>Score</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rankings?.map((rank, index) => {
-            const date = formatDistanceToNow(new Date(rank.date), {
-              addSuffix: true,
-              includeSeconds: false,
-            });
+      {!rankings ? (
+        <div>
+          <p>Chargement des classements en cours...</p>
+        </div>
+      ) : rankings && rankings.length === 0 ? (
+        <div>
+          <p>Ce quiz n'a pas encore de records... Soyez le premier !</p>
+          <button onClick={() => goToQuiz()}>Jouer</button>
+        </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Pseudo</th>
+              <th>Score</th>
+              <th>Time</th>
+              <th>Date</th>
+              <th>Beat it</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rankings?.map((rank, index) => {
+              const date = formatDistanceToNow(new Date(rank.date), {
+                addSuffix: true,
+                includeSeconds: false,
+              });
 
-            const nationalityFlag = data?.find(
-              (country) => country.name.common === rank.nationality
-            );
+              const nationalityFlag = data?.find(
+                (country) => country.name.common === rank.nationality
+              );
 
-            return (
-              index < 10 && (
+              return (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{rank.pseudo}</td>
                   <td>
-                    {nationalityFlag ? (
-                      <img
-                        src={nationalityFlag?.flags.png}
-                        alt={nationalityFlag?.flags.alt}
-                        onClick={() => navigate(`/study/infos/${rank.nationality.toLowerCase()}`)}
-                      />
-                    ) : (
-                      "Unknown"
-                    )}
+                    <span>
+                      {rank.pseudo}{" "}
+                      {nationalityFlag && (
+                        <img
+                          src={nationalityFlag?.flags.png}
+                          alt={nationalityFlag?.flags.alt}
+                          onClick={() =>
+                            navigate(
+                              `../${ROUTES.STUDY}${
+                                ROUTES.INFOS.ROOT
+                              }${rank.nationality.toLowerCase()}`
+                            )
+                          }
+                        />
+                      )}
+                    </span>
                   </td>
-                  {state.theme === initialState.theme && <td>{rank.theme}</td>}
-                  {state.region === initialState.region && <td>{rank.region}</td>}
-                  {state.difficulty === initialState.difficulty && <td>{rank.difficulty}</td>}
-                  {state.length === initialState.length && <td>{rank.length}</td>}
                   <td>{rank.score}</td>
                   <td>{rank.time}</td>
                   <td>{date}</td>
@@ -173,11 +191,11 @@ export function Rankings() {
                     <button onClick={() => goToQuiz(rank)}>Play</button>
                   </td>
                 </tr>
-              )
-            );
-          })}
-        </tbody>
-      </table>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </article>
   );
 }
@@ -190,6 +208,7 @@ function Selector({ selector, options, dispatch }: any) {
       <select
         name={selector}
         id={selector}
+        defaultValue={options.default.value}
         onChange={(e) =>
           dispatch({
             type: selector,
@@ -197,7 +216,6 @@ function Selector({ selector, options, dispatch }: any) {
           })
         }
       >
-        <option value={options.default.value}>{options.default.label}</option>
         {options.options.map((option: any, index: number) => {
           return (
             <option key={index} value={option.value}>

@@ -7,11 +7,16 @@ export const TITLE = "Nations Quiz";
 // Routes
 export const ROUTES = {
   HOME: "/",
-  STUDY: "/study",
-  INFOS: "/study/infos/:country",
-  QUIZ_LIST: "/quiz",
-  GAME: "/quiz/:theme",
-  RANKINGS: "/rankings",
+  STUDY: "study/",
+  INFOS: {
+    ROOT: "infos/",
+    ID: ":country/",
+  },
+  QUIZ: {
+    ROOT: "quiz/",
+    ID: ":theme/",
+  },
+  RANKINGS: "rankings/",
   PAGE_NOT_FOUND: "*",
 };
 
