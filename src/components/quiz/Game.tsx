@@ -102,7 +102,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
         <CountryNameOfAnswer countryName={getCountryName()} />
       )}
 
-      <ul>
+      <ul className="responses">
         {Array(nbOfResponses)
           .fill(0)
           .map((_, index) => {

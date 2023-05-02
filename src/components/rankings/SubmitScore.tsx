@@ -7,10 +7,10 @@ import { AppProviderProps } from "../../types/context";
 
 export function SubmitScore({ infosToSubmit, onChangeSubmit, submitScore }: SubmitScoreProps) {
   const { data }: AppProviderProps = useContext(AppContext);
-  const { pseudo, nationality, score, time } = infosToSubmit;
+  const { score, time, pseudo, nationality } = infosToSubmit;
 
   return (
-    <div>
+    <div className="submitScore">
       <p>
         Avec un score de {score} point{score === 1 ? "" : "s"} en {time} seconde
         {time === 1 ? "" : "s"}, vous venez d'établir un nouveau record, félicitations !<br />
@@ -21,6 +21,7 @@ export function SubmitScore({ infosToSubmit, onChangeSubmit, submitScore }: Subm
         type="text"
         placeholder="Your name"
         value={pseudo}
+        maxLength={20}
         onChange={(e) => onChangeSubmit({ type: "pseudo", value: e.target.value })}
       />
 

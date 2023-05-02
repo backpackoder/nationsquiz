@@ -1,5 +1,6 @@
 // Types
 import { API_DATA } from "./api";
+import { getRankingsFilters } from "./rankings";
 
 // SEARCHBAR
 export type SearchBarProps = {
@@ -54,8 +55,13 @@ export type SubmitScoreProps = {
   submitScore: () => Promise<void>;
 };
 
-// RANKING
+// RANKINGS
 export type RankingProps = {
   score: number;
   time: number;
+};
+
+export type SearchBarRankingsProps = {
+  rankingsFilters: getRankingsFilters;
+  dispatch: React.Dispatch<any>;
 };

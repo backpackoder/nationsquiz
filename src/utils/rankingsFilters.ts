@@ -1,12 +1,8 @@
-type getRankingsFiltersProps = {
-  theme: string;
-  difficulty: string;
-  length: string;
-  region: string;
-};
+// Types
+import { getRankingsFilters, getRankingsFiltersProps } from "../types/rankings";
 
 export function getRankingsFilters({ theme, difficulty, length, region }: getRankingsFiltersProps) {
-  const rankingsFilters = {
+  const rankingsFilters: getRankingsFilters = {
     theme: {
       title: "theme",
       default: { value: theme, label: theme },
@@ -19,14 +15,14 @@ export function getRankingsFilters({ theme, difficulty, length, region }: getRan
       ],
     },
     region: {
-      title: "continent",
+      title: "region",
       default: { value: region, label: region },
       options: [
         { value: "world", label: "world" },
-        { value: "europe", label: "europe" },
         { value: "africa", label: "africa" },
-        { value: "asia", label: "asia" },
         { value: "americas", label: "americas" },
+        { value: "asia", label: "asia" },
+        { value: "europe", label: "europe" },
         { value: "oceania", label: "oceania" },
       ],
     },
@@ -48,30 +44,6 @@ export function getRankingsFilters({ theme, difficulty, length, region }: getRan
         { value: "short", label: "short" },
         { value: "normal", label: "normal" },
         { value: "long", label: "long" },
-      ],
-    },
-    score: {
-      title: "min score",
-      default: { value: 0, label: "all" },
-      options: [
-        { value: 0, label: "all" },
-        { value: 5, label: "5" },
-        { value: 10, label: "10" },
-        { value: 15, label: "15" },
-        { value: 20, label: "20" },
-        { value: 25, label: "25" },
-      ],
-    },
-    time: {
-      title: "max time",
-      default: { value: 999, label: "all" },
-      options: [
-        { value: 999, label: "all" },
-        { value: 100, label: "100" },
-        { value: 80, label: "80" },
-        { value: 60, label: "60" },
-        { value: 40, label: "40" },
-        { value: 20, label: "20" },
       ],
     },
   };

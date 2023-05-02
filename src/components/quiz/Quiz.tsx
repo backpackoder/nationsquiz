@@ -17,13 +17,14 @@ import { API_DATA } from "../../types/api";
 import { GameState } from "../../types/quiz";
 
 // Commons
-import { SUPABASE, THEMES } from "../../commons/commons";
+import { MAX_RANKS_LIMIT, SUPABASE, THEMES } from "../../commons/commons";
 
 // Utils
 import { getCountriesList } from "../../utils/getCountriesList";
 import { SubmitScore } from "../rankings/SubmitScore";
 import { Rankings } from "../rankings/Rankings";
 import { OnChangeSubmit } from "../../types/props";
+import { QuizModeSentence } from "../QuizModeSentence";
 
 type Answer = any;
 // {
@@ -42,6 +43,7 @@ export function Quiz() {
   const [pseudo, setPseudo] = useState(localStorage.getItem("pseudo") || "");
   const [nationality, setNationality] = useState(localStorage.getItem("nationality") || "");
   const [time, setTime] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(true);
   const [isScoreSubmitted, setIsScoreSubmitted] = useState(false);
 
   function getResponses() {
@@ -292,10 +294,61 @@ export function Quiz() {
     }
   }
 
+  async function getActualRecords() {
+    const { data } = await supabase
+      .from("rankings")
+      .select()
+      .eq("theme", theme)
+      .eq("region", region)
+      .eq("difficulty", nbOfChoices)
+      .eq("length", nbOfQuestions)
+      .order("score", { ascending: false })
+      .order("time", { ascending: true })
+      .order("date", { ascending: true });
+
+    return data;
+  }
+
+  async function checkIfNewRecord() {
+    const actualRecords = await getActualRecords();
+
+    const worstRankedScore = actualRecords && actualRecords[actualRecords?.length - 1];
+
+    if (actualRecords) {
+      if (actualRecords.length < MAX_RANKS_LIMIT) {
+        setIsNewRecord(true);
+      } else {
+        if (score > worstRankedScore?.score) {
+          setIsNewRecord(true);
+        } else if (score === worstRankedScore?.score && time < worstRankedScore?.time) {
+          setIsNewRecord(true);
+        } else {
+          setIsNewRecord(false);
+        }
+      }
+    }
+
+    return isNewRecord;
+  }
+
   async function submitScore() {
     if (pseudo === "") {
       alert("Please enter a pseudo");
     } else {
+      const actualRecords = await getActualRecords();
+
+      if (actualRecords && actualRecords.length >= MAX_RANKS_LIMIT) {
+        for (let i = actualRecords?.length; i && i >= MAX_RANKS_LIMIT; i--) {
+          const newActualRecords = await getActualRecords();
+          const worstRankedScore =
+            newActualRecords && newActualRecords[newActualRecords?.length - 1];
+          await supabase
+            .from("rankings")
+            .delete()
+            .match({ id: worstRankedScore && worstRankedScore.id });
+        }
+      }
+
       await supabase.from("rankings").insert([
         {
           pseudo,
@@ -313,20 +366,23 @@ export function Quiz() {
   }
 
   useEffect(() => {
-    gameDispatch({ type: "restart" });
-  }, []);
-
-  useEffect(() => {
     if (!isQuizfinished) {
       const interval = setInterval(() => setTime(time + 1), 1000);
       return () => clearInterval(interval);
     }
   }, [time]);
 
+  useEffect(() => {
+    if (isQuizfinished) {
+      checkIfNewRecord();
+    }
+  }, [isQuizfinished]);
+
   return (
     <section className="quiz">
+      <QuizModeSentence settings={{ region, difficulty: nbOfChoices, length: nbOfQuestions }} />
+
       <p>
-        Theme: {theme} | Difficulty: {nbOfChoices} | Region: {region} | Length: {nbOfQuestions} |
         Score: {score} | Time: {time}
       </p>
 
@@ -338,14 +394,19 @@ export function Quiz() {
       <article className="game">
         {!isQuizfinished ? (
           <Game gameState={gameState} gameDispatch={gameDispatch} />
-        ) : isScoreSubmitted ? (
-          <Rankings />
-        ) : (
+        ) : !isScoreSubmitted && isNewRecord ? (
           <SubmitScore
             infosToSubmit={infosToSubmit}
             onChangeSubmit={onChangeSubmit}
             submitScore={submitScore}
           />
+        ) : (
+          <>
+            {isNewRecord
+              ? "Votre score à été ajouté dans la liste des records."
+              : "votre score n'entre pas dans la table des records."}
+            <Rankings />
+          </>
         )}
       </article>
 

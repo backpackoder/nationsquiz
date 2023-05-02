@@ -30,21 +30,21 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  max-width: 1000px;
+  min-width: 300px;
+  width: calc(100% - 100px);
   background-color: rgb(240, 240, 240);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 0 24px -16px;
-  margin: 10px;
 }
-.quiz > .game ul {
+.quiz > .game .responses {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
   text-align: center;
 }
-.quiz > .game ul li {
+.quiz > .game .responses li {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,38 +56,38 @@
   cursor: pointer;
 }
 @media (hover: hover) {
-  .quiz > .game ul li:hover {
+  .quiz > .game .responses li:hover {
     background-color: rgb(100, 200, 200);
   }
 }
-.quiz > .game ul li.limited {
+.quiz > .game .responses li.limited {
   max-width: 125px;
 }
-.quiz > .game ul li .responseImgWrapper {
+.quiz > .game .responses li .responseImgWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
-.quiz > .game ul li .responseImgWrapper .responseImg {
+.quiz > .game .responses li .responseImgWrapper .responseImg {
   width: 100%;
 }
-.quiz > .game ul li.correctResponse.active {
+.quiz > .game .responses li.correctResponse.active {
   background-color: lightgreen;
 }
-.quiz > .game ul li.wrongResponse.active {
+.quiz > .game .responses li.wrongResponse.active {
   background-color: red;
 }
 
 @media (min-width: 600px) {
-  .quiz > .game ul li.limited {
+  .quiz > .game .responses li.limited {
     max-width: 150px;
   }
 }
 
 @media (min-width: 800px) {
-  .quiz > .game ul li.limited {
+  .quiz > .game .responses li.limited {
     max-width: 175px;
   }
 }

@@ -5,6 +5,36 @@ export const translationsFRA = {
     spa: "Espagnol",
   },
 
+  settings: {
+    themes: {
+      flags: "Drapeaux",
+      capitals: "Capitales",
+      demography: "Démographie",
+      borders: "Frontières",
+      areas: "Superficies",
+    },
+    regions: {
+      world: "Monde",
+      africa: "Afrique",
+      americas: "Amériques",
+      asia: "Asie",
+      europe: "Europe",
+      oceania: "Océanie",
+    },
+    difficulties: {
+      kid: "Bac à sable",
+      easy: "Facile",
+      medium: "Moyen",
+      hard: "Difficile",
+      expert: "Expert",
+    },
+    lengths: {
+      short: "Court",
+      normal: "Normal",
+      long: "Long",
+    },
+  },
+
   menu: {
     home: "Accueil",
     study: "Étudier",
@@ -119,7 +149,7 @@ export const translationsFRA = {
       description: "Trouver le pays le plus étendu",
     },
 
-    start: "Jouer",
+    start: "JOUER",
   },
 
   game: {
@@ -148,6 +178,60 @@ export const translationsFRA = {
 
       restart: "Rejouer",
       another: "Autre quiz",
+    },
+  },
+
+  rankings: {
+    title: "Classements",
+    playThisQuiz: "Jouer à ce quiz",
+
+    filters: {
+      theme: {
+        title: "Thème",
+        flags: "Drapeaux",
+        capitals: "Capitales",
+        demography: "Démographie",
+        borders: "Frontières",
+        areas: "Superficies",
+      },
+      region: {
+        title: "Region",
+        world: "Monde",
+        africa: "Afrique",
+        americas: "Amériques",
+        asia: "Asie",
+        europe: "Europe",
+        oceania: "Océanie",
+      },
+      difficulty: {
+        title: "Difficulté",
+        kid: "Bac à sable",
+        easy: "Facile",
+        medium: "Moyen",
+        hard: "Difficile",
+        expert: "Expert",
+      },
+      length: {
+        title: "Questions",
+        short: "Court",
+        normal: "Normal",
+        long: "Long",
+      },
+    },
+
+    sentence: {
+      main: "{{theme}} de {{region}}",
+      second: "({{difficulty}}, {{length}})",
+    },
+
+    loading: "Chargement des classements en cours...",
+    noRankings: "Ce quiz n'a pas encore de records... Soyez le premier !",
+  },
+
+  ranking: {
+    scoreAndTime: {
+      one: "<span>{{score}}</span> point en <span>{{time}}</span> secondes",
+      many: "<span>{{score}}</span> points en <span>{{time}}</span> secondes",
     },
   },
 

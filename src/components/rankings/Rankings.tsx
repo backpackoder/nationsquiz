@@ -2,6 +2,13 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import { Trans, useTranslation } from "react-i18next";
+import { formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
+
+// Components
+import { QuizModeSentence } from "../QuizModeSentence";
 
 // Types
 import { AppProviderProps } from "../../types/context";
@@ -12,13 +19,14 @@ import { getRankingsFilters } from "../../utils/rankingsFilters";
 
 // Commons
 import { ROUTES, SUPABASE } from "../../commons/commons";
-import { formatDistanceToNow } from "date-fns";
+import { SearchBarRankings } from "./SearchBarRankings";
 
 const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
 export function Rankings() {
   const { theme: themeParams } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data, settingsState, settingsDispatch }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
   const [rankings, setRankings] = useState<RankingsType>(null);
@@ -81,33 +89,20 @@ export function Rankings() {
     setRankings(data);
   }
 
-  function goToQuiz(rank?: { [x: string]: any }) {
-    const keys =
-      rank &&
-      Object.entries(rank).map(([key, value]) => {
-        return { [key]: value };
-      });
-
-    const change = keys && {
-      theme: keys.find((item) => item.theme)?.theme,
-      region: keys.find((item) => item.region)?.region,
-      difficulty: keys.find((item) => item.difficulty)?.difficulty,
-      length: keys.find((item) => item.length)?.length,
-    };
-
+  function goToQuiz() {
     settingsDispatch({
       type: `goToQuiz`,
       payload: {
         value: "",
-        region: change?.region ?? region,
-        difficulty: change?.difficulty ?? difficulty,
-        length: change?.length ?? length,
+        region,
+        difficulty,
+        length,
       },
     });
 
-    rankingsDispatch({ type: "reset score and time", payload: { type: "nope" } });
+    rankingsDispatch({ type: "reset score and time" });
 
-    navigate(`../../${ROUTES.QUIZ.ROOT}${rank ? change?.theme : theme}`);
+    navigate(`../../${ROUTES.QUIZ.ROOT}${theme}`);
     window.location.reload();
   }
 
@@ -117,113 +112,81 @@ export function Rankings() {
 
   return (
     <article className="rankings">
-      <h2>Rankings</h2>
+      <h2>{t("rankings.title")}</h2>
 
-      <div className="searchBar rankings">
-        {Object.entries(rankingsFilters).map(([key, value], index) => {
-          return (
-            <Selector key={index} selector={key} options={value} dispatch={rankingsDispatch} />
-          );
-        })}
+      <SearchBarRankings rankingsFilters={rankingsFilters} dispatch={rankingsDispatch} />
+
+      <div className="sentence">
+        <QuizModeSentence theme={theme} settings={{ region, difficulty, length }} />
+
+        <button onClick={() => goToQuiz()}>{t("rankings.playThisQuiz")}</button>
       </div>
 
-      <p>
-        {theme.toUpperCase()} of {region.toUpperCase()} ({difficulty} mode, {length} quiz)
-      </p>
-
       {!rankings ? (
-        <div>
-          <p>Chargement des classements en cours...</p>
+        <div className="rankings-loading">
+          <p>{t("rankings.loading")}</p>
         </div>
       ) : rankings && rankings.length === 0 ? (
-        <div>
-          <p>Ce quiz n'a pas encore de records... Soyez le premier !</p>
-          <button onClick={() => goToQuiz()}>Jouer</button>
+        <div className="rankings-noRankings">
+          <p>{t("rankings.noRankings")}</p>
         </div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Pseudo</th>
-              <th>Score</th>
-              <th>Time</th>
-              <th>Date</th>
-              <th>Beat it</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rankings?.map((rank, index) => {
-              const date = formatDistanceToNow(new Date(rank.date), {
-                addSuffix: true,
-                includeSeconds: false,
-              });
+        <ul className="rankings-list">
+          {rankings?.map((rank, index) => {
+            const date = formatDistanceToNow(new Date(rank.date), {
+              addSuffix: true,
+              includeSeconds: false,
+            });
 
-              const nationalityFlag = data?.find(
-                (country) => country.name.common === rank.nationality
-              );
+            const nationalityFlag = data?.find(
+              (country) => country.name.common === rank.nationality
+            );
 
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <span>
-                      {rank.pseudo}{" "}
-                      {nationalityFlag && (
-                        <img
-                          src={nationalityFlag?.flags.png}
-                          alt={nationalityFlag?.flags.alt}
-                          onClick={() =>
-                            navigate(
-                              `../${ROUTES.STUDY}${
-                                ROUTES.INFOS.ROOT
-                              }${rank.nationality.toLowerCase()}`
-                            )
-                          }
-                        />
-                      )}
-                    </span>
-                  </td>
-                  <td>{rank.score}</td>
-                  <td>{rank.time}</td>
-                  <td>{date}</td>
-                  <td>
-                    <button onClick={() => goToQuiz(rank)}>Play</button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+            return (
+              <li key={index} className="rankings-item">
+                <h3 className="rank">{index + 1}</h3>
+
+                <div className="infos">
+                  <div className="player">
+                    <h4>{rank.pseudo}</h4>
+                    {nationalityFlag && (
+                      <img
+                        src={nationalityFlag?.flags.png}
+                        alt={nationalityFlag?.flags.alt}
+                        onClick={() =>
+                          navigate(
+                            `../${ROUTES.STUDY}${
+                              ROUTES.INFOS.ROOT
+                            }${rank.nationality.toLowerCase()}`
+                          )
+                        }
+                      />
+                    )}
+                  </div>
+
+                  <p className="scoreAndTime">
+                    <Trans
+                      components={{
+                        span: <span></span>,
+                      }}
+                      values={{ score: rank.score, time: rank.time }}
+                    >
+                      {rank.score === 1 ? "ranking.scoreAndTime.one" : "ranking.scoreAndTime.many"}
+                    </Trans>
+                  </p>
+
+                  <div className="date">
+                    <FontAwesomeIcon icon={faClock} size="sm" />
+                    <p>
+                      <small>{date}</small>
+                    </p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </article>
-  );
-}
-
-function Selector({ selector, options, dispatch }: any) {
-  return (
-    <div>
-      <p>{options.title ?? selector}</p>
-
-      <select
-        name={selector}
-        id={selector}
-        defaultValue={options.default.value}
-        onChange={(e) =>
-          dispatch({
-            type: selector,
-            payload: { type: selector, value: e.target.value },
-          })
-        }
-      >
-        {options.options.map((option: any, index: number) => {
-          return (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          );
-        })}
-      </select>
-    </div>
   );
 }

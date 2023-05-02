@@ -23,6 +23,7 @@
 }
 
 /* Rankings */
-.searchBar.rankings {
-  position: static;
+.searchBar.searchBar-rankings {
+  width: 100%;
+  border-radius: 10px;
 }

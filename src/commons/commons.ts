@@ -54,3 +54,5 @@ export const CONTINENTS = {
   EUROPE: "Europe",
   OCEANIA: "Oceania",
 };
+
+export const MAX_RANKS_LIMIT = 10;

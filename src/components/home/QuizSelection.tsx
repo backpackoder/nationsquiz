@@ -29,7 +29,7 @@ export function QuizList() {
     <article className="quiz-selection">
       <h2>{t("quizList.title")}</h2>
 
-      <ul>
+      <ul className="quiz-item">
         {quizData.map((item, index) => {
           const { description, theme, title } = item;
 

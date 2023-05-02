@@ -5,6 +5,36 @@ export const translationsSPA = {
     spa: "Español",
   },
 
+  settings: {
+    themes: {
+      flags: "Banderas",
+      capitals: "Capitales",
+      demography: "Demografía",
+      borders: "Fronteras",
+      areas: "Áreas",
+    },
+    regions: {
+      world: "Mundo",
+      africa: "África",
+      americas: "Américas",
+      asia: "Asia",
+      europe: "Europa",
+      oceania: "Oceanía",
+    },
+    difficulties: {
+      kid: "Niño",
+      easy: "Fácil",
+      medium: "Medio",
+      hard: "Difícil",
+      expert: "Experto",
+    },
+    lengths: {
+      short: "Corto",
+      normal: "Normal",
+      long: "Largo",
+    },
+  },
+
   menu: {
     home: "Inicio",
     study: "Estudiar",
@@ -119,7 +149,7 @@ export const translationsSPA = {
       description: "Encuentra el país más grande",
     },
 
-    start: "Jugar",
+    start: "JUGAR",
   },
 
   game: {
@@ -148,6 +178,60 @@ export const translationsSPA = {
 
       restart: "Repetir",
       another: "Otro quiz",
+    },
+  },
+
+  rankings: {
+    title: "Récords",
+    playThisQuiz: "Jugar a este quiz",
+
+    filters: {
+      theme: {
+        title: "Tema",
+        flags: "Banderas",
+        capitals: "Capitales",
+        demography: "Demografía",
+        borders: "Fronteras",
+        areas: "Áreas",
+      },
+      region: {
+        title: "Region del mundo",
+        world: "Mundo",
+        africa: "África",
+        americas: "Américas",
+        asia: "Asia",
+        europe: "Europa",
+        oceania: "Oceanía",
+      },
+      difficulty: {
+        title: "Dificultad",
+        kid: "Niño",
+        easy: "Fácil",
+        medium: "Medio",
+        hard: "Difícil",
+        expert: "Experto",
+      },
+      length: {
+        title: "Preguntas",
+        short: "Corto",
+        normal: "Normal",
+        long: "Largo",
+      },
+    },
+
+    sentence: {
+      main: "{{theme}} de {{region}}",
+      second: "({{difficulty}}, {{length}})",
+    },
+
+    loading: "Cargando los rankings...",
+    noRankings: "Este quiz no tiene récords todavía... ¡Sé el primero!",
+  },
+
+  ranking: {
+    scoreAndTime: {
+      one: "<span>{{score}}</span> punto en <span>{{time}}</span> segundos",
+      many: "<span>{{score}}</span> puntos en <span>{{time}}</span> segundos",
     },
   },
 

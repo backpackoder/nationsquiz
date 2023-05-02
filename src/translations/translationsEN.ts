@@ -5,6 +5,36 @@ export const translationsEN = {
     spa: "Spanish",
   },
 
+  settings: {
+    themes: {
+      flags: "Flags",
+      capitals: "Capitals",
+      demography: "Demography",
+      borders: "Borders",
+      areas: "Areas",
+    },
+    regions: {
+      world: "World",
+      africa: "Africa",
+      americas: "Americas",
+      asia: "Asia",
+      europe: "Europe",
+      oceania: "Oceania",
+    },
+    difficulties: {
+      kid: "Kid",
+      easy: "Easy",
+      medium: "Medium",
+      hard: "Hard",
+      expert: "Expert",
+    },
+    lengths: {
+      short: "Short",
+      normal: "Normal",
+      long: "Long",
+    },
+  },
+
   menu: {
     home: "Home",
     study: "Study",
@@ -119,7 +149,7 @@ export const translationsEN = {
       description: "Find the largest country",
     },
 
-    start: "Play",
+    start: "PLAY",
   },
 
   game: {
@@ -148,6 +178,60 @@ export const translationsEN = {
 
       restart: "Play again",
       another: "Other quiz",
+    },
+  },
+
+  rankings: {
+    title: "Rankings",
+    playThisQuiz: "Play this quiz",
+
+    filters: {
+      theme: {
+        title: "Theme",
+        flags: "Flags",
+        capitals: "Capitals",
+        demography: "Demography",
+        borders: "Borders",
+        areas: "Areas",
+      },
+      region: {
+        title: "Region",
+        world: "World",
+        africa: "Africa",
+        americas: "Americas",
+        asia: "Asia",
+        europe: "Europe",
+        oceania: "Oceania",
+      },
+      difficulty: {
+        title: "Difficulty",
+        kid: "Kid",
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard",
+        expert: "Expert",
+      },
+      length: {
+        title: "Questions",
+        short: "Short",
+        normal: "Normal",
+        long: "Long",
+      },
+    },
+
+    sentence: {
+      main: "{{theme}} of {{region}}",
+      second: "({{difficulty}}, {{length}})",
+    },
+
+    loading: "Loading rankings...",
+    noRankings: "This quiz has no records yet... Be the first!",
+  },
+
+  ranking: {
+    scoreAndTime: {
+      one: "<span>{{score}}</span> point in <span>{{time}}</span> seconds",
+      many: "<span>{{score}}</span> points in <span>{{time}}</span> seconds",
     },
   },
 
