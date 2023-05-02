@@ -49,20 +49,23 @@ export function Rankings() {
 
   const [rankingsState, rankingsDispatch] = useReducer(reducer, rankingsInitialState);
   const { theme, region, difficulty, length, score, time } = rankingsState;
+  console.log("rankingsState", rankingsState);
 
   function reducer(state: RankingsInitialState, action: any) {
     switch (action.type) {
-      case action.payload.type:
-        return {
-          ...state,
-          [action.payload.type]: action.payload.value,
-        };
-
       case "reset score and time":
+        console.log("reset score and time");
         return {
           ...state,
           score: 0,
           time: 0,
+        };
+
+      case action.payload.type:
+        console.log("action.payload.type", action.payload.type);
+        return {
+          ...state,
+          [action.payload.type]: action.payload.value,
         };
 
       default:
@@ -103,6 +106,7 @@ export function Rankings() {
     rankingsDispatch({ type: "reset score and time" });
 
     navigate(`../../${ROUTES.QUIZ.ROOT}${theme}`);
+
     window.location.reload();
   }
 
