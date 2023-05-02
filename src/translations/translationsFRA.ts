@@ -226,6 +226,7 @@ export const translationsFRA = {
 
     loading: "Chargement des classements en cours...",
     noRankings: "Ce quiz n'a pas encore de records... Soyez le premier !",
+    lastRankings: "Records les plus récents",
   },
 
   ranking: {

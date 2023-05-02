@@ -1,3 +1,10 @@
+export type RankingsListOptions = {
+  rankings: RankingsType;
+  showRank: boolean;
+  showSettings: boolean;
+  playBtn: boolean;
+};
+
 export type RankingsType =
   | null
   | {

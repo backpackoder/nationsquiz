@@ -2,17 +2,14 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
-import { Trans, useTranslation } from "react-i18next";
-import { formatDistanceToNow } from "date-fns";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 // Components
 import { QuizModeSentence } from "../QuizModeSentence";
 
 // Types
 import { AppProviderProps } from "../../types/context";
-import { RankingsInitialState, RankingsType } from "../../types/rankings";
+import { RankingsInitialState, RankingsListOptions, RankingsType } from "../../types/rankings";
 
 // Utils
 import { getRankingsFilters } from "../../utils/rankingsFilters";
@@ -20,6 +17,8 @@ import { getRankingsFilters } from "../../utils/rankingsFilters";
 // Commons
 import { ROUTES, SUPABASE } from "../../commons/commons";
 import { SearchBarRankings } from "./SearchBarRankings";
+import { RankingsList } from "./RankingsList";
+import { PlayThisQuizBtn } from "../buttons/PlayThisQuizBtn";
 
 const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
@@ -27,7 +26,7 @@ export function Rankings() {
   const { theme: themeParams } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data, settingsState, settingsDispatch }: AppProviderProps = useContext(AppContext);
+  const { settingsState, settingsDispatch }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
   const [rankings, setRankings] = useState<RankingsType>(null);
 
@@ -47,14 +46,19 @@ export function Rankings() {
     time: 999,
   };
 
+  const rankingsListOptions: RankingsListOptions = {
+    rankings,
+    showRank: true,
+    showSettings: false,
+    playBtn: false,
+  };
+
   const [rankingsState, rankingsDispatch] = useReducer(reducer, rankingsInitialState);
   const { theme, region, difficulty, length, score, time } = rankingsState;
-  console.log("rankingsState", rankingsState);
 
   function reducer(state: RankingsInitialState, action: any) {
     switch (action.type) {
       case "reset score and time":
-        console.log("reset score and time");
         return {
           ...state,
           score: 0,
@@ -62,7 +66,6 @@ export function Rankings() {
         };
 
       case action.payload.type:
-        console.log("action.payload.type", action.payload.type);
         return {
           ...state,
           [action.payload.type]: action.payload.value,
@@ -92,24 +95,6 @@ export function Rankings() {
     setRankings(data);
   }
 
-  function goToQuiz() {
-    settingsDispatch({
-      type: `goToQuiz`,
-      payload: {
-        value: "",
-        region,
-        difficulty,
-        length,
-      },
-    });
-
-    rankingsDispatch({ type: "reset score and time" });
-
-    navigate(`../../${ROUTES.QUIZ.ROOT}${theme}`);
-
-    window.location.reload();
-  }
-
   useEffect(() => {
     getRankings();
   }, [rankingsState]);
@@ -123,7 +108,7 @@ export function Rankings() {
       <div className="sentence">
         <QuizModeSentence theme={theme} settings={{ region, difficulty, length }} />
 
-        <button onClick={() => goToQuiz()}>{t("rankings.playThisQuiz")}</button>
+        <PlayThisQuizBtn settings={{ theme, region, difficulty, length }} />
       </div>
 
       {!rankings ? (
@@ -135,61 +120,7 @@ export function Rankings() {
           <p>{t("rankings.noRankings")}</p>
         </div>
       ) : (
-        <ul className="rankings-list">
-          {rankings?.map((rank, index) => {
-            const date = formatDistanceToNow(new Date(rank.date), {
-              addSuffix: true,
-              includeSeconds: false,
-            });
-
-            const nationalityFlag = data?.find(
-              (country) => country.name.common === rank.nationality
-            );
-
-            return (
-              <li key={index} className="rankings-item">
-                <h3 className="rank">{index + 1}</h3>
-
-                <div className="infos">
-                  <div className="player">
-                    <h4>{rank.pseudo}</h4>
-                    {nationalityFlag && (
-                      <img
-                        src={nationalityFlag?.flags.png}
-                        alt={nationalityFlag?.flags.alt}
-                        onClick={() =>
-                          navigate(
-                            `../${ROUTES.STUDY}${
-                              ROUTES.INFOS.ROOT
-                            }${rank.nationality.toLowerCase()}`
-                          )
-                        }
-                      />
-                    )}
-                  </div>
-
-                  <p className="scoreAndTime">
-                    <Trans
-                      components={{
-                        span: <span></span>,
-                      }}
-                      values={{ score: rank.score, time: rank.time }}
-                    >
-                      {rank.score === 1 ? "ranking.scoreAndTime.one" : "ranking.scoreAndTime.many"}
-                    </Trans>
-                  </p>
-
-                  <div className="date">
-                    <FontAwesomeIcon icon={faClock} size="sm" />
-                    <p>
-                      <small>{date}</small>
-                    </p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <RankingsList options={rankingsListOptions} />
       )}
     </article>
   );

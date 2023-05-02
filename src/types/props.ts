@@ -1,6 +1,6 @@
 // Types
 import { API_DATA } from "./api";
-import { getRankingsFilters } from "./rankings";
+import { RankingsListOptions, getRankingsFilters } from "./rankings";
 
 // SEARCHBAR
 export type SearchBarProps = {
@@ -56,6 +56,10 @@ export type SubmitScoreProps = {
 };
 
 // RANKINGS
+export type RankingsListProps = {
+  options: RankingsListOptions;
+};
+
 export type RankingProps = {
   score: number;
   time: number;

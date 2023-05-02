@@ -16,14 +16,14 @@
   font-size: 1.5rem;
   text-align: center;
 }
-.rankings .sentence button {
+.playThisQuizBtn {
   background-color: lightgreen;
   border: none;
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
 }
-.rankings .sentence button:hover {
+.playThisQuizBtn:hover {
   background-color: green;
   color: #fff;
 }
@@ -72,10 +72,24 @@
   border-radius: 10px;
 }
 
+.rankings-item .infos .showSettings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.rankings-item .infos .showSettings li {
+  background-color: skyblue;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
 .rankings-item .infos .player {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-weight: bold;
 }

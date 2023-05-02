@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 // Types
 import { QuizData } from "../../types/quiz";
 
-// Utils
-import { useQuizData } from "../../hooks/quizData";
-
 // Components
+import { LastRankings } from "../rankings/LastRankings";
 import { Rankings } from "../rankings/Rankings";
 import { Modale } from "../../modales/Modale";
 import { SettingsModale } from "../../modales/SettingsModale";
+
+// Utils
+import { useQuizData } from "../../hooks/quizData";
 
 export function QuizList() {
   const { t } = useTranslation();
@@ -48,6 +49,8 @@ export function QuizList() {
       </ul>
 
       <Rankings />
+
+      <LastRankings />
 
       {isModaleOpened && (
         <Modale

@@ -226,6 +226,7 @@ export const translationsSPA = {
 
     loading: "Cargando los rankings...",
     noRankings: "Este quiz no tiene récords todavía... ¡Sé el primero!",
+    lastRankings: "Récords más recientes",
   },
 
   ranking: {

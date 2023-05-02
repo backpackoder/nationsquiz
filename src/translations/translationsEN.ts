@@ -226,6 +226,7 @@ export const translationsEN = {
 
     loading: "Loading rankings...",
     noRankings: "This quiz has no records yet... Be the first!",
+    lastRankings: "Last records",
   },
 
   ranking: {
