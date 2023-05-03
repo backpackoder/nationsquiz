@@ -25,6 +25,7 @@ import { SubmitScore } from "../rankings/SubmitScore";
 import { Rankings } from "../rankings/Rankings";
 import { OnChangeSubmit } from "../../types/props";
 import { QuizModeSentence } from "../QuizModeSentence";
+import { useTranslation } from "react-i18next";
 
 type Answer = any;
 // {
@@ -36,6 +37,7 @@ const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
 export function Quiz() {
   const { theme } = useParams();
+  const { t } = useTranslation();
   const { data, settingsState }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen: region } = settingsState;
 
@@ -333,7 +335,7 @@ export function Quiz() {
 
   async function submitScore() {
     if (pseudo === "") {
-      alert("Please enter a pseudo");
+      alert(t("submitScore.pseudoMissing"));
     } else {
       const actualRecords = await getActualRecords();
 
@@ -402,9 +404,7 @@ export function Quiz() {
           />
         ) : (
           <>
-            {isNewRecord
-              ? "Votre score à été ajouté dans la liste des records."
-              : "votre score n'entre pas dans la table des records."}
+            {isNewRecord ? t("submitScore.newRecord") : t("submitScore.notNewRecord")}
             <Rankings />
           </>
         )}

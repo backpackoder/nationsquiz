@@ -181,6 +181,25 @@ export const translationsFRA = {
     },
   },
 
+  submitScore: {
+    description: {
+      onePoint:
+        "Avec un score de 1 point en {{time}} secondes, vous venez d'établir un nouveau record, félicitations !",
+      manyPoints:
+        "Avec un score de {{score}} points en {{time}} secondes, vous venez d'établir un nouveau record, félicitations !",
+    },
+    saveScore: "Enregistrez le dès maintenant :",
+
+    placeholder: "Votre pseudo",
+    pseudoMissing: "Veuillez entrer un pseudo",
+    selectCountry: "Sélectionnez votre pays",
+
+    btn: "Sauvegarder",
+
+    newRecord: "Votre score à été ajouté dans la liste des records.",
+    notNewRecord: "Votre score n'entre pas dans la table des records.",
+  },
+
   rankings: {
     title: "Classements",
     playThisQuiz: "Jouer à ce quiz",

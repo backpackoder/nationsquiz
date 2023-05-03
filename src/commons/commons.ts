@@ -29,6 +29,16 @@ export const SUPABASE = {
   KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkdGpraGRyd3J2Z3B0a3F4bXJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODIzMzAxMDMsImV4cCI6MTk5NzkwNjEwM30.ZmeNo3hArgs65MGRIgF5cj-fxuFN8R9UARWMTIGqgds",
 };
 
+// Local storage
+export const LOCAL_STORAGE_ITEMS = {
+  SETTINGS: "settings",
+};
+
+// Query keys
+export const QUERY_KEYS = {
+  NATIONS: "nations",
+};
+
 // Quiz themes
 export const THEMES: { [key: string]: Themes } = {
   FLAGS: "flags",

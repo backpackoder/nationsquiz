@@ -19,7 +19,7 @@ import {
 } from "./types/settings";
 
 // Commons
-import { API_LINK, SETTINGS } from "./commons/commons";
+import { API_LINK, LOCAL_STORAGE_ITEMS, QUERY_KEYS, SETTINGS } from "./commons/commons";
 
 export function AppProvider(props: object) {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ export function AppProvider(props: object) {
 
   // API
   const { isFetching, status, error, data } = useQuery({
-    queryKey: ["nations"],
+    queryKey: [QUERY_KEYS.NATIONS],
     queryFn: () => axios.get<API_DATA[]>(API_LINK).then((res) => res.data),
   });
 
@@ -82,32 +82,32 @@ export function AppProvider(props: object) {
     values: [
       {
         label: t("modale.settings.region.all"),
-        value: "world",
+        value: "World",
       },
       {
         label: t("modale.settings.region.africa"),
-        value: "africa",
+        value: "Africa",
       },
       {
         label: t("modale.settings.region.americas"),
-        value: "americas",
+        value: "Americas",
       },
       {
         label: t("modale.settings.region.asia"),
-        value: "asia",
+        value: "Asia",
       },
       {
         label: t("modale.settings.region.europe"),
-        value: "europe",
+        value: "Europe",
       },
       {
         label: t("modale.settings.region.oceania"),
-        value: "oceania",
+        value: "Oceania",
       },
     ],
   };
 
-  const savedSettings = localStorage.getItem("settings");
+  const savedSettings = localStorage.getItem(LOCAL_STORAGE_ITEMS.SETTINGS);
 
   const initialState: SettingsState =
     savedSettings !== null
@@ -174,7 +174,7 @@ export function AppProvider(props: object) {
   }
 
   function updateLocalStorage(state: any) {
-    localStorage.setItem("settings", JSON.stringify(state));
+    localStorage.setItem(LOCAL_STORAGE_ITEMS.SETTINGS, JSON.stringify(state));
   }
 
   useEffect(() => {

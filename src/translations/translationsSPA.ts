@@ -181,6 +181,25 @@ export const translationsSPA = {
     },
   },
 
+  submitScore: {
+    description: {
+      onePoint:
+        "Con un punto en {{time}} segundos, acabas de establecer un nuevo récord, ¡felicidades!",
+      manyPoints:
+        "Con {{score}} puntos en {{time}} segundos, acabas de establecer un nuevo récord, ¡felicidades!",
+    },
+    saveScore: "Guárdalo ahora:",
+
+    placeholder: "Tu nombre de usuario",
+    pseudoMissing: "Por favor, introduce un nombre de usuario",
+    selectCountry: "Selecciona tu país",
+
+    btn: "Guardar",
+
+    newRecord: "Tu puntuación ha sido añadida a los récords.",
+    notNewRecord: "Tu puntuación no entra en los récords.",
+  },
+
   rankings: {
     title: "Récords",
     playThisQuiz: "Jugar a este quiz",

@@ -1,25 +1,29 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
+import { useTranslation } from "react-i18next";
 
 // Types
 import { SubmitScoreProps } from "../../types/props";
 import { AppProviderProps } from "../../types/context";
 
 export function SubmitScore({ infosToSubmit, onChangeSubmit, submitScore }: SubmitScoreProps) {
+  const { t } = useTranslation();
   const { data }: AppProviderProps = useContext(AppContext);
   const { score, time, pseudo, nationality } = infosToSubmit;
+
+  const placeholder = t("submitScore.placeholder");
 
   return (
     <div className="submitScore">
       <p>
-        Avec un score de {score} point{score === 1 ? "" : "s"} en {time} seconde
-        {time === 1 ? "" : "s"}, vous venez d'établir un nouveau record, félicitations !<br />
-        Enregistrez le dès maintenant :
+        {t(`submitScore.description.${score === 1 ? "onePoint" : "manyPoints"}`, { score, time })}
+        <br />
+        {t("submitScore.saveScore")}
       </p>
 
       <input
         type="text"
-        placeholder="Your name"
+        placeholder={placeholder}
         value={pseudo}
         maxLength={20}
         onChange={(e) => onChangeSubmit({ type: "pseudo", value: e.target.value })}
@@ -31,7 +35,7 @@ export function SubmitScore({ infosToSubmit, onChangeSubmit, submitScore }: Subm
         value={nationality}
         onChange={(e) => onChangeSubmit({ type: "nationality", value: e.target.value })}
       >
-        <option value="">Select your country</option>
+        <option value="">{t("submitScore.selectCountry")}</option>
         {data
           ?.map((item) => {
             return item.name.common;
@@ -44,7 +48,7 @@ export function SubmitScore({ infosToSubmit, onChangeSubmit, submitScore }: Subm
           ))}
       </select>
 
-      <button onClick={() => submitScore()}>Submit your score</button>
+      <button onClick={() => submitScore()}>{t("submitScore.btn")}</button>
     </div>
   );
 }

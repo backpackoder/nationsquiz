@@ -19,7 +19,7 @@ export function QuizModeSentence({ theme, settings }: QuizModeSentenceProps) {
     <p>
       {t("rankings.sentence.main", {
         theme: t(`settings.themes.${theme ?? themeParams}`).toUpperCase(),
-        region: t(`settings.regions.${region}`).toUpperCase(),
+        region: t(`settings.regions.${region.toLowerCase()}`).toUpperCase(),
       })}
       <br />
       {t("rankings.sentence.second", {

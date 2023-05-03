@@ -181,6 +181,25 @@ export const translationsEN = {
     },
   },
 
+  submitScore: {
+    description: {
+      onePoint:
+        "With a score of 1 point in {{time}} seconds, you have just set a new record, congratulations!",
+      manyPoints:
+        "With a score of {{score}} points in {{time}} seconds, you have just set a new record, congratulations!",
+    },
+    saveScore: "Save it now:",
+
+    placeholder: "Your pseudo",
+    pseudoMissing: "Please enter a pseudo",
+    selectCountry: "Select your country",
+
+    btn: "Submit",
+
+    newRecord: "Your score has been added to the rankings.",
+    notNewRecord: "Your score does not enter the rankings.",
+  },
+
   rankings: {
     title: "Rankings",
     playThisQuiz: "Play this quiz",
