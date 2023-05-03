@@ -16,7 +16,7 @@ export function QuizModeSentence({ theme, settings }: QuizModeSentenceProps) {
   const { region, difficulty, length } = settings;
 
   return (
-    <p>
+    <p className="quizModeSentence">
       {t("rankings.sentence.main", {
         theme: t(`settings.themes.${theme ?? themeParams}`).toUpperCase(),
         region: t(`settings.regions.${region.toLowerCase()}`).toUpperCase(),

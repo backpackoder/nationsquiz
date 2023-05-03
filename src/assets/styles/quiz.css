@@ -5,6 +5,10 @@
   justify-content: center;
   gap: 10px;
 }
+.quiz .quizModeSentence {
+  text-align: center;
+}
+
 .quiz .buttons {
   display: flex;
   flex-wrap: wrap;

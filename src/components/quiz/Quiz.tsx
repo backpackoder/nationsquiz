@@ -47,7 +47,6 @@ export function Quiz() {
   const [time, setTime] = useState(0);
   const [isNewRecord, setIsNewRecord] = useState(true);
   const [isScoreSubmitted, setIsScoreSubmitted] = useState(false);
-  console.log("region.toLowerCase()", region.toLowerCase());
 
   function getResponses() {
     const countriesList = data && getCountriesList({ data, theme, region });
