@@ -161,7 +161,7 @@ export function Game({ gameState, gameDispatch }: GameProps) {
                 default:
                   throw new Error("Quiz theme not found");
               }
-            }, [responses, actualLanguage]);
+            }, [actualLanguage, responses]);
 
             return (
               <li

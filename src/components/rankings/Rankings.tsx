@@ -1,6 +1,6 @@
 import { useContext, useEffect, useReducer, useState } from "react";
 import { AppContext } from "../../AppContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,7 @@ import { RankingsInitialState, RankingsListOptions, RankingsType } from "../../t
 import { getRankingsFilters } from "../../utils/rankingsFilters";
 
 // Commons
-import { ROUTES, SUPABASE } from "../../commons/commons";
+import { SUPABASE, THEMES } from "../../commons/commons";
 import { SearchBarRankings } from "./SearchBarRankings";
 import { RankingsList } from "./RankingsList";
 import { PlayThisQuizBtn } from "../buttons/PlayThisQuizBtn";
@@ -24,14 +24,13 @@ const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
 export function Rankings() {
   const { theme: themeParams } = useParams();
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { settingsState, settingsDispatch }: AppProviderProps = useContext(AppContext);
+  const { settingsState }: AppProviderProps = useContext(AppContext);
   const { nbOfChoices, nbOfQuestions, regionChosen } = settingsState;
   const [rankings, setRankings] = useState<RankingsType>(null);
 
   const rankingsFilters = getRankingsFilters({
-    theme: themeParams ?? "flags",
+    theme: themeParams ?? THEMES.FLAGS,
     difficulty: nbOfChoices,
     length: nbOfQuestions,
     region: regionChosen,
@@ -80,7 +79,7 @@ export function Rankings() {
     setRankings(null);
 
     const { data } = await supabase
-      .from("rankings")
+      .from(SUPABASE.TABLES.RANKINGS)
       .select()
       .eq("theme", theme)
       .eq("region", region.toLowerCase())

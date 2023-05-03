@@ -29,7 +29,7 @@ export function LastRankings() {
     setRankings(null);
 
     const { data } = await supabase
-      .from("rankings")
+      .from(SUPABASE.TABLES.RANKINGS)
       .select()
       .limit(5)
       .order("date", { ascending: false });
