@@ -83,7 +83,7 @@ export function Rankings() {
       .from("rankings")
       .select()
       .eq("theme", theme)
-      .eq("region", region)
+      .eq("region", region.toLowerCase())
       .eq("difficulty", difficulty)
       .eq("length", length)
       .gte("score", score)

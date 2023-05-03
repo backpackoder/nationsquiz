@@ -12,6 +12,7 @@ export type SearchBarProps = {
 export type ButtonsProps = {
   dispatch: any;
   isQuizfinished: boolean;
+  setIsScoreSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type ResultsProps = {
