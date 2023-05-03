@@ -22,7 +22,11 @@ import { PlayThisQuizBtn } from "../buttons/PlayThisQuizBtn";
 
 const supabase = createClient(SUPABASE.LINK, SUPABASE.KEY);
 
-export function Rankings() {
+export type RankingsProps = {
+  dispatch?: React.Dispatch<any>;
+};
+
+export function Rankings({ dispatch }: RankingsProps) {
   const { theme: themeParams } = useParams();
   const { t } = useTranslation();
   const { settingsState }: AppProviderProps = useContext(AppContext);
@@ -107,7 +111,7 @@ export function Rankings() {
       <div className="sentence">
         <QuizModeSentence theme={theme} settings={{ region, difficulty, length }} />
 
-        <PlayThisQuizBtn settings={{ theme, region, difficulty, length }} />
+        <PlayThisQuizBtn settings={{ theme, region, difficulty, length }} dispatch={dispatch} />
       </div>
 
       {!rankings ? (

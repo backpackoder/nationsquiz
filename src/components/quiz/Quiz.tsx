@@ -405,7 +405,7 @@ export function Quiz() {
         ) : (
           <>
             {isNewRecord ? t("submitScore.newRecord") : t("submitScore.notNewRecord")}
-            <Rankings />
+            <Rankings dispatch={gameDispatch} />
           </>
         )}
       </article>

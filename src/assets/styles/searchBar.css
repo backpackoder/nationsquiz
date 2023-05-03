@@ -24,6 +24,6 @@
 
 /* Rankings */
 .searchBar.searchBar-rankings {
-  width: 100%;
+  width: 100vw;
   border-radius: 10px;
 }

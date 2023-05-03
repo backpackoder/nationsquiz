@@ -115,7 +115,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                   className={
                     quizTheme.theme === THEMES.BORDERS && index === Regions.Oceania
                       ? "hidden"
-                      : region.value === item.value
+                      : region.value === item.value.toLowerCase()
                       ? "active"
                       : "inactive"
                   }
@@ -134,7 +134,9 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
         </div>
       </div>
 
-      <a onClick={() => goToQuiz()}>{t(`${T_ROOT}.start`)}</a>
+      <button className="start" onClick={() => goToQuiz()}>
+        {t(`${T_ROOT}.start`)}
+      </button>
     </>
   );
 }

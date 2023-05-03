@@ -113,9 +113,9 @@ export function AppProvider(props: object) {
     savedSettings !== null
       ? JSON.parse(savedSettings)
       : {
-          nbOfChoices: difficulty.values[Difficulties.Easy].value,
-          nbOfQuestions: lengths.values[QuizLengths.Twenty].value,
-          regionChosen: regions.values[Regions.World].value,
+          nbOfChoices: difficulty.values[Difficulties.Easy].value.toLowerCase(),
+          nbOfQuestions: lengths.values[QuizLengths.Twenty].value.toLowerCase(),
+          regionChosen: regions.values[Regions.World].value.toLowerCase(),
         };
 
   const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
@@ -151,7 +151,7 @@ export function AppProvider(props: object) {
       case "change region":
         return {
           ...state,
-          regionChosen: action.payload.value,
+          regionChosen: action.payload.value.toLowerCase(),
         };
 
       case "goToQuiz":
@@ -159,13 +159,13 @@ export function AppProvider(props: object) {
           ...state,
           nbOfChoices: action.payload.difficulty,
           nbOfQuestions: action.payload.length,
-          regionChosen: action.payload.region,
+          regionChosen: action.payload.region.toLowerCase(),
         };
 
       case "region not available for this theme":
         return {
           ...state,
-          regionChosen: action.payload.value,
+          regionChosen: action.payload.value.toLowerCase(),
         };
 
       default:

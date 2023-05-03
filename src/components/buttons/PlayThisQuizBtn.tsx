@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // Types
@@ -14,9 +14,11 @@ type PlayThisQuizBtnProps = {
     difficulty: string;
     length: string;
   };
+  dispatch?: React.Dispatch<any>;
 };
 
-export function PlayThisQuizBtn({ settings }: PlayThisQuizBtnProps) {
+export function PlayThisQuizBtn({ settings, dispatch }: PlayThisQuizBtnProps) {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { settingsDispatch }: AppProviderProps = useContext(AppContext);
@@ -35,9 +37,19 @@ export function PlayThisQuizBtn({ settings }: PlayThisQuizBtnProps) {
 
     // rankingsDispatch({ type: "reset score and time" });
 
-    navigate(`../../${ROUTES.QUIZ.ROOT}${theme}`);
+    switch (pathname) {
+      case ROUTES.HOME:
+        navigate(`${ROUTES.QUIZ.ROOT}${theme}`);
+        break;
 
-    window.location.reload();
+      case `/${ROUTES.QUIZ.ROOT}${theme}`:
+        dispatch && dispatch({ type: "restart", payload: "restart" });
+        break;
+
+      default:
+        window.location.reload();
+        break;
+    }
   }
 
   return (
