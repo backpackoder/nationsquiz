@@ -36,19 +36,19 @@ export function getCountriesList({ data, theme, region }: GetCountriesList) {
 
   switch (region) {
     case CONTINENTS.AFRICA:
-      return getTheme().filter((country: API_DATA) => country.region === "Africa");
+      return getTheme().filter((country: API_DATA) => country.region === CONTINENTS.AFRICA);
 
     case CONTINENTS.AMERICAS:
-      return getTheme().filter((country: API_DATA) => country.region === "Americas");
+      return getTheme().filter((country: API_DATA) => country.region === CONTINENTS.AMERICAS);
 
     case CONTINENTS.ASIA:
-      return getTheme().filter((country: API_DATA) => country.region === "Asia");
+      return getTheme().filter((country: API_DATA) => country.region === CONTINENTS.ASIA);
 
     case CONTINENTS.EUROPE:
-      return getTheme().filter((country: API_DATA) => country.region === "Europe");
+      return getTheme().filter((country: API_DATA) => country.region === CONTINENTS.EUROPE);
 
     case CONTINENTS.OCEANIA:
-      return getTheme().filter((country: API_DATA) => country.region === "Oceania");
+      return getTheme().filter((country: API_DATA) => country.region === CONTINENTS.OCEANIA);
 
     default:
       return getTheme();

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 // Components
 import { DidYouKnow } from "./DidYouKnow";
 import { GoToStudy } from "./GoToStudy";
-import { QuizList } from "./QuizSelection";
+import { QuizList } from "./QuizList";
 
 // Commons
 import { TITLE } from "../../commons/commons";

@@ -270,11 +270,14 @@ export const translationsEN = {
 
       length: {
         title: "Questions",
+        short: "Short",
+        normal: "Normal",
+        long: "Long",
       },
 
       region: {
         title: "Continents",
-        all: "All",
+        world: "All",
         africa: "Africa",
         americas: "Americas",
         asia: "Asia",

@@ -86,7 +86,7 @@ export function Rankings({ dispatch }: RankingsProps) {
       .from(SUPABASE.TABLES.RANKINGS)
       .select()
       .eq("theme", theme)
-      .eq("region", region.toLowerCase())
+      .eq("region", region)
       .eq("difficulty", difficulty)
       .eq("length", length)
       .gte("score", score)

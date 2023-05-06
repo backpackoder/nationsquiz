@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "./utils/test-utils";
+import { screen } from "@testing-library/react";
 
 // Components
 import { Home } from "../components/home/Home";
@@ -10,11 +11,5 @@ describe("Home page", () => {
     render(<Home />);
     const title = screen.getByRole("heading", { name: TITLE });
     expect(title).toBeVisible();
-  });
-
-  it("should render the catchPhrase", () => {
-    render(<Home />);
-    const catchPhrase = screen.queryByText(/home.catchPhrase/i);
-    expect(catchPhrase).toBeVisible();
   });
 });

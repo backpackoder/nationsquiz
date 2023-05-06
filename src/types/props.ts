@@ -1,5 +1,6 @@
 // Types
 import { API_DATA } from "./api";
+import { QuizData } from "./quiz";
 import { RankingsListOptions, getRankingsFilters } from "./rankings";
 
 // SEARCHBAR
@@ -69,4 +70,16 @@ export type RankingProps = {
 export type SearchBarRankingsProps = {
   rankingsFilters: getRankingsFilters;
   dispatch: React.Dispatch<any>;
+};
+
+// MODALES
+export type ModaleProps = {
+  name: string;
+  children: React.ReactNode;
+  setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type SettingsModaleProps = {
+  quizTheme: QuizData;
+  setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };

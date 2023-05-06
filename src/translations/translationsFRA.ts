@@ -270,11 +270,14 @@ export const translationsFRA = {
 
       length: {
         title: "Questions",
+        short: "Court",
+        normal: "Normal",
+        long: "Long",
       },
 
       region: {
         title: "Continents",
-        all: "Tous",
+        world: "Tous",
         africa: "Afrique",
         americas: "Amériques",
         asia: "Asie",

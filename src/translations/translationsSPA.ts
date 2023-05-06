@@ -270,11 +270,14 @@ export const translationsSPA = {
 
       length: {
         title: "Preguntas",
+        short: "Corto",
+        normal: "Normal",
+        long: "Largo",
       },
 
       region: {
         title: "Continentes",
-        all: "Todos",
+        world: "Todos",
         africa: "África",
         americas: "Américas",
         asia: "Asia",

@@ -355,7 +355,7 @@ export function Quiz() {
         {
           pseudo,
           theme,
-          region: region.toLowerCase(),
+          region: region,
           difficulty: nbOfChoices,
           length: nbOfQuestions,
           score,

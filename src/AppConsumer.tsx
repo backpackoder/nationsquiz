@@ -14,7 +14,7 @@ import { Study } from "./components/learn/Study";
 import { Infos } from "./components/learn/Infos";
 
 import { Quiz } from "./components/quiz/Quiz";
-import { QuizList } from "./components/home/QuizSelection";
+import { QuizList } from "./components/home/QuizList";
 
 import { PageNotFound } from "./components/errors/PageNotFound";
 import { Error } from "./components/errors/Error";

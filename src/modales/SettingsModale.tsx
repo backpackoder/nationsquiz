@@ -1,20 +1,17 @@
 import { useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../AppContext";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // Types
-import { QuizData } from "../types/quiz";
+import { SettingsModaleProps } from "../types/props";
+import { Regions, SettingEnum } from "../types/settings";
 
 // Hooks
 import { AppProviderProps } from "../types/context";
-import { CONTINENTS, ROUTES, THEMES } from "../commons/commons";
-import { Regions, SettingEnum } from "../types/settings";
 
-type SettingsModaleProps = {
-  quizTheme: QuizData;
-  setIsModaleOpened: React.Dispatch<React.SetStateAction<boolean>>;
-};
+// Commons
+import { CONTINENTS, ROUTES, THEMES } from "../commons/commons";
 
 export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleProps) {
   const navigate = useNavigate();
@@ -38,10 +35,10 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
   useEffect(() => {
     switch (quizTheme.theme) {
       case THEMES.BORDERS:
-        if (region.value.toLowerCase() === CONTINENTS.OCEANIA.toLowerCase()) {
+        if (region.value === CONTINENTS.OCEANIA) {
           settingsDispatch({
             type: "region not available for this theme",
-            payload: { value: CONTINENTS.WORLD.toLowerCase() },
+            payload: { value: CONTINENTS.WORLD },
           });
         }
         break;
@@ -97,7 +94,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                     })
                   }
                 >
-                  {item.label} ({item.value})
+                  {item.label}
                 </button>
               );
             })}
@@ -115,7 +112,7 @@ export function SettingsModale({ quizTheme, setIsModaleOpened }: SettingsModaleP
                   className={
                     quizTheme.theme === THEMES.BORDERS && index === Regions.Oceania
                       ? "hidden"
-                      : region.value === item.value.toLowerCase()
+                      : region.value === item.value
                       ? "active"
                       : "inactive"
                   }

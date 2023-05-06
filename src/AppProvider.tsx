@@ -63,15 +63,15 @@ export function AppProvider(props: object) {
     title: SETTINGS.LENGTH,
     values: [
       {
-        label: "short",
+        label: t("modale.settings.length.short"),
         value: "short",
       },
       {
-        label: "normal",
+        label: t("modale.settings.length.normal"),
         value: "normal",
       },
       {
-        label: "long",
+        label: t("modale.settings.length.long"),
         value: "long",
       },
     ],
@@ -81,7 +81,7 @@ export function AppProvider(props: object) {
     title: SETTINGS.REGION,
     values: [
       {
-        label: t("modale.settings.region.all"),
+        label: t("modale.settings.region.world"),
         value: "World",
       },
       {
@@ -113,9 +113,9 @@ export function AppProvider(props: object) {
     savedSettings !== null
       ? JSON.parse(savedSettings)
       : {
-          nbOfChoices: difficulty.values[Difficulties.Easy].value.toLowerCase(),
-          nbOfQuestions: lengths.values[QuizLengths.Twenty].value.toLowerCase(),
-          regionChosen: regions.values[Regions.World].value.toLowerCase(),
+          nbOfChoices: difficulty.values[Difficulties.Easy].value,
+          nbOfQuestions: lengths.values[QuizLengths.Twenty].value,
+          regionChosen: regions.values[Regions.World].value,
         };
 
   const [settingsState, settingsDispatch] = useReducer(reducer, initialState);
@@ -151,7 +151,7 @@ export function AppProvider(props: object) {
       case "change region":
         return {
           ...state,
-          regionChosen: action.payload.value.toLowerCase(),
+          regionChosen: action.payload.value,
         };
 
       case "goToQuiz":
@@ -159,13 +159,13 @@ export function AppProvider(props: object) {
           ...state,
           nbOfChoices: action.payload.difficulty,
           nbOfQuestions: action.payload.length,
-          regionChosen: action.payload.region.toLowerCase(),
+          regionChosen: action.payload.region,
         };
 
       case "region not available for this theme":
         return {
           ...state,
-          regionChosen: action.payload.value.toLowerCase(),
+          regionChosen: action.payload.value,
         };
 
       default:
