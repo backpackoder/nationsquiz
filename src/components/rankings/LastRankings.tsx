@@ -42,9 +42,12 @@ export function LastRankings() {
   }, []);
 
   return (
-    <div className="lastRankings">
-      <h2>{t("rankings.lastRankings")}</h2>
-      <RankingsList options={rankingsListOptions} />
-    </div>
+    rankings &&
+    rankings.length > 0 && (
+      <div className="lastRankings">
+        <h2>{t("rankings.lastRankings")}</h2>
+        <RankingsList options={rankingsListOptions} />
+      </div>
+    )
   );
 }

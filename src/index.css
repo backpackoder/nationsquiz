@@ -47,6 +47,10 @@ section {
   margin: 10px;
 }
 
+article {
+  background-color: rgba(135, 207, 235, 0.25);
+}
+
 a {
   font-weight: 500;
   text-decoration: inherit;

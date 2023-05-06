@@ -10,9 +10,11 @@ import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { RankingsListProps } from "../../types/props";
 import { AppProviderProps } from "../../types/context";
 
+// Components
+import { PlayThisQuizBtn } from "../buttons/PlayThisQuizBtn";
+
 // Commons
 import { ROUTES } from "../../commons/commons";
-import { PlayThisQuizBtn } from "../buttons/PlayThisQuizBtn";
 
 export function RankingsList({ options }: RankingsListProps) {
   const navigate = useNavigate();

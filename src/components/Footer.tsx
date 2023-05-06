@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer>
-      <p>Footer</p>
+      <p>Nations quiz</p>
     </footer>
   );
 }
