@@ -76,6 +76,38 @@ export const translationsEN = {
   study: {
     infoSheet: "Info sheet",
     noResult: "No country matches your search criteria.",
+
+    infos: {
+      rows: {
+        geography: "Geography",
+        status: "Status",
+        economy: "Economy",
+        miscellaneous: "Miscellaneous",
+      },
+      labels: {
+        continent: "Continent",
+        subregion: "Subregion",
+        capital: "Capital",
+        area: "Area",
+        borders: "Borders",
+        landlocked: "Landlocked",
+        population: "Population",
+        languages: "Languages",
+        independent: "Independant",
+        unmember: "UN member",
+        currency: "Currency",
+        gini: "Gini",
+        callingcode: "Calling code",
+        timezones: "Timezones",
+        car: "Car",
+      },
+      values: {
+        yes: "Yes",
+        no: "No",
+        population: "{{population}} inhabitants",
+        car: '"{{sign}}", {{side}} side of the road',
+      },
+    },
   },
 
   searchBar: {
@@ -122,7 +154,6 @@ export const translationsEN = {
       },
     },
     placeholder: "Search a country",
-    reset: "Reset filters",
   },
 
   quizList: {

@@ -27,7 +27,7 @@ export function DidYouKnow() {
 
         <div className="imgWrapper">
           <img
-            src={randomCountryFromInfo.flags.png}
+            src={randomCountryFromInfo.flags.svg}
             alt={randomCountryFromInfo.flags.alt ?? "Country flag of the random fact"}
           />
         </div>

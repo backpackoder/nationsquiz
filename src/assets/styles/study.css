@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, 150px);
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   text-align: center;
   padding: 20px;
 }
@@ -15,7 +15,7 @@
   gap: 20px;
   background-color: lightblue;
   padding: 10px;
-  border: solid blue;
+  border: solid rgba(0, 0, 255, 0.25);
   border-radius: 5px;
   cursor: pointer;
   transition: 0.25s ease-in-out;

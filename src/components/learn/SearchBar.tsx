@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
 
 // Types
 import { SearchBarProps } from "../../types/props";
@@ -36,6 +38,7 @@ export function SearchBar({ data, filterDispatch }: SearchBarProps) {
           <select
             name={input.name}
             id={input.name}
+            defaultValue={input.options[0].value}
             onChange={(e) => filterDispatch({ type: input.name, payload: e.target.value })}
           >
             {input.options.map((option) => (
@@ -50,11 +53,13 @@ export function SearchBar({ data, filterDispatch }: SearchBarProps) {
       <input
         type="text"
         placeholder={t("searchBar.placeholder") ?? "Type..."}
-        onChange={(e) => filterDispatch({ type: "writing", payload: e.target.value })}
+        className="searchInput"
+        onChange={(e) => filterDispatch({ type: "search", payload: e.target.value })}
       />
 
-      {/* onClick={() => filterDispatch({ type: "reset" })} */}
-      <button onClick={() => window.location.reload()}>{t("searchBar.reset")}</button>
+      <button onClick={() => window.location.reload()}>
+        <FontAwesomeIcon icon={faArrowLeftRotate} color="#fff" size="xl" />
+      </button>
     </div>
   ) : null;
 }

@@ -106,13 +106,13 @@ export function Rankings({ dispatch }: RankingsProps) {
     <article className="rankings">
       <h2>{t("rankings.title")}</h2>
 
-      <SearchBarRankings rankingsFilters={rankingsFilters} dispatch={rankingsDispatch} />
+      <QuizModeSentence theme={theme} settings={{ region, difficulty, length }} />
 
       <div className="sentence">
-        <QuizModeSentence theme={theme} settings={{ region, difficulty, length }} />
-
         <PlayThisQuizBtn settings={{ theme, region, difficulty, length }} dispatch={dispatch} />
       </div>
+
+      <SearchBarRankings rankingsFilters={rankingsFilters} dispatch={rankingsDispatch} />
 
       {!rankings ? (
         <div className="rankings-loading">

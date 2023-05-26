@@ -36,13 +36,13 @@ export function RankingsList({ options }: RankingsListProps) {
 
         return (
           <li key={index} className="rankings-item">
-            {showRank && <p className="rank">{index + 1}</p>}
+            {showRank && <p className={index + 1 === 1 ? "rank first" : "rank"}>{index + 1}</p>}
 
             <div className="infos">
               {showSettings && (
                 <ul className="showSettings">
                   <li> {t(`rankings.filters.theme.${theme}`)}</li>
-                  <li> {t(`rankings.filters.region.${region}`)}</li>
+                  <li> {t(`rankings.filters.region.${region.toLowerCase()}`)}</li>
                   <li>{t(`rankings.filters.difficulty.${difficulty}`)}</li>
                   <li> {t(`rankings.filters.length.${length}`)}</li>
                 </ul>

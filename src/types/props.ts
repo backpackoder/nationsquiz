@@ -3,13 +3,26 @@ import { API_DATA } from "./api";
 import { QuizData } from "./quiz";
 import { RankingsListOptions, getRankingsFilters } from "./rankings";
 
+// STUDY
+export type FilterState = {
+  sort: string;
+  search: string;
+  region: string;
+  population: number;
+};
+
+export type ReducerAction = {
+  type: string;
+  payload: string | number;
+};
+
 // SEARCHBAR
 export type SearchBarProps = {
   data: API_DATA[];
-  filterDispatch: any;
+  filterDispatch: React.Dispatch<ReducerAction>;
 };
 
-// quiz
+// QUIZ
 export type ButtonsProps = {
   dispatch: any;
   isQuizfinished: boolean;

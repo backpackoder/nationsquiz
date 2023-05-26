@@ -76,6 +76,38 @@ export const translationsSPA = {
   study: {
     infoSheet: "Ficha informativa",
     noResult: "Ningún país coincide con tus criterios de búsqueda.",
+
+    infos: {
+      rows: {
+        geography: "Geografía",
+        status: "Estado",
+        economy: "Economía",
+        miscellaneous: "Diverso",
+      },
+      labels: {
+        continent: "Continente",
+        subregion: "Subregión",
+        capital: "Capital",
+        area: "Área",
+        borders: "Fronteras",
+        landlocked: "País sin salida al mar",
+        population: "Población",
+        languages: "Idiomas",
+        independent: "Independiente",
+        unmember: "Miembro de la ONU",
+        currency: "Moneda",
+        gini: "Gini",
+        callingcode: "Prefijo telefónico",
+        timezones: "Zonas horarias",
+        car: "Conducción",
+      },
+      values: {
+        yes: "Sí",
+        no: "No",
+        population: "{{population}} habitantes",
+        car: '"{{sign}}", lado {{side}} de la carretera',
+      },
+    },
   },
 
   searchBar: {
@@ -122,7 +154,6 @@ export const translationsSPA = {
       },
     },
     placeholder: "Buscar un país",
-    reset: "Reiniciar los filtros",
   },
 
   quizList: {

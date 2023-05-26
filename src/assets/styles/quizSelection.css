@@ -4,8 +4,13 @@
   align-items: center;
   gap: 25px;
   width: 100%;
-  border: solid 1px;
+  border: solid 1px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+  box-shadow: 0 2px 15px -5px rgba(0, 0, 0, 0.5);
+}
+
+.quiz-selection h2 {
+  margin-top: 15px;
 }
 
 .quiz-selection .quiz-item {

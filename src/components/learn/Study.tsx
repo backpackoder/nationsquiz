@@ -1,3 +1,5 @@
+import unidecode from "unidecode";
+
 import { useContext, useReducer } from "react";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
@@ -8,24 +10,20 @@ import { SearchBar } from "./SearchBar";
 
 // Types
 import { AppProviderProps } from "../../types/context";
+import { FilterState, ReducerAction } from "../../types/props";
 
 // Utils
 import { stringForUrl } from "../../utils/stringForUrl";
 
 // Commons
 import { ROUTES } from "../../commons/commons";
-
-type FilterState = {
-  sort: string;
-  search: string;
-  region: string;
-  population: number;
-};
+import { API_DATA } from "../../types/api";
+import { getDataDependingOnLanguage } from "../../utils/getDataWithLanguage";
 
 export function Study() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data }: AppProviderProps = useContext(AppContext);
+  const { actualLanguage, data }: AppProviderProps = useContext(AppContext);
 
   const initialState: FilterState = {
     sort: "",
@@ -36,13 +34,25 @@ export function Study() {
 
   const [filterState, filterDispatch] = useReducer(reducer, initialState);
 
-  const sortedData = data?.sort((a: any, b: any) => {
+  const sortedData = data?.sort((a: API_DATA, b: API_DATA) => {
     switch (filterState.sort) {
       case "Name ascending":
-        return a.name.common.localeCompare(b.name.common);
+        return getDataDependingOnLanguage({
+          data: a,
+          type: "common name",
+          language: actualLanguage,
+        }).localeCompare(
+          getDataDependingOnLanguage({ data: b, type: "common name", language: actualLanguage })
+        );
 
       case "Name descending":
-        return b.name.common.localeCompare(a.name.common);
+        return getDataDependingOnLanguage({
+          data: b,
+          type: "common name",
+          language: actualLanguage,
+        }).localeCompare(
+          getDataDependingOnLanguage({ data: a, type: "common name", language: actualLanguage })
+        );
 
       case "Population ascending":
         return a.population - b.population;
@@ -51,47 +61,30 @@ export function Study() {
         return b.population - a.population;
 
       default:
-        return a + b;
+        return 0;
     }
   });
 
-  function reducer(state: any, action: any) {
+  function reducer(state: FilterState, action: ReducerAction): FilterState {
     switch (action.type) {
-      case "sort":
+      case action.type:
         return {
           ...state,
-          sort: action.payload,
+          [action.type]: action.payload,
         };
-
-      case "writing":
-        return {
-          ...state,
-          search: action.payload,
-        };
-
-      case "region":
-        return {
-          ...state,
-          region: action.payload,
-        };
-
-      case "population":
-        return {
-          ...state,
-          population: action.payload,
-        };
-
-      case "reset":
-        return initialState;
 
       default:
         throw new Error("Unexpected filters action");
     }
   }
 
-  const filteredData = sortedData?.filter((item: any) => {
+  const filteredData = sortedData?.filter((item: API_DATA) => {
     return (
-      item.name.common.toLowerCase().includes(filterState.search.toLowerCase()) &&
+      unidecode(
+        getDataDependingOnLanguage({ data: item, type: "common name", language: actualLanguage })
+      )
+        .toLowerCase()
+        .includes(unidecode(filterState.search.toLowerCase())) &&
       item.region.includes(filterState.region) &&
       (filterState.population >= 0
         ? item.population >= filterState.population
@@ -108,12 +101,16 @@ export function Study() {
           {filteredData.map((item, index) => {
             return (
               <div key={index} className="item">
-                {/* <h3>{item.translations[actualLanguage]?.common ?? item.name.common}</h3> */}
-                {/* EN DESSOUS A RENDRE DYNAMIQUE EN FONCTION DE LA LANGUE */}
-                <h3>{item.translations["fra"]?.common ?? item.name.common}</h3>
+                <h3>
+                  {getDataDependingOnLanguage({
+                    data: item,
+                    type: "common name",
+                    language: actualLanguage,
+                  })}
+                </h3>
 
                 <div className="imgWrapper">
-                  <img src={item.flags.png} alt={item.flags.alt} />
+                  <img src={item.flags.svg} alt={item.flags.alt} />
                 </div>
 
                 <button

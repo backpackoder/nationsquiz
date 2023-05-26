@@ -3,7 +3,7 @@ export type API_DATA = {
     common: string;
     official: string;
     nativeName: {
-      DEPENDS: {
+      [key: string]: {
         official: string;
         common: string;
       };
@@ -18,7 +18,7 @@ export type API_DATA = {
   status: string;
   unMember: boolean;
   currencies: {
-    DEPENDS: {
+    [key: string]: {
       name: string;
       symbol: string;
     };
@@ -61,7 +61,7 @@ export type API_DATA = {
   };
   population: number;
   gini: {
-    DEPENDS: number;
+    [key: string]: number;
   };
   fifa: string;
   car: {

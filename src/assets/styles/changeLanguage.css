@@ -14,9 +14,6 @@
 
 .openLanguage {
   position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%);
   display: none;
   flex-direction: column;
   background-color: lightblue;
@@ -24,6 +21,16 @@
 }
 .openLanguage.active {
   display: flex;
+}
+.openLanguage.active.header {
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+}
+.openLanguage.active.footer {
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -100%);
 }
 .openLanguage button {
   padding: 5px 10px;
